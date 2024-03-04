@@ -108,6 +108,7 @@ if __name__ == '__main__':
 ### 1-2 Odometry ROS 메시지 생성
 
 ```py
+# gpsimu_parser.py
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
  
@@ -155,7 +156,6 @@ class GPSIMUParser:
         '''
         self.proj_UTM = Proj(proj='utm', zone=52, ellps='WGS84', preserve_units=False)
 
-
         #TODO: (2) 송신 될 Odometry 메세지 변수 생성
         '''
         # ROS 메세지 중 물체의 위치와 자세 데이터를 나타내는 Odometry 메세지를 사용한다.
@@ -170,7 +170,6 @@ class GPSIMUParser:
         self.odom_msg = Odometry()
         self.odom_msg.header.frame_id = '/odom'
         self.odom_msg.child_frame_id = '/base_link'
-
         rate = rospy.Rate(30) # 30hz
         while not rospy.is_shutdown():
             if self.is_imu==True and self.is_gps == True:
@@ -183,7 +182,6 @@ class GPSIMUParser:
                 
                 '''
                 self.odom_pub.publish(self.odom_msg)
-
                 os.system('clear')
                 print(" ROS Odometry Msgs Pose ")
                 print(self.odom_msg.pose.pose.position)
@@ -209,7 +207,7 @@ class GPSIMUParser:
         # GPS 센서에서 출력되는 Offset 값은 시뮬레이터에 맵 좌표계로 변경을 위한 값이다.
         # UTM 좌표로 변환 된 x, y 값에 offset 값을 빼주면 된다.
         xy_zone = self.proj_UTM(위도 데이터, 경도 데이터)
-
+        
         # if 문을 이용 예외처리를 하는 이유는 시뮬레이터 음영 구간 설정 센서 데이터가 0.0 으로 나오기 때문이다.
         if self.lon == 0 and self.lat == 0:
             self.x = 0.0
@@ -234,6 +232,7 @@ class GPSIMUParser:
         self.odom_msg.pose.pose.position.x = 
         self.odom_msg.pose.pose.position.y = 
         self.odom_msg.pose.pose.position.z =
+
         '''
         self.odom_msg.header.stamp = rospy.get_rostime()
         self.odom_msg.pose.pose.position.x = self.x
@@ -258,7 +257,6 @@ class GPSIMUParser:
             self.odom_msg.pose.pose.orientation.w = data.orientation.w
 
         '''
-        self.is_imu=True
         if data.orientation.w == 0:
             self.odom_msg.pose.pose.orientation.x = 0.0
             self.odom_msg.pose.pose.orientation.y = 0.0
@@ -269,6 +267,7 @@ class GPSIMUParser:
             self.odom_msg.pose.pose.orientation.y = data.orientation.y
             self.odom_msg.pose.pose.orientation.z = data.orientation.z
             self.odom_msg.pose.pose.orientation.w = data.orientation.w
+        self.is_imu=True
 
 if __name__ == '__main__':
     try:
@@ -281,6 +280,7 @@ if __name__ == '__main__':
 ### 1-3 ROS TF 좌표계 생성
 
 ```py
+# tf_pub.py
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import rospy
@@ -303,7 +303,7 @@ class Ego_listener():
 
 
     #TODO: (1) Callback 함수 생성
-    def odom_callback(self,msg):
+    def odom_callback(self,odom_msg):
         self.is_odom = True
 
         '''
@@ -316,17 +316,16 @@ class Ego_listener():
         self.orientation_y = 물체의 quaternion y 값
         self.orientation_z = 물체의 quaternion z 값
         self.orientation_w = 물체의 quaternion ㅈ 값
+
         '''
-        self.x = msg.pose.pose.position.x
-        self.y = msg.pose.pose.position.y
+        self.x = odom_msg.pose.pose.position.x
+        self.y = odom_msg.pose.pose.position.y
 
-        self.orientation_x = msg.pose.pose.orientation.x
-        self.orientation_y = msg.pose.pose.orientation.y
-        self.orientation_z = msg.pose.pose.orientation.z
-        self.orientation_w = msg.pose.pose.orientation.w
-
-
-
+        self.orientation_x = odom_msg.pose.pose.orientation.x
+        self.orientation_y = odom_msg.pose.pose.orientation.y
+        self.orientation_z = odom_msg.pose.pose.orientation.z
+        self.orientation_w = odom_msg.pose.pose.orientation.w
+        
         #TODO: (2) 브로드캐스터 생성 및 Ego 상태 tf 브로드캐스팅
         '''
         # TF 데이터를 broadcast 해주는 변수를 선언한다.
@@ -338,15 +337,13 @@ class Ego_listener():
                         rospy.Time.now(),
                         "Ego",
                         "map")
+
         '''
         br = tf.TransformBroadcaster()
-        br.sendTransform(
-                            (self.x, self.y, 1),
-                            (self.orientation_x, self.orientation_y, self.orientation_z, self.orientation_z),
-                            rospy.Time.now(),
-                            "Ego",
-                            "map"
-                        )
+        br.sendTransform((self.x, self.y, 0),
+                         (self.orientation_x, self.orientation_y, self.orientation_z, self.orientation_w),
+                         rospy.Time.now(),
+                         "Ego", "map")
 
 if __name__ == '__main__':
     try:
@@ -359,4 +356,182 @@ if __name__ == '__main__':
 
 # 2. 정밀도로 지도
 
-### 2-1 MGeo 데이터 확인 및 시각화
+### 2-1-1 MGeo 데이터 확인
+
+```py
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import os
+import sys
+
+current_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(current_path)
+
+from lib.mgeo.class_defs import *
+
+# mgeo 는 정밀도로지도 데이터 인 MGeo(MORAI Geometry) 데이터를 읽어오는 예제입니다.
+# Json 파일 형식으로 되어 있는 MGeo 데이터를 dictionary 형태로 읽어옵니다.
+
+# 노드 실행 순서 
+# 1. Mgeo data 읽어온 후 데이터 확인
+
+#TODO: (1) Mgeo data 읽어온 후 데이터 확인
+'''
+# Json 파일 형식으로 저장된 MGeo 데이터를 읽어오는 예제 입니다.
+# VScode 의 debug 기능을 이용하여 MGeo 데이터를 확인 할 수 있습니다.
+# MGeo 데이터는 인접 리스트 방식의 그래프 구조 입니다.
+# 정밀도로지도의 도로 간의 연결 관계를 표현 합니다.
+# MGeo 에는 도로의 형상을 나타내는 Node 와 Link 데이터가 있습니다.
+# Node 와 Link 는 모두 Point 데이터 들의 집합입니다.
+# Node 는 서로 다른 두개 이상의 Link 간의 연결 여부를 나타냅니다.
+# Link 는 도로를 표현하며 도로 의 중심 선이 됩니다.
+# Link 와 Node 정보가 모여 도로의 형상을 표현합니다.
+# 각각의 Node Link 정보는 이름인 idx 정보를 가집니다 idx 는 중복 될 수 없습니다. 
+# to_links , from_links , to_node , from_node ... 등 
+# MGeo에 정의되어 있는 데이터를 활용해 각 Node 와 Link 간 연결 성을 나타낼 수 있습니다.
+# 
+
+'''
+load_path = os.path.normpath(os.path.join(current_path, 'lib/mgeo_data/R_KR_PG_K-City'))
+mgeo_planner_map = MGeo.create_instance_from_json(load_path)
+
+node_set = mgeo_planner_map.node_set
+link_set = mgeo_planner_map.link_set
+nodes=node_set.nodes
+links=link_set.lines
+
+print('# of nodes: ', len(node_set.nodes))
+print('# of links: ', len(link_set.lines))
+```
+
+### 2-1-2 MGeo 시각화
+```py
+# mgeo_pub.py
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import os
+import sys
+import rospy
+
+from nav_msgs.msg import Path
+from geometry_msgs.msg import PoseStamped,Point32
+from sensor_msgs.msg import PointCloud
+
+current_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(current_path)
+
+from lib.mgeo.class_defs import *
+
+# mgeo_pub 은 Mgeo 데이터를 읽어온 뒤 도로 정보를 Point Cloud Data 로 변환하는 예제입니다.
+# Point Cloud 형식으로 변환 후 Rviz 를 이용해 정밀도로지도 데이터를 시각화 할 수 있습니다.
+
+# 노드 실행 순서 
+# 1. Mgeo data 읽어온 후 데이터 확인
+# 2. Link 정보 Point Cloud 데이터로 변환
+# 3. Node 정보 Point Cloud 데이터로 변환
+# 4. 변환한 Link, Node 정보 Publish
+
+class get_mgeo :
+    def __init__(self):
+        rospy.init_node('test', anonymous=True)
+        self.link_pub = rospy.Publisher('link',PointCloud, queue_size=1)
+        self.node_pub = rospy.Publisher('node',PointCloud, queue_size=1)
+
+        #TODO: (1) Mgeo data 읽어온 후 데이터 확인
+        '''
+        # Json 파일 형식으로 저장된 MGeo 데이터를 읽어오는 예제 입니다.
+        # VScode 의 debug 기능을 이용하여 MGeo 데이터를 확인 할 수 있습니다.
+        # MGeo 데이터는 인접 리스트 방식의 그래프 구조 입니다.
+        # 정밀도로지도의 도로 간의 연결 관계를 표현 합니다.
+        # MGeo 에는 도로의 형상을 나타내는 Node 와 Link 데이터가 있습니다.
+        # Node 와 Link 는 모두 Point 데이터 들의 집합입니다.
+        # Node 는 서로 다른 두개 이상의 Link 간의 연결 여부를 나타냅니다.
+        # Link 는 도로를 표현하며 도로 의 중심 선이 됩니다.
+        # Link 와 Node 정보가 모여 도로의 형상을 표현합니다.
+        # 각각의 Node Link 정보는 이름인 idx 정보를 가집니다 idx 는 중복 될 수 없습니다. 
+        # to_links , from_links , to_node , from_node ... 등 
+        # MGeo에 정의되어 있는 데이터를 활용해 각 Node 와 Link 간 연결 성을 나타낼 수 있습니다.
+        
+        '''
+        load_path = os.path.normpath(os.path.join(current_path, 'lib/mgeo_data/R_KR_PG_K-City'))
+        mgeo_planner_map = MGeo.create_instance_from_json(load_path)
+        
+        node_set = mgeo_planner_map.node_set
+        link_set = mgeo_planner_map.link_set
+
+        self.nodes=node_set.nodes
+        self.links=link_set.lines
+
+        self.link_msg=self.getAllLinks()
+        self.node_msg=self.getAllNode()
+
+        print('# of nodes: ', len(node_set.nodes))
+        print('# of links: ', len(link_set.lines))
+
+        rate = rospy.Rate(1) 
+        while not rospy.is_shutdown():
+
+            #TODO: (4) 변환한 Link, Node 정보 Publish
+            '''
+            # 변환한 Link, Node 정보 를 전송하는 publisher 를 만든다.
+            self.link_pub.
+            self.node_pub.
+            
+            '''
+            self.link_pub.publish(self.link_msg)
+            self.node_pub.publish(self.node_msg)
+            rate.sleep()
+
+
+    def getAllLinks(self):
+        all_link=PointCloud()
+        all_link.header.frame_id='map'
+
+        #TODO: (2) Link 정보 Point Cloud 데이터로 변환
+        '''
+        # Point Cloud 형식으로 Link 의 좌표 정보를 변환합니다.
+        # Link 의 개수 만큼 반복하는 반복 문을 이용해 Link 정보를 Point Cloud 형식 데이터에 넣습니다.
+
+        for link_idx in self.links :
+            for  in :
+
+        
+        '''
+        for link_idx in self.links :
+            for link_point in self.links[link_idx].points:
+                tmp_point=Point32()
+                tmp_point.x=link_point[0]
+                tmp_point.y=link_point[1]
+                tmp_point.z=link_point[2]
+                all_link.points.append(tmp_point)
+
+        return all_link
+    
+    def getAllNode(self):
+        all_node=PointCloud()
+        all_node.header.frame_id='map'
+
+        #TODO: (3) Node 정보 Point Cloud 데이터로 변환
+        '''
+        # Point Cloud 형식으로 Node 의 좌표 정보를 변환합니다.
+        # Node 의 개수 만큼 반복하는 반복 문을 이용해 Node 정보를 Point Cloud 형식 데이터에 넣습니다.
+
+        for node_idx in self.nodes :
+
+        '''
+        for node_idx in self.nodes :
+            tmp_point=Point32()
+            tmp_point.x=self.nodes[node_idx].point[0]
+            tmp_point.y=self.nodes[node_idx].point[1]
+            tmp_point.z=self.nodes[node_idx].point[2]
+            all_node.points.append(tmp_point)
+            
+        return all_node
+
+
+if __name__ == '__main__':
+    
+    test_track=get_mgeo()
+```
