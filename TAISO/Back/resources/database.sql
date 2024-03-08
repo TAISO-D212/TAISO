@@ -20,6 +20,7 @@ CREATE TABLE `Reservations` (
 	`rsv_stop_cnt`	int	NOT NULL	DEFAULT 1,
 	`rsv_user_cnt`	int	NOT NULL	DEFAULT 1,
 	`fk_rsv_bus_id`	int	NOT NULL,
+	`rsv_arrival_time`	datetime	NULL,
 	CONSTRAINT `PK_RESERVATIONS` PRIMARY KEY (`rsv_id`)
 )default character set utf8mb4;
 
@@ -66,7 +67,7 @@ CREATE TABLE `Buses` (
 	`bus_latitude`	double	NOT NULL,
 	`bus_longitude`	double	NOT NULL,
 	`bus_updated_date`	datetime	NOT NULL	DEFAULT now(),
-	`bus_max_user`	int	NOT NULL	DEFAULT 6,
+	`bus_max_user`	int	NOT NULL	DEFAULT 4,
 	CONSTRAINT `PK_BUSES` PRIMARY KEY (`bus_id`)
 )default character set utf8mb4;
 
