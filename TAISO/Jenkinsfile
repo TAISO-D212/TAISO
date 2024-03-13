@@ -43,19 +43,12 @@ pipeline {
 //             }
 //         }
 
-        stage('Install dependencies') {
-            steps {
-                script {
-                    env.PATH = "${tool 'Node.js'}/bin:${env.PATH}"
-                    sh 'npm install'
-                }
-            }
-        }
 
         // 프론트엔드 빌드
         stage('Build Frontend') {
             steps {
              dir("${DIR_FE}"){
+                    env.PATH = "${tool 'node-v20.11.1'}/bin:${env.PATH}"
                     sh 'npm install'  // npm 종속성 설치
                     sh 'npm run build'  // 빌드
 
