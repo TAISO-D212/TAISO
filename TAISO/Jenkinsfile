@@ -1,0 +1,86 @@
+pipeline {
+    agent any
+
+    environment {
+//             DOCKER = 'sudo docker'
+
+            // Dockerfile이 위치한 경로
+//             DOCKERFILE_PATH = './Dockerfile'
+
+            // 생성할 Docker 이미지 이름
+//             DOCKER_IMAGE_NAME = 'project-longd-develop'
+
+            //BE 디렉터리명
+    		DIR_BE = 'Back'
+
+    		//FE 디렉터리명
+            DIR_FE = 'Front'
+
+//             PROJECT_PATH = '/jenkins-data/workspace/LongD-develop'
+
+           //현재 위치
+           // currentDir = pwd()
+
+        }
+
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+            
+            post {
+                    success { sh 'echo "Successfully Cloned Repository"'}
+                    failure { sh 'echo "Fail Cloned Repository"'}
+                }
+        }
+//         stage('Build') {
+//             steps {
+//                 // Gradle을 사용하여 빌드
+//                 sh './gradlew build'  // Gradle Wrapper를 사용하는 경우
+//                 // 또는 "gradle" 명령어를 직접 사용할 수도 있습니다.
+//             }
+//         }
+
+        // 프론트엔드 빌드
+        stage('Build Frontend') {
+            steps {
+             dir("${DIR_FE}"){
+                    sh 'npm install'  // npm 종속성 설치
+                    sh 'npm run build'  // 빌드
+
+                    script {
+                            def currentDir = pwd()
+                            echo "Current Directory: ${currentDir}"
+                            }
+                }
+            }
+        }
+
+//         stage('Test') {
+//             steps {
+//                 // 테스트 실행
+//                 sh './gradlew test'  // Gradle Wrapper를 사용하는 경우
+//             }
+//         }
+//         stage('Deploy') {
+//             steps {
+//                 // 배포 스크립트 실행
+//                 // 적절한 배포 명령어 또는 스크립트를 여기에 추가
+//             }
+//         }
+    }
+
+//     post {
+//         always {
+//             // 항상 실행할 내용
+//         }
+//         success {
+//             // 성공 시 실행할 내용
+//         }
+//         failure {
+//             // 실패 시 실행할 내용
+//         }
+//     }
+}
