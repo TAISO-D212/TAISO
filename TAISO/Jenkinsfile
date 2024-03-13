@@ -10,6 +10,8 @@ pipeline {
             // 생성할 Docker 이미지 이름
 //             DOCKER_IMAGE_NAME = 'project-longd-develop'
 
+
+            PATH = "${tool 'node-v20.11.1'}/bin:${env.PATH}"
             //BE 디렉터리명
     		DIR_BE = 'Back'
 
@@ -47,7 +49,7 @@ pipeline {
         // 프론트엔드 빌드
         stage('Build Frontend') {
             steps {
-            env.PATH = "${tool 'node-v20.11.1'}/bin:${env.PATH}"
+//             env.PATH = "${tool 'node-v20.11.1'}/bin:${env.PATH}"
              dir("${DIR_FE}"){
                     sh 'npm install'  // npm 종속성 설치
                     sh 'npm run build'  // 빌드
