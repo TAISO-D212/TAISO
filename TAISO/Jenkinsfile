@@ -29,7 +29,7 @@ pipeline {
             steps {
                 checkout scm
             }
-            
+
             post {
                     success { sh 'echo "Successfully Cloned Repository"'}
                     failure { sh 'echo "Fail Cloned Repository"'}
@@ -42,6 +42,15 @@ pipeline {
 //                 // 또는 "gradle" 명령어를 직접 사용할 수도 있습니다.
 //             }
 //         }
+
+        stage('Install dependencies') {
+            steps {
+                script {
+                    env.PATH = "${tool 'Node.js'}/bin:${env.PATH}"
+                    sh 'npm install'
+                }
+            }
+        }
 
         // 프론트엔드 빌드
         stage('Build Frontend') {
@@ -57,6 +66,9 @@ pipeline {
                 }
             }
         }
+
+
+
 
 //         stage('Test') {
 //             steps {
