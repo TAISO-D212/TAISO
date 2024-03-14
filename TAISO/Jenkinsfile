@@ -11,7 +11,7 @@ pipeline {
 //             DOCKER_IMAGE_NAME = 'project-longd-develop'
 
 
-            PATH = "${tool 'node-v20.11.1'}/bin:${env.PATH}"
+            //PATH = "${tool 'node-v20.11.1'}/bin:${env.PATH}"
             //BE 디렉터리명
     		DIR_BE = 'Back'
 
