@@ -16,15 +16,18 @@ pipeline {
                     checkout scm
                 }
             }
+            script{
+                def currentDir = pwd()
+                echo "Current Directory: ${currentDir}"
+            }
         }
 
         stage('Build Frontend') {
             steps {
                 script {
-                    sh 'chown jenkins:jenkins .env'
-                    sh 'chmod 644 .env'
-                    def currentDir = pwd()
-                    echo "Current Directory: ${currentDir}"
+//                     sh 'chown jenkins:jenkins .env'
+//                     sh 'chmod 644 .env'
+
 
                     nodejs('node-v20.11.1') {
                         dir("${DIR_FE}") {
