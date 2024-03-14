@@ -14,12 +14,12 @@ pipeline {
             steps {
                 script {
                     checkout scm
+                    def currentDir = pwd()
+                    echo "Current Directory: ${currentDir}"
                 }
+
             }
-            script{
-                def currentDir = pwd()
-                echo "Current Directory: ${currentDir}"
-            }
+
         }
 
         stage('Build Frontend') {
