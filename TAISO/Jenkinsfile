@@ -36,6 +36,12 @@ pipeline {
                     success { sh 'echo "Successfully Cloned Repository"'}
                     failure { sh 'echo "Fail Cloned Repository"'}
                 }
+
+            script {
+                    def currentDir = pwd()
+                    echo "Current Directory: ${currentDir}"
+                    }
+            }
         }
 //         stage('Build') {
 //             steps {
