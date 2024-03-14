@@ -33,15 +33,10 @@ pipeline {
         stage('Build Frontend') {
             steps {
                 script {
-//                     sh 'chown jenkins:jenkins .env'
-//                     sh 'chmod 644 .env'
 
-
-                    nodejs('node-v20.11.1') {
-                        dir("${DIR_FE}") {
-                            sh 'npm install'  // npm 종속성 설치
-                            sh 'npm run build'  // 빌드
-                        }
+                    dir("${DIR_FE}") {
+                        sh 'npm install'  // npm 종속성 설치
+                        sh 'npm run build'  // 빌드
                     }
                 }
             }
