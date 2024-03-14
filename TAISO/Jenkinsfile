@@ -2,6 +2,14 @@ pipeline {
     agent any
 
     environment {
+        
+        // NODEJS_HOME = "${tool 'node-v20.11.1'}" // YourNodeJSInstallation은 Jenkins에서 설정한 Node.js 설치명
+        // PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
+ 
+        NODEJS_HOME = "/var/jenkins_home/tools/jenkins.plugins.nodejs.tools.NodeJSInstallation"
+        PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
+
+
         // BE 디렉터리명
         DIR_BE = 'Back'
 
