@@ -36,18 +36,6 @@ pipeline {
             }
         }
     }
-
-    post {
-        always {
-            // 항상 실행할 내용
-        }
-        success {
-            // 성공 시 실행할 내용
-        }
-        failure {
-            // 실패 시 실행할 내용
-        }
-    }
 }
 
 
