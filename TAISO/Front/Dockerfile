@@ -1,3 +1,5 @@
+syntax=docker/dockerfile:experimental
+
 # Node.js 20.10.1 버전을 기반으로 한 이미지 사용
 FROM node:20.10.1 AS build
 
@@ -15,6 +17,7 @@ RUN npm install
 
 # Vue 프로젝트 빌드
 RUN npm run build
+
 
 ## 최종 이미지 구성
 #FROM nginx:latest
