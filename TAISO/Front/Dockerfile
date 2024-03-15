@@ -1,5 +1,5 @@
-# Node.js 20.10.0 버전을 기반으로 한 이미지 사용
-FROM node:20.10.1
+# Node.js 20.10.1 버전을 기반으로 한 이미지 사용
+FROM node:20.10.1 AS build
 
 # 작업 디렉토리 설정
 WORKDIR /app
@@ -15,3 +15,18 @@ RUN npm install
 
 # Vue 프로젝트 빌드
 RUN npm run build
+
+## 최종 이미지 구성
+#FROM nginx:latest
+#
+## Nginx 설정 파일 복사
+#COPY nginx.conf /etc/nginx/nginx.conf
+#
+## 빌드된 프론트엔드 파일 복사
+#COPY --from=build /app/dist /usr/share/nginx/html
+
+## 포트 설정
+#EXPOSE 80
+#
+## Nginx 실행
+#CMD ["nginx", "-g", "daemon off;"]
