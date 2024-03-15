@@ -1,8 +1,8 @@
-# Enable BuildKit
-ENV DOCKER_BUILDKIT=1
-
 # Node.js 20.10.1 버전을 기반으로 한 이미지 사용
 FROM node:20.10.1 AS build
+
+# Enable BuildKit
+ENV DOCKER_BUILDKIT=1
 
 # 작업 디렉토리 설정
 WORKDIR /app
