@@ -16,20 +16,6 @@ RUN rm -rf /app/node_modules /app/package-lock.json
 # 필요한 패키지 설치
 RUN npm install
 
-CMD ["npm", "run", "build"]
-
-
-## 최종 이미지 구성
-#FROM nginx:latest
-#
-## Nginx 설정 파일 복사
-#COPY nginx.conf /etc/nginx/nginx.conf
-#
-## 빌드된 프론트엔드 파일 복사
-#COPY --from=build /app/dist /usr/share/nginx/html
-
-## 포트 설정
-#EXPOSE 80
-#
-## Nginx 실행
-#CMD ["nginx", "-g", "daemon off;"]
+# 빌드된 파일을 호스트 시스템으로 복사
+RUN npm run build
+COPY dist /app/dist
