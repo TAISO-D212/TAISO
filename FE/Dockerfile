@@ -12,5 +12,5 @@ RUN rm -rf /app/node_modules /app/package-lock.json
 # 필요한 패키지 설치
 RUN npm install
 
-# Vue 프로젝트 빌드
+# React 프로젝트 빌드
 RUN npm run build
