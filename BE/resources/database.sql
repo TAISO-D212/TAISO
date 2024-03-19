@@ -1,4 +1,4 @@
-CREATE DATABASE taiso;
+CREATE DATABASE IF NOT EXISTS taiso;
 
 USE taiso;
 
