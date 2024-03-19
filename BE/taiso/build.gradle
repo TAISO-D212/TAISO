@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.3'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.d212'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    compileOnly 'org.projectlombok:lombok'
+    // 추가
+    testCompileOnly 'org.projectlombok:lombok'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    annotationProcessor 'org.projectlombok:lombok'
+    // 추가
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // 추가
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // 추가
+    // 시큐리티에서 사용하는 로그인 성공핸들러, 로그인 성공했어 그러면 뭐 할꺼야?
+    // 그걸 핸들러라는 이름으로 많이 제공 (시큐리티는 좀 올드한 면이 있다.)
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+    // 추가
+    // JWT
+    // 이 라이브러리를 이용해서 하는 일 크게 2가지
+    //1. JWT 문자열을 만드는 작업 2. 외부에서 전달되어서 들어오는 JWT 문자열을 검증해보는 작업
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+}
+
+
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
