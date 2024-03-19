@@ -44,7 +44,7 @@ public class CustomSecurityConfig {
 
         // 로그인은 어떤 경로에서 할 것이야?
         http.formLogin(config -> {
-            config.loginPage("/api/member/login");
+            config.loginPage("/members/login");
             // APILoginSuccessHandler라는 애로 처리를 할꺼야!
             config.successHandler(new APILoginSuccessHandler());
             config.failureHandler(new APILoginFailHandler());

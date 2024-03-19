@@ -35,7 +35,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
 
         // 회원 쪽은 체크하지 마!
-        if (path.startsWith("/api/member/")) {
+        if (path.startsWith("/api/members/")) {
             return true;
         }
 
