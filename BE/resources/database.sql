@@ -1,8 +1,8 @@
-CREATE DATABASE taiso;
+CREATE DATABASE IF NOT EXISTS TAISO;
 
-USE taiso;
+USE TAISO;
 
-CREATE TABLE `Member` (
+CREATE TABLE IF NOT EXISTS `Member` (
 	`email`	varchar(20)	NOT NULL,
 	`pwd`	varchar(200)	NOT NULL,
 	`name`	varchar(20)	NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE `Member` (
    CONSTRAINT `PK_Member` PRIMARY KEY (`email`)
 )default character set utf8mb4;
 
-CREATE TABLE `Reservation` (
+CREATE TABLE IF NOT EXISTS `Reservation` (
 	`rsv_id`	int	NOT NULL	AUTO_INCREMENT,
 	`email`	varchar(20)	NOT NULL,
 	`place_id`	int	NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE `Reservation` (
 	CONSTRAINT `PK_RESERVATION` PRIMARY KEY (`rsv_id`)
 )default character set utf8mb4;
 
-CREATE TABLE `Place` (
+CREATE TABLE IF NOT EXISTS `Place` (
 	`place_id`	int	NOT NULL AUTO_INCREMENT,
 	`latitude`	double	NOT NULL,
 	`longitude`	double	NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE `Place` (
 	CONSTRAINT `PK_PLACE` PRIMARY KEY (`place_id`)
 )default character set utf8mb4;
 
-CREATE TABLE `Rsv_detail` (
+CREATE TABLE IF NOT EXISTS `Rsv_detail` (
 	`rsv_id`	int	NOT NULL,
 	`place_id`	int	NOT NULL,
 	`email`	varchar(20)	NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE `Rsv_detail` (
 	CONSTRAINT `PK_RSV_DETAIL` PRIMARY KEY (`rsv_id`,	`place_id`)
 )default character set utf8mb4;
 
-CREATE TABLE `Places_list` (
+CREATE TABLE IF NOT EXISTS `Places_list` (
 	`pl_id`	int	NOT NULL	AUTO_INCREMENT,
 	`place_id`	int	NOT NULL,
 	`name`	varchar(20)	NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE `Places_list` (
 	CONSTRAINT `PK_PLACES_LIST` PRIMARY KEY (`pl_id`, `place_id`)
 )default character set utf8mb4;
 
-CREATE TABLE `Rsv_route` (
+CREATE TABLE IF NOT EXISTS `Rsv_route` (
 	`rsv_id`	int	NOT NULL,
 	`latitude`	double	NOT NULL,
 	`longitude`	double	NOT NULL,

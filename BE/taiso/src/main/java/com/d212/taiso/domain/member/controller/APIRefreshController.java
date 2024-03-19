@@ -22,7 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Log4j2
 public class APIRefreshController {
-    @RequestMapping("/api/member/refresh")
+    @RequestMapping("/members/refresh")
     public Map<String, Object> refresh (
             @RequestHeader("Authorization") String authHeader,
             String refreshToken
