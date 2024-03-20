@@ -1,12 +1,14 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { HomePage } from './pages/home/HomePage';
-
-const router = createBrowserRouter([{ path: '/', element: <HomePage /> }]);
+import { MainLayout } from "./layouts/MainLayout";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
 
 export const App = () => {
+
   return (
     <>
-      <RouterProvider router={router} />
+      <MainLayout>
+        <RouterProvider router={router}/>
+      </MainLayout>
     </>
   );
 };

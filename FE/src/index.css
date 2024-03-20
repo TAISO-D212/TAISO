@@ -4,23 +4,23 @@
 
 @font-face {
   font-family: 'Pretendard-Regular';
-  src: url(./assets/font/Pretendard-Regular.woff2) format('woff2');
+  src: url('./assets/font/Pretendard-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
   font-family: 'Pretendard-Bold';
-  src: url(./assets/font/Pretendard-Bold.woff2) format('woff2');
+  src: url('./assets/font/Pretendard-Bold.woff2') format('woff2');
+  font-weight: nolmal;
+  font-style: normal;
 }
 
-html,
-body,
-#root {
+
+body {
   max-width: 360px;
   margin: 0 auto;
   height: 100vh;
-}
-
-body {
   font-family: 'Pretendard-Regular';
 }
 
@@ -95,29 +95,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-} 
-
-@layer components {
-  .liveBtn {
-    @apply flex justify-center items-center rounded-full p-3 mx-1;
-  }
-
-  .blueBtn {
-    @apply w-full h-full rounded-2xl shadow-sm text-white text-lg bg-BID_MAIN hover:bg-BID_HOVER_MAIN;
-  }
-
-  .liveRedBtn {
-    @apply px-2.5 py-0.5 bg-[#FF0000] text-white rounded-[3px] text-sm;
-  }
-
-  .detailLiveRedBtn {
-    @apply w-full py-2.5 text-white rounded-xl text-center text-sm border border-red-500 flex justify-center items-center;
-  }
-
-  .detailBtn {
-    @apply w-full py-3 text-white rounded-xl text-center text-sm flex justify-center items-center;
-  }
-}
-
-
-*/
+} */
