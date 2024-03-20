@@ -1,8 +1,11 @@
+import { colorPalette } from "./src/constants/colorPalette.ts";
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      colors: colorPalette,
       keyframes: {
         "fade-in": {
           "0%": {
@@ -44,10 +47,10 @@ export default {
         },
       },
       animation: {
-        "fade-in": "fade-in 0.5s ease-in",
-        "fade-out": "fade-out 0.5s ease-out",
-        "fade-in-out": "fade-in-out 1s ease-in-out",
-        "fade-out-in": "fade-out-in 1s ease-in-out",
+        fadeIn: "fade-in 0.5s ease-in",
+        fadeOut: "fade-out 0.5s ease-out",
+        fadeInOut: "fade-in-out 1s ease-in-out",
+        fadeOutIn: "fade-out-in 1s ease-in-out",
       },
     },
     fontFamily: {

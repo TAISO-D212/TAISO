@@ -1,4 +1,4 @@
-export const colorPallet = {
+export const colorPalette = {
     // Mono Colors
     point1: '#454645',
     unActive: '#D9D9D9',
