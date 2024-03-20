@@ -39,6 +39,7 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+
     // 추가
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
@@ -58,6 +59,10 @@ dependencies {
     //추가
     // SWAGGER
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+
+    //추가
+    //테스트용 h2 DB
+    testImplementation 'com.h2database:h2'
 }
 
 
