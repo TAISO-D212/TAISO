@@ -2,15 +2,21 @@ import { useState, useEffect } from "react";
 import Logo192 from "../../assets/icon/icon_192.png"
 import Logo72 from "../../assets/icon/icon_72.png"
 import LogoImage from "../../assets/image/Loding_Image.png"
+import { SignUpPage } from "../signup/SignUpPage";
 
 export const LoginPage = () => {
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 2000)
   }, []);
+
+  const handleSignUpModal = () => {
+    setShowModal(showModal => !showModal)
+  }
 
   if (loading) return (<>
   <div className="flex flex-col justify-center overflow-hidden items-center animate-fadeIn">
@@ -40,10 +46,12 @@ export const LoginPage = () => {
           <div className="h-14 w-full bg-blue rounded-full text-white font-['Pretendard-Bold'] text-[20px] my-[5%] px-[5%] flex justify-center items-center">로그인</div>
           <div className="w-full font-['Pretendard-Bold'] mt-[10%] px-[5%] text-center">
             처음 이용하시는 유저신가요?
-            <span className="text-blue">&nbsp;&nbsp;&nbsp;&nbsp;회원가입</span>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span className="text-blue hover:underline" onClick={handleSignUpModal}>회원가입</span>
           </div>  
         </div>
         </div>
+        {showModal && <SignUpPage setShowModal={setShowModal}/>}
     </>
   );
 };
