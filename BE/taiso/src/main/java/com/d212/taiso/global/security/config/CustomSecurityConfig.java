@@ -42,6 +42,11 @@ public class CustomSecurityConfig {
 
         http.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
 
+        // 추가 todo 보류
+//        http.authorizeHttpRequests(config -> {
+//            config.requestMatchers("/**").permitAll();
+//        });
+
         // 로그인은 어떤 경로에서 할 것이야?
         http.formLogin(config -> {
             config.loginPage("/members/login");

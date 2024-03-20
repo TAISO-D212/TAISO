@@ -28,3 +28,18 @@ spring:
           org.hibernate.SQL: debug
           org.hibernate.orm.jdbc.bind: trace #스프링 부트 3.x, hibernate6
           org.springframework.security.web: trace
+
+springdoc: #swagger
+  packages-to-scan: com.d212.taiso
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    path: /taiso-ui.html            # Swagger UI 경로 => localhost:8000/taiso-ui.html
+    tags-sorter: alpha            # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
+    operations-sorter: alpha      # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
+  api-docs:
+    path: /api-docs/json
+    groups:
+      enabled: true
+  cache:
+    disabled: true

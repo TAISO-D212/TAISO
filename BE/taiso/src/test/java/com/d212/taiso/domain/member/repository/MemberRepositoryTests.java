@@ -1,6 +1,7 @@
 package com.d212.taiso.domain.member.repository;
 
 import com.d212.taiso.domain.member.entity.Member;
+import com.d212.taiso.global.exception.member.MemberNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,7 @@ class MemberRepositoryTests {
     @Test
     void testFindMemberByEmail() {
         String email = "user7@aaa.com";
-        Member member = memberRepository.findMemberByEmail(email);
-
+        Member member = memberRepository.findMemberByEmail(email).orElseThrow(MemberNotFoundException::new);
         log.info("-----------------");
         log.info(member);
 
