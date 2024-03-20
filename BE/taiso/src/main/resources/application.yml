@@ -10,9 +10,9 @@ server:
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/taiso
-    username: root
-    password: ssafy
+    url: jdbc:mariadb://j10d212.p.ssafy.io:3306/TAISO
+    username: localTaiso
+    password: taiso1234
 
   jpa:
     hibernate:
