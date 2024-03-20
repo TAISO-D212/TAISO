@@ -31,7 +31,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         log.info("----------------loadUserByUsername----------------------");
 
         // 여기서 username이 이메일임
-        Member member = memberRepository.findMemberByEmail(username);
+        Member member = memberRepository.findMemberByEmail(username)
+                .orElseThrow();
 
         // 이렇게 뽑아낸 Member 엔티티를 가지고 멤버DTO를 반환해줘야 됨
 
