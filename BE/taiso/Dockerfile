@@ -2,7 +2,7 @@
 FROM amazoncorretto:17
 
 # jar 파일을 컨테이너 내부에 복사
-COPY build/libs/*.jar TAISO-app.jar
+COPY build/libs/*.jar /TAISO-app.jar
 
 # 외부 호스트 3000 포트로 노출(외부에 호출될 포트)
 EXPOSE 3000
