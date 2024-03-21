@@ -1,4 +1,87 @@
-:root {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Adding Font Face */
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('./assets/font/Pretendard-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard-Bold';
+  src: url('./assets/font/Pretendard-Bold.woff2') format('woff2');
+  font-weight: nolmal;
+  font-style: normal;
+}
+
+/* Adding components classes */
+@layer components {
+  .modal-outer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-inner {
+    background-color: #ffffff;
+    width: 100%;
+    max-height: 70%;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  }
+  .modal--header {
+    border-bottom: 1px solid #dedede;
+  }
+  .modal-title {
+    margin: 0;
+    font: Pretendard-Bold;
+    font-size: 36px;
+    font-weight: bold;
+    padding: 1rem;
+    text-align: left;
+  }
+  .modal-content {
+    text-align: left;
+    padding: 1rem;
+  }
+  .modal-footer {
+    padding: 1rem;
+    border-top: 1px solid #dedede;
+    text-align: right;
+  }
+  .modal-button {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #52a88c;
+    background: #fff;
+    padding: 0;
+    border-radius: 0;
+    border: 0;
+    margin-right: 1rem;
+  }
+}
+
+body {
+  max-width: 360px;
+  margin: 0 auto;
+  height: 100vh;
+  font-family: 'Pretendard-Regular';
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -65,4 +148,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */

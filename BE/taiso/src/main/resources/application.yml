@@ -1,22 +1,37 @@
 server:
-  port: 3000
+  port: ${SERVER_PORT}
   servlet:
     encoding:
       charset: UTF-8
       enabled: true
       force: true
     context-path: /api
+  tomcat: # HTTP 요청을 다중 처리하기 위한 thread pool 설정
+    threads:
+      max: 10                 # 생성할 수 있는 thread의 총 개수
+      min-spare: 4            # 항상 활성화 되어있는(idle) thread의 개수
+    max-connections: 8192     # 수립가능한 connection의 총 개수
+    accept-count: 100         # 작업큐의 사이즈
+    connection-timeout: 20000 # timeout 판단 기준 시간, 20초
 
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://j10d212.p.ssafy.io:3306/TAISO
-    username: localTaiso
-    password: taiso1234
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+
+  #spring:
+  #  datasource:
+  #    driver-class-name: org.mariadb.jdbc.Driver
+  #    url: jdbc:mariadb://localhost:3306/taiso
+  #    username: root
+  #    password: ssafy
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
@@ -28,3 +43,23 @@ spring:
           org.hibernate.SQL: debug
           org.hibernate.orm.jdbc.bind: trace #스프링 부트 3.x, hibernate6
           org.springframework.security.web: trace
+
+springdoc: #swagger
+  packages-to-scan: com.d212.taiso
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    path: /taiso-ui.html            # Swagger UI 경로 => 주소:8000/taiso-ui.html
+    tags-sorter: alpha            # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
+    operations-sorter: alpha      # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
+  api-docs:
+    path: /api-docs/json
+    groups:
+      enabled: true
+  cache:
+    disabled: true
+
+mqtt:
+  broker:
+    url: ${MQTT_BROKER_URL}
+

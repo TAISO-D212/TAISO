@@ -1,4 +1,7 @@
 package com.d212.taiso.global.security.config;
+/**
+ * Created by 전근렬 on 2024-03-21
+ */
 
 import com.d212.taiso.domain.member.controller.formatter.LocalDateFormatter;
 import lombok.extern.log4j.Log4j2;
@@ -9,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @Log4j2
 public class CustomServletConfig implements WebMvcConfigurer {
+
     @Override
     public void addFormatters(FormatterRegistry registry) {
 
