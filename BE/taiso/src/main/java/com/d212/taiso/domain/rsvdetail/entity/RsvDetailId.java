@@ -20,11 +20,11 @@ import lombok.Data;
 @Embeddable
 public class RsvDetailId implements Serializable {
 
-    @ManyToOne(fetch = EAGER)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "rsv_id")
     private Reservation reservation;
 
-    @ManyToOne(fetch = EAGER)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "place_id")
     private Place place;
 }
