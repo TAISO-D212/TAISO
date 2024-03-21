@@ -18,7 +18,7 @@ public interface MemberService {
 //    default Member memberJoinReqToEntity(MemberJoinReq memberJoinReq){
 //        return Member.builder()
 //                .email(memberJoinReq.getEmail())
-//                .pw(memberJoinReq.getPw())
+//                .pwd(memberJoinReq.getPwd())
 //                .name(memberJoinReq.getName())
 //                .faceImg(memberJoinReq.getFaceImg())
 //                .build();

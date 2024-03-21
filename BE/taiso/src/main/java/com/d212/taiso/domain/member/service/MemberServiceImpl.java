@@ -43,9 +43,9 @@ public class MemberServiceImpl implements MemberService {
 
         Member member = Member.builder()
             .email(memberJoinReq.getEmail())
-            .pw(passwordEncoder.encode(memberJoinReq.getPw()))
+            .pwd(passwordEncoder.encode(memberJoinReq.getPwd()))
             .name(memberJoinReq.getName())
-            .createTime(LocalDateTime.now())
+            .createDate(LocalDateTime.now())
             .faceImg(memberJoinReq.getFaceImg())
             .build();
         memberRepository.save(member);

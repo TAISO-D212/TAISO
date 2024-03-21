@@ -9,7 +9,7 @@ import lombok.Data;
 public class MemberJoinReq {
 
     private String email;
-    private String pw;
+    private String pwd;
     private String name;
     private String faceImg;
 
