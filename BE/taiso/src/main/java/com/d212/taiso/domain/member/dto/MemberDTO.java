@@ -1,4 +1,7 @@
 package com.d212.taiso.domain.member.dto;
+/**
+ * Created by 전근렬 on 2024-03-21
+ */
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,18 +18,18 @@ import java.util.Map;
 @ToString
 public class MemberDTO extends User {
 
-    private String email, pw, name, faceImg;
+    private String email, pwd, name, faceImg;
 
     private boolean deleteFlag;
 
     // 생성날짜도 넣어야 하나?
-    private LocalDateTime createTime;
+    private LocalDateTime createDate;
 
     // todo 보류
-    public MemberDTO( String email, String pw, String name, boolean deleteFlag) {
-        super(email, pw, new ArrayList<>());
+    public MemberDTO(String email, String pwd, String name, boolean deleteFlag) {
+        super(email, pwd, new ArrayList<>());
         this.email = email;
-        this.pw = pw;
+        this.pwd = pwd;
         this.name = name;
         this.deleteFlag = deleteFlag;
     }
@@ -37,7 +40,7 @@ public class MemberDTO extends User {
     public Map<String, Object> getClaims() {
         Map<String, Object> dataMap = new HashMap<>();
         dataMap.put("email", email);
-        dataMap.put("pw",pw);
+        dataMap.put("pwd", pwd);
         dataMap.put("name", name);
         dataMap.put("deleteFlag", deleteFlag);
         return dataMap;

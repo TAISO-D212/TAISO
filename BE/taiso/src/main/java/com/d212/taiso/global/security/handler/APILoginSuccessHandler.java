@@ -1,6 +1,11 @@
 package com.d212.taiso.global.security.handler;
+/**
+ * Created by 전근렬 on 2024-03-21
+ */
 
 import com.d212.taiso.domain.member.dto.MemberDTO;
+import com.d212.taiso.global.result.error.ErrorCode;
+import com.d212.taiso.global.result.error.exception.BusinessException;
 import com.d212.taiso.global.security.util.JWTUtil;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
@@ -17,8 +22,10 @@ import java.util.Map;
 // 인증에 성공했을 때 어떻게 할꺼야?
 @Log4j2
 public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
+
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+        Authentication authentication) throws IOException, ServletException {
         log.info("-------------------");
         log.info("authentication");
         log.info("-------------------");
@@ -27,6 +34,11 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
         // MemberDTO를 꺼내와가지고 JWT
         // MemberDTO는 인증한 것에서부터 getPrincipal로 부터 끄집어냄
         MemberDTO memberDTO = (MemberDTO) authentication.getPrincipal();
+
+        // Todo 로그인 시에 deleteFlag 값이 1이면 예외처리 하기
+        if (memberDTO.isDeleteFlag()) {
+            throw new BusinessException(ErrorCode.MEMBER_DISABLED);
+        }
 
         // 우리가 만들어야 될 데이터
         // 이걸 왜 이렇게 따로 끄집어냈냐면 이따가 추가적인 정보(엑세스 토큰과 리프레스 토큰)를 넣을 것이므로

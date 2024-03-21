@@ -1,4 +1,7 @@
 package com.d212.taiso.global.security;
+/**
+ * Created by 전근렬 on 2024-03-21
+ */
 
 import com.d212.taiso.domain.member.dto.MemberDTO;
 import com.d212.taiso.domain.member.entity.Member;
@@ -9,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 
 // 잘된 자바 코드들은 항상 리턴 타입이랑 파라미터 타입은 가능하면 인터페이스로 뺌.(나중에 변경이 용이 하도록), 늘 김영한이 하던거네.
 // 현재 리턴 타입이 유저 Details 타입인데, 근데 얘를 구현한 클래스 중에 하나가 유저(유저는 클래스이다보니 생성자를 가질 수 있음.)
@@ -25,13 +27,15 @@ public class CustomUserDetailsService implements UserDetailsService {
     // 얘는 인터페이스 이고 유저라는 애(Member DTO 쪽에 USER라는 애를 extends 했음)는 클래스 느낌....
 
     private final MemberRepository memberRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws
-            UsernameNotFoundException {
+        UsernameNotFoundException {
         log.info("----------------loadUserByUsername----------------------");
 
         // 여기서 username이 이메일임
-        Member member = memberRepository.findMemberByEmail(username);
+        Member member = memberRepository.findMemberByEmail(username)
+            .orElseThrow();
 
         // 이렇게 뽑아낸 Member 엔티티를 가지고 멤버DTO를 반환해줘야 됨
 
@@ -40,10 +44,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         MemberDTO memberDTO = new MemberDTO(
-                member.getEmail(),
-                member.getPw(),
-                member.getName(),
-                member.isDeleteFlag());
+            member.getEmail(),
+            member.getPwd(),
+            member.getName(),
+            member.isDeleteFlag());
 
         log.info(memberDTO);
 

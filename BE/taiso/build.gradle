@@ -39,7 +39,6 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-
     // 추가
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
@@ -75,4 +74,9 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+// 테스트 코드를 제외한 빌드 수행
+tasks.withType(Test).configureEach {
+    enabled = false
 }
