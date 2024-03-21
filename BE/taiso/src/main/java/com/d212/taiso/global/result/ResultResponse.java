@@ -1,4 +1,7 @@
 package com.d212.taiso.global.result;
+/**
+ * Created by 전근렬 on 2024-03-21
+ */
 
 import lombok.Getter;
 

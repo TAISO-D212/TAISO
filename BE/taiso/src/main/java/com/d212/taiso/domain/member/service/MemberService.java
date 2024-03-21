@@ -1,4 +1,7 @@
 package com.d212.taiso.domain.member.service;
+/**
+ * Created by 전근렬 on 2024-03-21
+ */
 
 import com.d212.taiso.domain.member.dto.MemberJoinReq;
 import com.d212.taiso.domain.member.entity.Member;
@@ -9,11 +12,13 @@ public interface MemberService {
 
     void memberJoin(MemberJoinReq memberJoinReq);
 
+    void memberDelete();
+
     // 비밀번호 암호화로 인해 지움.
 //    default Member memberJoinReqToEntity(MemberJoinReq memberJoinReq){
 //        return Member.builder()
 //                .email(memberJoinReq.getEmail())
-//                .pw(memberJoinReq.getPw())
+//                .pwd(memberJoinReq.getPwd())
 //                .name(memberJoinReq.getName())
 //                .faceImg(memberJoinReq.getFaceImg())
 //                .build();

@@ -1,4 +1,7 @@
 package com.d212.taiso.global.security.config;
+/**
+ * Created by 전근렬 on 2024-03-21
+ */
 
 import com.d212.taiso.global.security.filter.JWTCheckFilter;
 import com.d212.taiso.global.security.handler.APILoginFailHandler;
@@ -27,6 +30,7 @@ import java.util.Arrays;
 // PreAuthorize 관련된 부분 다 안 해놨음, 만약에 필요시 넣을 것!
 //@EnableMethodSecurity
 public class CustomSecurityConfig {
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.info("----------------security config-------------------");
@@ -37,7 +41,8 @@ public class CustomSecurityConfig {
 
         // 세션을 만들지 마!!! 세션 유지를 안할거야. 나 세션은 안 만들고 안 쓸꺼야.
         http.sessionManagement(httpSecuritySessionManagementConfigurer -> {
-            httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.NEVER);
+            httpSecuritySessionManagementConfigurer.sessionCreationPolicy(
+                SessionCreationPolicy.NEVER);
         });
 
         http.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
@@ -57,7 +62,8 @@ public class CustomSecurityConfig {
 
         // 이 필터(UsernamePasswordAuthenticationFilter)가 동작하기 전에 해줘
         // 검사 전에 안할 것들 걸러주는 역할을 해줄 듯.
-        http.addFilterBefore(new JWTCheckFilter(), UsernamePasswordAuthenticationFilter.class);// JWT 체크
+        http.addFilterBefore(new JWTCheckFilter(),
+            UsernamePasswordAuthenticationFilter.class);// JWT 체크
 
         return http.build();
     }
@@ -75,10 +81,11 @@ public class CustomSecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOriginPatterns(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowedMethods(
+            Arrays.asList("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"));
+        configuration.setAllowedHeaders(
+            Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
-
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
