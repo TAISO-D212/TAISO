@@ -18,19 +18,20 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
+@Table(name = "member")
 public class Member {
 
     @Id
     private String email;
-    private String pw;
+    private String pwd;
     private String name; // username으로 쓰이는 것이 있어서 name으로 변환
     private String faceImg;
     @CreatedDate
-    private LocalDateTime createTime;
+    private LocalDateTime createDate;
     private boolean deleteFlag = false;
 
-    public void changePw(String pw) {
-        this.pw = pw;
+    public void changePwd(String pwd) {
+        this.pwd = pwd;
     }
 
     public void changeName(String name) {
