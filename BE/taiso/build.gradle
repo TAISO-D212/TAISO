@@ -55,15 +55,21 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-    //추가
+    // 추가
     // SWAGGER
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 
-    //추가
-    //테스트용 h2 DB
-    //testImplementation 'com.h2database:h2'
-}
+    // 추가
+    // 테스트용 h2 DB
+    testImplementation 'com.h2database:h2'
 
+    // 추가
+    // mqtt용 의존성 : 스프링 MQTT 통합 프레임워크 사용
+    implementation 'org.springframework.boot:spring-boot-starter-integration'
+    implementation 'org.springframework.integration:spring-integration-mqtt:5.5.0' // 버전 확인
+
+
+}
 
 
 tasks.named('test') {
