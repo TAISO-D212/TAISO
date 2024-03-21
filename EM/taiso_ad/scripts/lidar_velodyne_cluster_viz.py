@@ -29,7 +29,7 @@ class Cluster_viz:
         self.is_odom = False
         self.cluster_status = False
 
-        rate = rospy.Rate(30) # 10hz
+        rate = rospy.Rate(10) # 10hz
         while not rospy.is_shutdown():
             if self.is_odom == True and self.cluster_status == True:
 
