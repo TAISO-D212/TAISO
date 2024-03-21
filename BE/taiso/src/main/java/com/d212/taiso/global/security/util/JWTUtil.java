@@ -1,4 +1,7 @@
 package com.d212.taiso.global.security.util;
+/**
+ * Created by 전근렬 on 2024-03-21
+ */
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -26,34 +29,34 @@ public class JWTUtil {
             throw new RuntimeException(e.getMessage());
         }
         String jwtStr = Jwts.builder()
-                .setHeader(Map.of("typ", "JWT"))
-                .setClaims(valueMap)
-                .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
-                .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(min).toInstant()))
-                .signWith(key)
-                .compact();
+            .setHeader(Map.of("typ", "JWT"))
+            .setClaims(valueMap)
+            .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
+            .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(min).toInstant()))
+            .signWith(key)
+            .compact();
         return jwtStr;
     }
 
     // 검증을 위한 validateToken
     public static Map<String, Object> validateToken(String token) {
         Map<String, Object> claim = null;
-        try{
+        try {
             SecretKey key = Keys.hmacShaKeyFor(JWTUtil.key.getBytes("UTF-8"));
             claim = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token) // 파싱 및 검증, 실패 시 에러
-                    .getBody();
-        }catch(MalformedJwtException malformedJwtException){
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token) // 파싱 및 검증, 실패 시 에러
+                .getBody();
+        } catch (MalformedJwtException malformedJwtException) {
             throw new CustomJWTException("MalFormed");
-        }catch(ExpiredJwtException expiredJwtException){
+        } catch (ExpiredJwtException expiredJwtException) {
             throw new CustomJWTException("Expired");
-        }catch(InvalidClaimException invalidClaimException){
+        } catch (InvalidClaimException invalidClaimException) {
             throw new CustomJWTException("Invalid");
-        }catch(JwtException jwtException){
+        } catch (JwtException jwtException) {
             throw new CustomJWTException("JWTError");
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new CustomJWTException("Error");
         }
         return claim;
