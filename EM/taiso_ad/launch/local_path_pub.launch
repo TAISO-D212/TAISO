@@ -1,0 +1,9 @@
+<launch>
+    <node pkg="taiso_ad" type="mgeo_pub.py" name="mgeo_pub"/>
+    <node pkg="taiso_ad" type="gpsimu_parser.py" name="gpsimu_parser"/>
+    <node pkg="taiso_ad" type="tf_pub.py" name="tf"/>
+    <node pkg="taiso_ad" type="global_path_pub.py" name="mgeo_dijkstra_path"/>
+    <node pkg="taiso_ad" type="local_path_pub.py" name="local_path_pub"/>
+
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find taiso_ad)/rviz/kcity_rviz.rviz" />
+</launch>
