@@ -1,8 +1,12 @@
 package com.d212.taiso.global.util;
+/**
+ * Created by 전근렬 on 2024-03-21
+ */
+
 import com.d212.taiso.domain.member.entity.Member;
 import com.d212.taiso.domain.member.repository.MemberRepository;
-import com.d212.taiso.global.exception.member.MemberDisabledException;
-import com.d212.taiso.global.exception.member.MemberNotFoundException;
+import com.d212.taiso.global.result.error.ErrorCode;
+import com.d212.taiso.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,11 +23,11 @@ public class CommonUtil {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
         Member currentMember = memberRepository.findMemberByEmail(userEmail)
-                .orElseThrow(MemberNotFoundException::new);
+            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_EMAIL_NOT_EXIST));
 
         // 회원탈퇴여부 체크
         if (currentMember.isDeleteFlag()) {
-            throw new MemberDisabledException();
+            throw new BusinessException(ErrorCode.MEMBER_DISABLED);
         }
 
         return currentMember;

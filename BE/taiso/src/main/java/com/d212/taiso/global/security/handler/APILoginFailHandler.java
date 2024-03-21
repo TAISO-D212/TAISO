@@ -1,4 +1,7 @@
 package com.d212.taiso.global.security.handler;
+/**
+ * Created by 전근렬 on 2024-03-21
+ */
 
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
@@ -18,9 +21,10 @@ import java.util.Map;
 // 200을 주면서 메시지는 로그인 실패를 보냄.
 @Log4j2
 public class APILoginFailHandler implements AuthenticationFailureHandler {
+
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-                                        AuthenticationException exception) throws IOException, ServletException {
+        AuthenticationException exception) throws IOException, ServletException {
         log.info("Login fail....." + exception);
         Gson gson = new Gson();
         String jsonStr = gson.toJson(Map.of("error", "ERROR_LOGIN"));

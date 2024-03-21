@@ -1,4 +1,7 @@
 package com.d212.taiso.global.security.filter;
+/**
+ * Created by 전근렬 on 2024-03-21
+ */
 
 import com.d212.taiso.domain.member.dto.MemberDTO;
 import com.d212.taiso.global.security.util.JWTUtil;
@@ -33,9 +36,12 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
         log.info("check uri----------" + path);
 
-
         // 회원 쪽은 체크하지 마!
-        if (path.startsWith("/api/members/")) {
+        if (path.startsWith("/api/members/join")) {
+            return true;
+        }
+
+        if (path.startsWith("/api/members/login")) {
             return true;
         }
 
@@ -60,7 +66,6 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             return true;
         }
 
-
         //이미지 조회 경로는 체크하지 않음
 //        if(path.startsWith("/api/products/view/")) {
 //            return true;
@@ -71,11 +76,11 @@ public class JWTCheckFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+        FilterChain filterChain) throws ServletException, IOException {
         log.info("-------------------");
         log.info("-----------------JWTCheckFilter.................");
         log.info("-------------------");
-
 
         String authHeaderStr = request.getHeader("Authorization");
         //Bearer //7 JWT 문자열 , Bearer과 공백 포함해서 총 7자 뒤에 JWT 문자열이 오므로 잘라내는 작업 필요.
@@ -92,19 +97,20 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             String email = (String) claims.get("email");
             String pw = (String) claims.get("pw");
             String nickname = (String) claims.get("nickname");
-            Boolean delFlag = (Boolean) claims.get("delFlag");
+            Boolean deleteFlag = (Boolean) claims.get("deleteFlag");
 
-            MemberDTO memberDTO = new MemberDTO( email, pw, nickname, delFlag.booleanValue());
+            MemberDTO memberDTO = new MemberDTO(email, pw, nickname, deleteFlag.booleanValue());
             log.info("-----------------------------------");
             log.info(memberDTO);
             log.info(memberDTO.getAuthorities());
             UsernamePasswordAuthenticationToken authenticationToken
-                    = new UsernamePasswordAuthenticationToken(memberDTO,pw,memberDTO.getAuthorities());
+                = new UsernamePasswordAuthenticationToken(memberDTO, pw,
+                memberDTO.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
             filterChain.doFilter(request, response);
 
-        } catch(Exception e){
+        } catch (Exception e) {
             log.error("JWT Check Error..............");
             log.error(e.getMessage());
 

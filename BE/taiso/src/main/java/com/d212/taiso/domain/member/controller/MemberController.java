@@ -1,4 +1,7 @@
 package com.d212.taiso.domain.member.controller;
+/**
+ * Created by 전근렬 on 2024-03-21
+ */
 
 import com.d212.taiso.domain.member.dto.MemberJoinReq;
 import com.d212.taiso.domain.member.service.MemberService;
@@ -37,5 +40,12 @@ public class MemberController {
     public ResponseEntity<ResultResponse> memberJoin(@RequestBody MemberJoinReq memberJoinReq) {
         memberService.memberJoin(memberJoinReq);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.JOIN_SUCCESS, true));
+    }
+
+
+    @DeleteMapping("/")
+    public ResponseEntity<ResultResponse> memberDelete() {
+        memberService.memberDelete();
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.MEMBER_DELETE_SUCCESS, true));
     }
 }
