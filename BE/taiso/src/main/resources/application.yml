@@ -40,6 +40,7 @@ spring:
       logging:
         level:
           # 얘는 로그를 통해서 보여줌
+          root: DEBUG
           org.hibernate.SQL: debug
           org.hibernate.orm.jdbc.bind: trace #스프링 부트 3.x, hibernate6
           org.springframework.security.web: trace

@@ -95,7 +95,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             // 사용자의 토큰이 성공을 했다면 사용자에 대한 정보를 끄집어낼 수 o
             // 이 사용자의 정보를 가지고 멤버 DTO를 구성
             String email = (String) claims.get("email");
-            String pw = (String) claims.get("pw");
+            String pw = (String) claims.get("pwd");
             String nickname = (String) claims.get("nickname");
             Boolean deleteFlag = (Boolean) claims.get("deleteFlag");
 

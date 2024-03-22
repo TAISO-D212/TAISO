@@ -36,7 +36,7 @@ public class AsyncService {
             String payload = objectMapper.writeValueAsString(dataMap);
 
             // location 데이터로 MQTT 메시지 발행
-            publisher.publishLocations("distance", payload);
+            publisher.publishLocations("distance/BE", payload);
             log.debug("locations로 발행 완료, rsvId : {}, payload : {}", rsvId, payload);
 
             // 필요한 경우 추가 작업을 수행할 수 있도록
@@ -55,8 +55,8 @@ public class AsyncService {
             Map<String, Object> responseData = objectMapper.readValue(payload, Map.class);
             log.debug("distance 수신값 : {}", responseData);
 
-            long rsvId = (long) responseData.get("rsvId");
-            long placeId = (long) responseData.get("placeId");
+//            long rsvId = (long) responseData.get("rsvId");
+//            long placeId = (long) responseData.get("placeId");
 
             // distance로 경로 계산, DB 업데이트
 
