@@ -21,7 +21,6 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
-
   #spring:
   #  datasource:
   #    driver-class-name: org.mariadb.jdbc.Driver
@@ -49,7 +48,7 @@ springdoc: #swagger
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
   swagger-ui:
-    path: /taiso-ui.html            # Swagger UI 경로 => 주소:8000/taiso-ui.html
+    path: /taiso-ui.html            # Swagger UI 경로 => 주소:3000/api/taiso-ui.html
     tags-sorter: alpha            # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
     operations-sorter: alpha      # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
   api-docs:

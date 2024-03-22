@@ -33,4 +33,7 @@ public class Place {
     @Column(nullable = false)
     private double longitude; // 경도
 
+    @Column(nullable = false)
+    private String address;
+    
 }
