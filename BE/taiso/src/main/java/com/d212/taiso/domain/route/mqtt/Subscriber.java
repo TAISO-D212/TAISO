@@ -23,8 +23,9 @@ public class Subscriber {
         return message -> {
             String payload = message.getPayload().toString();
             MessageHeaders headers = message.getHeaders();
-            String topic = headers.get("mqtt_topic", String.class);
+            String topic = headers.get("mqtt_receivedTopic", String.class);
 
+            log.info("받은 topic : {}", topic);
             switch (topic) {
                 case "location/BE":
                     // 실시간 위치 받아왔다면 갱신
@@ -32,6 +33,7 @@ public class Subscriber {
                     break;
                 case "distance":
                     // 거리 계산값 받아왔다면
+                    log.info("거리 들어왔다!!");
                     asyncService.DistanceCalc(payload);
                     break;
                 default:
