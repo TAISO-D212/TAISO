@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `rsv_detail` (
 	`place_id`	bigint	NOT NULL,
 	`email`	varchar(20)	NOT NULL,
 	`cnt`	int	NOT NULL	DEFAULT 1,
-	`order`	int	NULL,
+	`orders`	int	NULL,
 	`depart_flag`	boolean	NOT NULL	DEFAULT false,
 	`board_flag`	boolean	NOT NULL	DEFAULT false,
 	`stop_flag`	boolean	NOT NULL	DEFAULT FALSE,
