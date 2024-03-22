@@ -1,9 +1,9 @@
 import { BottomNav } from "../../components/BottomNav"
 
-export const UserPage = () => {
+export const Favorite = () => {
   return (
     <>
-      <h1>유저의 개인정보</h1>
+      <h1>즐겨찾기</h1>
       <BottomNav/>
     </>
   )
