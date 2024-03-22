@@ -20,7 +20,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/{email}")
+    @GetMapping("/ck/{email}")
     public ResponseEntity<ResultResponse> checkEmail(@PathVariable("email") String email) {
         try {
             boolean check = memberService.checkEmail(email);
