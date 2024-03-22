@@ -37,6 +37,12 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         log.info("check uri----------" + path);
 
         // 회원 쪽은 체크하지 마!
+
+        // 중복 체크 관련
+        if (path.startsWith("/api/members/ck")) {
+            return true;
+        }
+
         if (path.startsWith("/api/members/join")) {
             return true;
         }

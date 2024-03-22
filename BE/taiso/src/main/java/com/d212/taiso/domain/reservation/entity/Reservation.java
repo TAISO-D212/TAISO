@@ -52,7 +52,7 @@ public class Reservation {
 
     private LocalDateTime arrivalTime; // 예상 종료 시간
 
-    private String routeImage; // 총 경로 이미지
+    private String routeImg; // 총 경로 이미지
 
     private String routeDist; // 경유지 간 거리
 }
