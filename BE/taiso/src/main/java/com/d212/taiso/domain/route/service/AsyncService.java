@@ -63,6 +63,6 @@ public class AsyncService {
         } catch (JsonProcessingException e) {
             log.error("distance 처리 에러 {}", e);
         }
-    }
+    }git
 
 }
