@@ -1,5 +1,17 @@
 # MQTT 설정 순서
 - [EC2 서버 내 mosquitto 설치](https://changun516.tistory.com/201)
-- conf 파일 수정 : 외부 ROS 서버에서 접속 가능하도록 설정 변경
+- windows : conf 파일 수정 : 외부 ROS 서버에서 접속 가능하도록 설정 변경
     - ``` listener  -> listener 1883 ```
     - ``` allow_anonymous  -> allow_anonymous true ```
+- linux
+    - conf 파일 새로 생성 : 외부 ROS 서버에서 접속 가능하도록 설정 변경
+        - ```cd /etc/mosquitto/conf.d/``` : 디렉토리 이동
+        - ```sudo nano custom_config.conf``` : 새 설정 파일 생성
+        - ``` listener 1883``` : 기본 포트 번호 리스닝 활성화
+        - ``` llow_anonymous true ``` : 익명 사용자 접근 허용(보안은 과제 사항)
+    - mosquitto 서비스 시작으로 설정 적용
+        - ```sudo systemctl start mosquitto```
+    - EC2 서버 시스템 부팅 시 자동으로 mosquitto 시작
+        - ```sudo systemctl enable mosquitto```
+    - 서비스 상태 확인
+        - ```sudo systemctl status mosquitto```
