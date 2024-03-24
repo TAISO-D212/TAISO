@@ -43,7 +43,6 @@ public class Reservation {
     @JoinColumn(name = "place_id") // 도착지 아이디
     private Place place;
 
-    @CreatedDate
     private LocalDateTime time; // 예약 일시 (출발 시간)
 
     private int stopCnt = 1; // 경유지 수
