@@ -32,8 +32,13 @@ public enum ErrorCode {
     //Member
     MEMBER_EMAIL_NOT_EXIST(400, "현재 email에 해당하는 회원이 존재하지 않습니다."),
     MEMBER_EMAIL_DUPLICATED(400, "이미 존재하는 이메일입니다."),
-    MEMBER_DISABLED(400, "현재 비활성화 된 회원입니다.");
+    MEMBER_DISABLED(400, "현재 비활성화 된 회원입니다."),
 
+    //Place
+    PLACE_ID_NOT_EXIST(400, "현재 placeId에 해당하는 장소가 존재하지 않습니다."),
+
+    //Bookmark
+    BOOKMARK_NOT_EXIST(400, "즐겨찾기가 존재하지 않습니다.");
 
     private final int status;
     private final String message;

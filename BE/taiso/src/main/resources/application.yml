@@ -59,6 +59,7 @@ springdoc: #swagger
   cache:
     disabled: true
 
+
 mqtt:
   broker:
     url: ${MQTT_BROKER_URL}
