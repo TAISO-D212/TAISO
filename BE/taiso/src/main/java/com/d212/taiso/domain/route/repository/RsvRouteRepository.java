@@ -6,7 +6,7 @@ package com.d212.taiso.domain.route.repository;
 import com.d212.taiso.domain.route.entity.RsvRoute;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RsvRouteRepository extends JpaRepository<RsvRoute, Integer> {
+public interface RsvRouteRepository extends JpaRepository<RsvRoute, Long> {
     // 여기에 추가적인 쿼리 메소드 정의
 
 }

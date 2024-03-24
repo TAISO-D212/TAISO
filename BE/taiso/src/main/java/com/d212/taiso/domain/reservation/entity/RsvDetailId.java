@@ -1,4 +1,4 @@
-package com.d212.taiso.domain.rsvdetail.entity;
+package com.d212.taiso.domain.reservation.entity;
 
 import static jakarta.persistence.FetchType.*;
 
