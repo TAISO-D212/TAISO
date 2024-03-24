@@ -3,20 +3,20 @@
  * @description: Prettier는 코드를 읽어들여서 사용자 옵션에 따라 코드를 다시 포맷팅하는 "코드 포맷터" 입니다.
  * @version: 1.0
  */
-  module.exports = {
+module.exports = {
 	/**
 	 * @template: printWidth: <int>
 	 * @description: 코드 한줄의 개수
 	 * 추천) 가독성을 위해 80자 이상을 사용하지 않는 것이 좋습니다.
 	 * 추천) 코드 스타일 가이드에서 최대 줄 길이 규칙은 종종 100 또는 120으로 설정됩니다.
 	 */
-	printWidth: 120,
+	printWidth: 100,
 
 	/**
 	 * @template: tabWidth: <int>
 	 * @description: 들여쓰기 너비 수(탭을 사용할 경우 몇칸을 띄워줄지)
 	 */
-	tabWidth: 2,
+	tabWidth: 1,
 
 	/**
 	 * @template: useTabs: <bool>
