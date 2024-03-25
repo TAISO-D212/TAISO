@@ -43,16 +43,16 @@ public class BookmarkServiceImpl implements BookmarkService {
 
         // 이게 맞냐??? (더 좋은 방식 알려줘!!!)
         Place place = Place.builder()
-                .latitude(bookmarkAddReq.getLatitude())
-                .longitude(bookmarkAddReq.getLongitude())
-                .address(bookmarkAddReq.getAddress())
-                .build();
+            .latitude(bookmarkAddReq.getLatitude())
+            .longitude(bookmarkAddReq.getLongitude())
+            .address(bookmarkAddReq.getAddress())
+            .build();
 
         Bookmark bookmark = Bookmark.builder()
-                .member(member)
-                .name(bookmarkAddReq.getName())
-                .place(place)
-                .build();
+            .member(member)
+            .name(bookmarkAddReq.getName())
+            .place(place)
+            .build();
 
         placeRepository.save(place);
         bookmarkRepository.save(bookmark);
@@ -65,8 +65,8 @@ public class BookmarkServiceImpl implements BookmarkService {
         // 이거 유저 확인이랑 번호도 하는 것으로 해서 예약 처리 ㄱ
         Member member = commonUtil.getMember();
 
-        Bookmark bookmark = bookmarkRepository.findBookmarkByMemberAndAndId(member, bookmarkId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.BOOKMARK_NOT_EXIST));
+        Bookmark bookmark = bookmarkRepository.findBookmarkByMemberAndId(member, bookmarkId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.BOOKMARK_NOT_EXIST));
 
         bookmarkRepository.delete(bookmark);
 
