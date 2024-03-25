@@ -43,6 +43,7 @@ public enum ErrorCode {
     // Reservation
     RESERVATION_NOT_EXIST(400, "예약이 존재하지 않습니다.");
 
+
     private final int status;
     private final String message;
 }

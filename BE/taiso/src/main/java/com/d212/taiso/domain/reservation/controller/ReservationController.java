@@ -48,8 +48,15 @@ public class ReservationController {
 
     @PostMapping("/")
     public ResponseEntity<ResultResponse> addRsv(@RequestBody RsvAddReq rsvAddReq) {
-        reservationService.addRsv(rsvAddReq);
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.ADD_RESERVATION_SUCCESS, true));
+        String message = reservationService.addRsv(rsvAddReq);
+
+        if (!"예약이 성공적으로 추가되었습니다.".equals(message)) {
+            return ResponseEntity.ok(ResultResponse.of(ResultCode.ADD_RESERVATION_FAIL, message));
+        } else {
+            return ResponseEntity.ok(
+                ResultResponse.of(ResultCode.ADD_RESERVATION_SUCCESS, message));
+        }
+
     }
 
     @PostMapping("/{rsvId}")
