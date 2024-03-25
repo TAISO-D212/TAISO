@@ -30,7 +30,8 @@ public class ReservationController {
     @GetMapping("/{connectiontest}")
     public ResponseEntity<ResultResponse> mqttConnectionTest() {
         try {
-            rsvRouteService.locationToRoute();
+            // 임시 새 경유지
+            rsvRouteService.locationToRoute(0, 2);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
 
@@ -41,7 +42,8 @@ public class ReservationController {
     @GetMapping("/")
     public ResponseEntity<ResultResponse> getAllRsvList() {
         List<RsvListRes> rsvListResList = reservationService.getAllRsvList();
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_RESERVATION_SUCCESS, rsvListResList));
+        return ResponseEntity.ok(
+            ResultResponse.of(ResultCode.GET_RESERVATION_SUCCESS, rsvListResList));
     }
 
     @PostMapping("/")
