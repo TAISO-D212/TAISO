@@ -60,6 +60,7 @@ public class MqttConfig {
         adapter.setCompletionTimeout(5000);
         adapter.setConverter(new DefaultPahoMessageConverter());
         adapter.setQos(1);
+        log.info("InBound 메시지 채널 Adapter 생성 완료");
         return adapter;
     }
 
@@ -70,7 +71,7 @@ public class MqttConfig {
             mqttPahoClientFactory());
         messageHandler.setAsync(true);
         messageHandler.setDefaultTopic("noTopic");
-        log.info("메시지 핸들러 생성 완료");
+        log.info("OutBound 메시지 핸들러 생성 완료");
         return messageHandler;
     }
 
