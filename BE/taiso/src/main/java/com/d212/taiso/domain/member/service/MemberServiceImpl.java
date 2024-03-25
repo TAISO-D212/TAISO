@@ -34,6 +34,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void memberJoin(MemberJoinReq memberJoinReq) {
 
         // 이미 존재하는 이메일이면
@@ -52,7 +53,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    @Transactional
     public void memberDelete() {
         // 회원을 조회 후 소프트 delete 시킵니다.
         Member member = commonUtil.getMember();

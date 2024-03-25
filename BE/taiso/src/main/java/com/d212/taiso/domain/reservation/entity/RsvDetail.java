@@ -42,12 +42,11 @@ public class RsvDetail {
 //    @JoinColumn(name = "place_id")
 //    private Place place;
 
-
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "email")
     private Member member;
 
-    private int cnt = 1; // 경유 인원
+    private int cnt; // 경유 인원
 
     @Column(name = "orders")
     private int orders; // 경유 순서

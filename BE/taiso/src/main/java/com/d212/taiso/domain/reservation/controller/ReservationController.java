@@ -2,6 +2,7 @@ package com.d212.taiso.domain.reservation.controller;
 
 import com.d212.taiso.domain.reservation.dto.RsvAddReq;
 import com.d212.taiso.domain.reservation.dto.RsvListRes;
+import com.d212.taiso.domain.reservation.dto.RsvTogetherAddReq;
 import com.d212.taiso.domain.reservation.service.ReservationService;
 import com.d212.taiso.domain.route.service.RsvRouteService;
 import com.d212.taiso.global.result.ResultCode;
@@ -41,12 +42,22 @@ public class ReservationController {
     @GetMapping("/")
     public ResponseEntity<ResultResponse> getAllRsvList() {
         List<RsvListRes> rsvListResList = reservationService.getAllRsvList();
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_RESERVATION_SUCCESS, rsvListResList));
+        return ResponseEntity.ok(
+            ResultResponse.of(ResultCode.GET_RESERVATION_SUCCESS, rsvListResList));
     }
 
     @PostMapping("/")
     public ResponseEntity<ResultResponse> addRsv(@RequestBody RsvAddReq rsvAddReq) {
         reservationService.addRsv(rsvAddReq);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.ADD_RESERVATION_SUCCESS, true));
+    }
+
+    @PostMapping("/{rsvId}")
+    public ResponseEntity<ResultResponse> addTogetherRsv(@PathVariable("rsvId") Long rsvId,
+        @RequestBody
+        RsvTogetherAddReq rsvTogetherAddReq) {
+        reservationService.addTogetherRsv(rsvId, rsvTogetherAddReq);
+        return ResponseEntity.ok(
+            ResultResponse.of(ResultCode.ADD_TOGETHER_RESERVATION_SUCCESS, true));
     }
 }

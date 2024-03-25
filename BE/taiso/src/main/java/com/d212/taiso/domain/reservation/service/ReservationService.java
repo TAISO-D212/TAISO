@@ -23,10 +23,11 @@ public interface ReservationService {
     void addRsv(RsvAddReq rsvAddReq);
 
     // 예약 추가하기 (합승)
-    void addTogetherRsv(RsvTogetherAddReq rsvTogetherAddReq);
+    void addTogetherRsv(Long rsvId, RsvTogetherAddReq rsvTogetherAddReq);
 
-    // 예약 삭제하기 -> 이거 두개?? NO
-
+    // 예약 삭제하기
+    // 만약에 예약을 생성한 사람이 해당 예약을 취소한다면??
+    // 그럼 합승한 사람 여부를 판단하고 변경 되어야 하는데 이걸 우예 짜지
 
 
 }
