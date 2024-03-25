@@ -15,6 +15,7 @@ import com.d212.taiso.domain.reservation.repository.RsvDetailRepository;
 import com.d212.taiso.global.result.error.ErrorCode;
 import com.d212.taiso.global.result.error.exception.BusinessException;
 import com.d212.taiso.global.util.CommonUtil;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -77,7 +78,15 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public void addRsv(RsvAddReq rsvAddReq) {
+    public String addRsv(RsvAddReq rsvAddReq) {
+
+        // 현재 시간대에 이미 예약이 있으면 리턴
+        Optional<Reservation> existingReservation = reservationRepository.findCurrentTime(
+            rsvAddReq.getTime());
+
+        if (existingReservation.isPresent()) {
+            return "해당 시간대에 이미 예약이 있습니다.";
+        }
 
         // 요청한 멤버의 정보 가져오기
         Member member = commonUtil.getMember();
@@ -106,10 +115,11 @@ public class ReservationServiceImpl implements ReservationService {
             .cnt(rsvAddReq.getCnt())
             .build();
 
-        // Todo 여기도 혹시 Place를 먼저? (조건이 뭐죠?) -> 내가 볼땐 기존 Id 없을 땐 저장 해줘야 됨.
+        // 여기도 혹시 Place를 먼저? (조건이 뭐죠?) -> 내가 볼땐 기존 Id 없을 땐 저장 해줘야 됨.
         placeRepository.save(place);
         reservationRepository.save(reservation);
 
+        return "예약이 성공적으로 추가되었습니다.";
     }
 
     @Override
@@ -138,6 +148,7 @@ public class ReservationServiceImpl implements ReservationService {
                 .build();
         }
 
+        // 복합키 설정
         RsvDetailId rsvDetailId = RsvDetailId.builder()
             .place(place)
             .reservation(reservation)
@@ -146,6 +157,7 @@ public class ReservationServiceImpl implements ReservationService {
         RsvDetail rsvDetail = RsvDetail.builder()
             .rsvDetailId(rsvDetailId)
             .member(member)
+            .cnt(rsvTogetherAddReq.getCnt())
             .build();
 
         // 경유지 수 + 1
@@ -154,7 +166,7 @@ public class ReservationServiceImpl implements ReservationService {
         // 기존 예약 인원 수 + 경유지 예약 인원 수
         int cnt = reservation.getCnt() + rsvTogetherAddReq.getCnt();
 
-        // 이렇게 변화 줬으면 저장 해줘야 되나??
+        // 이런 변화는 저장 필요 x
         reservation.changeStopCnt(stopCnt);
         reservation.changeCnt(cnt);
 

@@ -26,5 +26,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<Reservation> findAllAfterCurrentTime(LocalDateTime currentTime);
 
 
+    // 현재 시간대의 예약이 있는지 조회
+    @Query("select r from Reservation r where r.time = :currentTime")
+    Optional<Reservation> findCurrentTime(LocalDateTime currentTime);
+
 }
 
