@@ -30,6 +30,8 @@ public class Member {
     private String faceImg;
     @CreatedDate
     private LocalDateTime createDate;
+
+    @Builder.Default
     private boolean deleteFlag = false;
 
     public void changePwd(String pwd) {
