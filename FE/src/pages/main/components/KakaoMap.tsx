@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import CurrentLoc from '../../../assets/image/CurrentLoc.png';
-import LatLngAddStore from '../../../store/LatLngAddstore';
+import { watchPositionHook } from '../../../hooks/watchPositionHook';
+import LatLngAddStore from '../../../store/LatLngAddStore';
 
 // kakao 변수를 전역으로 선언
 declare global {
@@ -21,7 +22,7 @@ interface IInfowindow {
 
 export const KakaoMap = () => {
 	const [map, setMap] = useState<any>();
-	const [marker, setMarker] = useState<IMarker | undefined>();
+	const [userMarker, setUserMarker] = useState<IMarker | undefined>();
 	const [ps, setPs] = useState<any>();
 	const [infowindow, setInfowindow] = useState<IInfowindow | undefined>();
 	const [keyword, setKeyword] = useState<string>('');
@@ -53,7 +54,7 @@ export const KakaoMap = () => {
 		});
 
 		setMap(newMap);
-		setMarker(new window.kakao.maps.Marker());
+		setUserMarker(new window.kakao.maps.Marker());
 		setPs(newPs);
 		setInfowindow(newInfowindow);
 	}, []);
@@ -131,7 +132,7 @@ export const KakaoMap = () => {
 			markers[i].setMap(null);
 		}
 		markers = [];
-		setMarker(markers);
+		setUserMarker(markers);
 	}
 
 	function displayInfowindow(marker: any, title: string) {
@@ -147,21 +148,46 @@ export const KakaoMap = () => {
 			() => alert('위치 정보를 가져오는데 실패했습니다.'),
 			{
 				enableHighAccuracy: true,
-				maximumAge: 30000,
-				timeout: 27000,
+				maximumAge: 20000,
+				timeout: 10000,
 			},
 		);
 	};
 
+	function displayMarker(locPosition: any, message: any) {
+		// 마커를 생성합니다
+		let curLocMarker = new kakao.maps.Marker({
+			map: map,
+			position: locPosition,
+		});
+
+		setUserMarker(curLocMarker);
+
+		let iwContent = message; // 인포윈도우에 표시할 내용
+		let iwRemoveable = true;
+
+		// 인포윈도우를 생성합니다
+		let curLocInfowindow = new kakao.maps.InfoWindow({
+			content: iwContent,
+			removable: iwRemoveable,
+		});
+
+		setInfowindow(undefined);
+
+		// 인포윈도우를 마커위에 표시합니다
+		curLocInfowindow.open(map, curLocMarker);
+
+		// 지도 중심좌표를 접속위치로 변경합니다
+		map.panTo(locPosition);
+	}
+
 	const getPosSuccess = (pos: GeolocationPosition) => {
 		let currentPos = new window.kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-		map.panTo(currentPos);
+		let message = '<div style="padding:5px;">내 위치</div>';
 
 		removeMarker();
 
-		marker.setMap(null);
-		marker.setPosition(currentPos);
-		marker.setMap(map);
+		displayMarker(currentPos, message);
 	};
 	return (
 		<>

@@ -15,7 +15,7 @@ import {
 } from '@mui/material/';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
-import Back from '../../assets/image/back.png';
+import { BackButton } from '../../components/BackButton';
 
 // 이메일, 비밀번호, 이름을 나타내는 인터페이스 정의
 interface FormData {
@@ -45,10 +45,6 @@ export const SignUpPage = () => {
 	const [nameError, setNameError] = useState<string>('');
 	const [registerError, setRegisterError] = useState<string>('');
 	const navigate = useNavigate();
-
-	const onClickBtn = () => {
-		navigate(-1);
-	};
 
 	const onhandlePost = async (data: FormData) => {
 		const { email, name, password } = data;
@@ -84,7 +80,8 @@ export const SignUpPage = () => {
 
 		// 비밀번호 유효성 체크
 		const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{8,25}$/;
-		if (!passwordRegex.test(password)) setPasswordState('숫자와 영문자 조합으로 8자리 이상 입력해주세요!');
+		if (!passwordRegex.test(password))
+			setPasswordState('숫자와 영문자 조합으로 8자리 이상 입력해주세요!');
 		else setPasswordState('');
 
 		// 비밀번호 같은지 체크
@@ -112,9 +109,7 @@ export const SignUpPage = () => {
 
 	return (
 		<div className='w-full h-lvh flex justify-center items-center animate-fadeIn'>
-			<div className='fixed w-[40px] h-[40px] top-[3%] left-[3%]' onClick={onClickBtn}>
-				<img src={Back} alt='뒤로가기' />
-			</div>
+			<BackButton />
 			<ThemeProvider theme={theme}>
 				<Container component='main' maxWidth='xs'>
 					<CssBaseline />
@@ -170,7 +165,14 @@ export const SignUpPage = () => {
 									</Grid>
 									<FormHelperTexts>{passwordError}</FormHelperTexts>
 									<Grid item xs={12}>
-										<TextField required fullWidth id='name' name='name' label='이름' error={nameError !== '' || false} />
+										<TextField
+											required
+											fullWidth
+											id='name'
+											name='name'
+											label='이름'
+											error={nameError !== '' || false}
+										/>
 									</Grid>
 									<FormHelperTexts>{nameError}</FormHelperTexts>
 								</Grid>

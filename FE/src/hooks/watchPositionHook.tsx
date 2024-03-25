@@ -1,4 +1,4 @@
-import LatLngAddStore from '../store/LatLngAddstore.ts';
+import LatLngAddStore from '../store/LatLngAddStore';
 import { distance } from '../utils/calc.ts';
 
 interface PositionOptions {
