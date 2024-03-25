@@ -23,6 +23,6 @@
     /* types */
     "types": ["kakao.maps.d.ts"]
   },
-  "include": ["src"],
+  "include": ["src", "custom.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
