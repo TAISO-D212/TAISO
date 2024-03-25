@@ -10,6 +10,44 @@ export const Reservation = () => {
 	const [requestArray, setRequestArray] = useState([]);
 	const navigate = useNavigate();
 
+	useEffect(() => {
+		// dummy data
+		setRequestArray([
+			{
+				pid: 1,
+				startName: '출발지',
+				endName: '도착지',
+				startDate: '2022-01-01T00:00:00.000Z',
+				currentMember: 1,
+				totalMember: 4,
+			},
+			{
+				pid: 2,
+				startName: '출발지',
+				endName: '도착지',
+				startDate: '2022-01-01T00:00:00.000Z',
+				currentMember: 1,
+				totalMember: 4,
+			},
+			{
+				pid: 3,
+				startName: '출발지',
+				endName: '도착지',
+				startDate: '2022-01-01T00:00:00.000Z',
+				currentMember: 1,
+				totalMember: 4,
+			},
+			{
+				pid: 4,
+				startName: '출발지',
+				endName: '도착지',
+				startDate: '2022-01-01T00:00:00.000Z',
+				currentMember: 1,
+				totalMember: 4,
+			},
+		]);
+	}, []);
+
 	// useEffect(() => {
 	// 	axios({
 	// 		headers: {
@@ -30,7 +68,7 @@ export const Reservation = () => {
 	return (
 		<>
 			<BackButton />
-			<div className='fixed bottom-[90px] w-[100%] h-[80%] flex flex-col justify-center items-center'>
+			<div className='fixed bottom-[90px] w-[100%] flex flex-col justify-center items-center'>
 				<div className='fixed flex top-[10%] w-[90%] h-[8%] px-5 shadow-md border border-[#d9d9d9] rounded-full justify-between items-center'>
 					원하는 목적지가 없으신가요?
 					<div onClick={goNewReservation} className='w-[45px] h-[45px]'>
