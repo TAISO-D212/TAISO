@@ -45,8 +45,10 @@ public class Reservation {
 
     private LocalDateTime time; // 예약 일시 (출발 시간)
 
+    @Builder.Default
     private int stopCnt = 1; // 경유지 수
 
+    @Builder.Default
     private int cnt = 1; // 예약 인원 수 (총 인원)
 
     private LocalDateTime arrivalTime; // 예상 종료 시간
@@ -54,4 +56,14 @@ public class Reservation {
     private String routeImg; // 총 경로 이미지
 
     private String routeDist; // 경유지 간 거리
+
+    public void changeStopCnt(int stopCnt) {
+        this.stopCnt = stopCnt;
+    }
+
+    public void changeCnt(int cnt) {
+        this.cnt = cnt;
+    }
+
+
 }

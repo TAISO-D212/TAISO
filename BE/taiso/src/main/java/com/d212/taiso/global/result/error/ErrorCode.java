@@ -38,7 +38,10 @@ public enum ErrorCode {
     PLACE_ID_NOT_EXIST(400, "현재 placeId에 해당하는 장소가 존재하지 않습니다."),
 
     //Bookmark
-    BOOKMARK_NOT_EXIST(400, "즐겨찾기가 존재하지 않습니다.");
+    BOOKMARK_NOT_EXIST(400, "즐겨찾기가 존재하지 않습니다."),
+
+    // Reservation
+    RESERVATION_NOT_EXIST(400, "예약이 존재하지 않습니다.");
 
     private final int status;
     private final String message;

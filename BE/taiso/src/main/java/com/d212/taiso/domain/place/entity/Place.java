@@ -27,13 +27,11 @@ public class Place {
     @Column(name = "place_id")
     private Long id;
 
-    @Column(nullable = false)
+
     private double latitude; // 위도
 
-    @Column(nullable = false)
     private double longitude; // 경도
 
-    @Column(nullable = false)
     private String address;
-    
+
 }
