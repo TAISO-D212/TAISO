@@ -31,7 +31,8 @@ public class ReservationController {
     @GetMapping("/{connectiontest}")
     public ResponseEntity<ResultResponse> mqttConnectionTest() {
         try {
-            rsvRouteService.locationToRoute();
+            // 임시 새 경유지
+            rsvRouteService.locationToRoute(0, 2);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
 
