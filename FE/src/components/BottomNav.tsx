@@ -22,7 +22,7 @@ export const BottomNav = () => {
 	};
 
 	return (
-		<div className='fixed bottom-0 backdrop-blur-sm rounded-[24px] z-10 w-[95%] h-[65px] flex justify-evenly items-center animate-fadeIn'>
+		<div className='fixed bottom-0 backdrop-blur-sm rounded-[24px] z-10 w-[100%] h-[65px] flex justify-evenly items-center animate-fadeIn'>
 			<div className='w-[42px] z-10 flex flex-col justify-center items-center' onClick={goHome}>
 				<img src={Home} alt='HOME_TAB' />
 				<div className='text-[12px] mt-[5px]'>홈</div>
