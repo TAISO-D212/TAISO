@@ -1,6 +1,7 @@
 package com.d212.taiso.domain.reservation.repository;
 
 import com.d212.taiso.domain.member.entity.Member;
+import com.d212.taiso.domain.reservation.dto.MyRsvListRes;
 import com.d212.taiso.domain.reservation.entity.Reservation;
 
 import java.time.LocalDateTime;
@@ -17,8 +18,22 @@ import org.springframework.data.jpa.repository.Query;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
     // 보류 Todo
-    // 현재 멤버가 예약한 리스트들 -> 이거 왜 멤버로만 뜨지??, email로 하고 싶은데 -> 단방향이라 그럼
-    List<Reservation> findReservationsByMember(Member member);
+    // join을 해서 rsvDetail에 있는
+    // placeID, latitude, longtitude, address (출발지) 를 가져와야 함
+    // reservation의 placeID, latitude, longtitude, address (도착지), time, arrivalTime, cnt를 가져와야 함
+
+    // r :reservation, d : rsvDetail
+
+    // 생각해보니깐 그냥 디테일에서 유저 있는 부분만 뽑아내면 이 짓 안해도 되는 것 아닌가?
+    // 잘 만지면 이걸로 조회해서 코드 양을 줄일 수 있겠지만.. 현재 내 능력 부족
+    // 차후 수정 예정
+//    @Query("select "
+//        + "new com.d212.taiso.domain.reservation.dto.MyRsvListRes(r.id, d.place.id, d.place.latitude, d.place.longitude, d.place.address, r.place.id, r.place.latitude, r.place.longitude, r.place.address, r.arrivalTime, r.cnt) "
+//        + "from "
+//        + "Reservation r left join RsvDetail d on d.rsvDetailId.reservation = r "
+//        + "where "
+//        + "d.member = :member")
+//    List<MyRsvListRes> findMyReservationList(Member member);
 
 
     // 현재 시간 이후의 모든 예약 리스트 조회

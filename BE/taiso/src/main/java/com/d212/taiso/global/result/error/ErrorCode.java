@@ -41,7 +41,10 @@ public enum ErrorCode {
     BOOKMARK_NOT_EXIST(400, "즐겨찾기가 존재하지 않습니다."),
 
     // Reservation
-    RESERVATION_NOT_EXIST(400, "예약이 존재하지 않습니다.");
+    RESERVATION_NOT_EXIST(400, "예약이 존재하지 않습니다."),
+
+    //RsvDetail
+    RSV_DETAIL_NOT_EXIST(400, "예약 상세내용이 존재하지 않습니다.");
 
 
     private final int status;

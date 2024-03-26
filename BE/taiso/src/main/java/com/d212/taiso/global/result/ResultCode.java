@@ -24,10 +24,11 @@ public enum ResultCode {
 
     // Reservation
     GET_RESERVATION_SUCCESS(200, "예약 목록 조회에 성공하였습니다."),
+    GET_MY_RESERVATION_SUCCESS(200, "내 예약 목록 조회에 성공하였습니다."),
     ADD_RESERVATION_SUCCESS(200, "예약 생성에 성공하였습니다."),
     ADD_RESERVATION_FAIL(400, "예약 생성에 실패하였습니다."),
-    ADD_TOGETHER_RESERVATION_SUCCESS(200, "합승 예약 생성에 성공하였습니다.");
-
+    ADD_TOGETHER_RESERVATION_SUCCESS(200, "합승 예약 생성에 성공하였습니다."),
+    DELETE_RESERVATION_SUCCESS(200, "예약 삭제에 성공하였습니다.");
 
     private final int status;
     private final String message;
