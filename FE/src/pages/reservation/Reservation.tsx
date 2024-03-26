@@ -6,8 +6,17 @@ import { useNavigate } from 'react-router';
 import { BackButton } from '../../components/BackButton.tsx';
 import ReservationButton from '../../assets/image/reservation_button.png';
 
+interface IReservationItem {
+	pid: number;
+	startName: string;
+	endName: string;
+	startDate: string;
+	currentMember: number;
+	totalMember: number;
+}
+
 export const Reservation = () => {
-	const [requestArray, setRequestArray] = useState([]);
+	const [requestArray, setRequestArray] = useState<IReservationItem[]>([]);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -81,9 +90,11 @@ export const Reservation = () => {
 					</div>
 				</div>
 				{requestArray.length !== 0 ? (
-					requestArray.map((e) => {
-						return <ReservationListElement reservationContent={e} />;
-					})
+					<div className='fixed bottom-[90px] w-[100%] h-[60%] flex flex-col justify-center items-center overflow-hidden'>
+						{requestArray.map((e) => {
+							return <ReservationListElement reservationContent={e} />;
+						})}
+					</div>
 				) : (
 					<div className='fixed bottom-[90px] w-[100%] h-[60%] flex flex-col justify-center items-center'>
 						예약 가능한 내역이 없습니다.

@@ -30,7 +30,7 @@ export const ReservationListElement = (props: IReservationListElementProps) => {
 	return (
 		<div
 			onClick={onClick}
-			className='w-[90%] flex justify-center items-center px-5 my-5 rounded-md shadow-[5px_15px_40px_-15px_rgba(0,0,0,0.5)]'>
+			className='w-[80%] flex justify-evenly items-center px-5 my-5 rounded-md shadow-[5px_15px_40px_-15px_rgba(0,0,0,0.5)]'>
 			<div className='flex flex-col w-[50%]'>
 				<div className='flex items-center'>
 					<SvgLocationFrom width='24' height='64' />
