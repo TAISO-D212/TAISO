@@ -1,5 +1,6 @@
 package com.d212.taiso.domain.reservation.controller;
 
+import com.d212.taiso.domain.reservation.dto.MyRsvListRes;
 import com.d212.taiso.domain.reservation.dto.RsvAddReq;
 import com.d212.taiso.domain.reservation.dto.RsvListRes;
 import com.d212.taiso.domain.reservation.dto.RsvTogetherAddReq;
@@ -47,6 +48,14 @@ public class ReservationController {
             ResultResponse.of(ResultCode.GET_RESERVATION_SUCCESS, rsvListResList));
     }
 
+    // 내 예약 목록 가져오기
+    @GetMapping("/my")
+    public ResponseEntity<ResultResponse> getAllMyRsvList() {
+        List<MyRsvListRes> myRsvListResList = reservationService.getMyRsvList();
+        return ResponseEntity.ok(
+            ResultResponse.of(ResultCode.GET_MY_RESERVATION_SUCCESS, myRsvListResList));
+    }
+
     @PostMapping("/")
     public ResponseEntity<ResultResponse> addRsv(@RequestBody RsvAddReq rsvAddReq) {
         String message = reservationService.addRsv(rsvAddReq);
@@ -67,5 +76,12 @@ public class ReservationController {
         reservationService.addTogetherRsv(rsvId, rsvTogetherAddReq);
         return ResponseEntity.ok(
             ResultResponse.of(ResultCode.ADD_TOGETHER_RESERVATION_SUCCESS, true));
+    }
+
+    @DeleteMapping("/{rsvId}/{placeId}")
+    public ResponseEntity<ResultResponse> deleteRsv(@PathVariable("rsvId") Long rsvId,
+        @PathVariable("placeId") Long placeId) {
+        reservationService.deleteRsv(rsvId, placeId);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.DELETE_RESERVATION_SUCCESS, true));
     }
 }
