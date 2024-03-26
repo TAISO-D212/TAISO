@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import CurrentLoc from '../../../assets/image/CurrentLoc.png';
-import { watchPositionHook } from '../../../hooks/watchPositionHook';
+import CurLocImage from '../../../assets/icon/CurLoc_Img.png';
 import LatLngAddStore from '../../../store/LatLngAddStore';
+import { watchPositionHook } from '../../../hooks/watchPositionHook';
 
 // kakao 변수를 전역으로 선언
 declare global {
@@ -10,19 +11,19 @@ declare global {
 	}
 }
 
-interface IMarker {
+interface IUserMarker {
 	setMap: (map: any) => void;
 	setPosition: (position: any) => void;
 }
 
 interface IInfowindow {
-	setContent: (content: any) => void;
+	setContent: (content: any | null) => void;
 	open: (map: any, marker: any) => void;
 }
 
 export const KakaoMap = () => {
 	const [map, setMap] = useState<any>();
-	const [userMarker, setUserMarker] = useState<IMarker | undefined>();
+	const [userMarker, setUserMarker] = useState<IUserMarker | null>(null);
 	const [ps, setPs] = useState<any>();
 	const [infowindow, setInfowindow] = useState<IInfowindow | undefined>();
 	const [keyword, setKeyword] = useState<string>('');
@@ -48,15 +49,8 @@ export const KakaoMap = () => {
 
 		const newPs = new window.kakao.maps.services.Places();
 
-		const newInfowindow = new window.kakao.maps.InfoWindow({
-			zIndex: 1,
-			removable: true,
-		});
-
 		setMap(newMap);
-		setUserMarker(new window.kakao.maps.Marker());
 		setPs(newPs);
-		setInfowindow(newInfowindow);
 	}, []);
 
 	const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,7 +67,8 @@ export const KakaoMap = () => {
 		ps.keywordSearch(keyword, placesSearchCB, searchOption);
 	}
 
-	function placesSearchCB(data: any, status: any, pagination: any) {
+	// function placesSearchCB(data: any, status: any, pagination: any) {
+	function placesSearchCB(data: any, status: any) {
 		if (status === window.kakao.maps.services.Status.OK) {
 			displayPlaces(data);
 		}
@@ -91,34 +86,18 @@ export const KakaoMap = () => {
 			newBound.extend(placePosition);
 
 			(function (marker, title) {
-				window.kakao.maps.event.addListener(marker, 'mouseover', function () {
+				kakao.maps.event.addListener(marker, 'click', function () {
 					displayInfowindow(marker, title);
-				});
-
-				window.kakao.maps.event.addListener(marker, 'mouseout', function () {
-					infowindow.close();
 				});
 			})(marker, places[i].place_name);
 		}
-
 		map.setBounds(newBound);
 	}
 
 	function addMarker(position: any, idx: number) {
-		const imageSrc =
-			'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png';
-		let imageSize = new window.kakao.maps.Size(36, 37);
-
-		let imgOptions = {
-			spriteSize: new window.kakao.maps.Size(36, 691),
-			spriteOrigin: new window.kakao.maps.Point(0, idx * 46 + 10),
-			offset: new window.kakao.maps.Point(13, 37),
-		};
-
-		let markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
 		let marker = new window.kakao.maps.Marker({
 			position: position,
-			image: markerImage,
+			clickable: true,
 		});
 
 		marker.setMap(map);
@@ -132,33 +111,66 @@ export const KakaoMap = () => {
 			markers[i].setMap(null);
 		}
 		markers = [];
-		setUserMarker(markers);
 	}
+
+	// 마커에 클릭이벤트를 등록합니다
 
 	function displayInfowindow(marker: any, title: string) {
 		let content = '<div style="padding:5px;z-index:1;color:black;">' + title + '</div>';
+
+		let iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+		// 인포윈도우를 생성합니다
+		let infowindow = new kakao.maps.InfoWindow({
+			content: content,
+			removable: iwRemoveable,
+		});
 
 		infowindow.setContent(content);
 		infowindow.open(map, marker);
 	}
 
 	const goCurrentLoc = () => {
+		if (userMarker) {
+			deleteCurMarkers();
+		}
 		navigator.geolocation.getCurrentPosition(
-			getPosSuccess,
-			() => alert('위치 정보를 가져오는데 실패했습니다.'),
-			{
-				enableHighAccuracy: true,
-				maximumAge: 20000,
-				timeout: 10000,
+			function (position) {
+				let currentPos = new window.kakao.maps.LatLng(
+					position.coords.latitude,
+					position.coords.longitude,
+				);
+				let message = '<div style="padding:5px;">내 위치</div>';
+
+				displayMarker(currentPos, message);
 			},
+			// getPosSuccess,
+			// () => alert('위치 정보를 가져오는데 실패했습니다.'),
+			// {
+			// 	enableHighAccuracy: true,
+			// 	maximumAge: 20000,
+			// 	timeout: 10000,
+			// },
 		);
+		// watchPositionHook();
+		// let currentPos = new window.kakao.maps.LatLng(currentLat, currentLng);
+		// let message = '<div style="padding:5px;">내 위치</div>';
+
+		// displayMarker(currentPos, message);
 	};
 
 	function displayMarker(locPosition: any, message: any) {
-		// 마커를 생성합니다
-		let curLocMarker = new kakao.maps.Marker({
-			map: map,
+		const imageSrc = CurLocImage;
+		let imageSize = new window.kakao.maps.Size(40, 40);
+
+		let imgOptions = {
+			offset: new window.kakao.maps.Point(20, 0),
+		};
+
+		let markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
+		let curLocMarker = new window.kakao.maps.Marker({
 			position: locPosition,
+			image: markerImage,
 		});
 
 		setUserMarker(curLocMarker);
@@ -172,33 +184,45 @@ export const KakaoMap = () => {
 			removable: iwRemoveable,
 		});
 
-		setInfowindow(undefined);
-
 		// 인포윈도우를 마커위에 표시합니다
 		curLocInfowindow.open(map, curLocMarker);
 
+		curLocMarker.setMap(map);
 		// 지도 중심좌표를 접속위치로 변경합니다
 		map.panTo(locPosition);
 	}
 
-	const getPosSuccess = (pos: GeolocationPosition) => {
-		let currentPos = new window.kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-		let message = '<div style="padding:5px;">내 위치</div>';
+	function deleteCurMarkers() {
+		userMarker?.setMap(null);
+	}
 
-		removeMarker();
+	// const getPosSuccess = (pos: GeolocationPosition) => {
+	// 	let currentPos = new window.kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+	// 	let message = '<div style="padding:5px;">내 위치</div>';
 
-		displayMarker(currentPos, message);
-	};
+	// 	displayMarker(currentPos, message);
+	// };
 	return (
 		<>
 			<div id='map' style={{ width: '100vw', height: '100vh' }} className='animate-fadeIn'></div>;
-			<div className='fixed z-10 w-[65%] h-[35px] top-[5px] left-[5px] flex justify-evenly items-center border border-grey'>
+			<div className='fixed z-10 w-[65%] h-[35px] top-[5px] left-[5px] flex justify-evenly items-center border border-none rounded-lg bg-slate-100 shadow-inner'>
 				<form onSubmit={searchPlaces} className='px-[5px]'>
-					키워드 :{' '}
-					<input className='w-[45%]' type='text' value={keyword} onChange={handleKeywordChange} />
-					<button type='submit' className='w-[20%]'>
-						검색
-					</button>
+					<div className='flex justify-evenly items-center'>
+						<div className='flex items-center'>
+							<div className='mx-[5px] font-["Pretendard-Bold"]'>키워드 : </div>
+							<input
+								className='w-[60%] rounded-sm border border-none focus:outline-none focus:border-sky-500'
+								type='text'
+								value={keyword}
+								onChange={handleKeywordChange}
+							/>
+						</div>
+						<button type='submit' className='w-[20%] flex justify-center mx-[3px]'>
+							<div className='w-[33px] font-["Pretendard-Bold"] rounded-lg bg-lightGreen text-white'>
+								검색
+							</div>
+						</button>
+					</div>
 				</form>
 			</div>
 			<div
