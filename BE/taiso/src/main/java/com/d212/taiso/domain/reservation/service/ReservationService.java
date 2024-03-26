@@ -1,6 +1,7 @@
 package com.d212.taiso.domain.reservation.service;
 
 
+import com.d212.taiso.domain.reservation.dto.MyRsvListRes;
 import com.d212.taiso.domain.reservation.dto.RsvAddReq;
 import com.d212.taiso.domain.reservation.dto.RsvListRes;
 import com.d212.taiso.domain.reservation.dto.RsvTogetherAddReq;
@@ -13,11 +14,11 @@ import java.util.List;
 public interface ReservationService {
 
 
-    // 전제 예약 리스트 조회하기 (현재 시간 이후로)
+    // 전제 예약 리스트 조회하기 (현재 시간 이후로) (도착지만 보여주기)
     List<RsvListRes> getAllRsvList();
 
-    // 내 예약 리스트 조회하기
-    List<RsvListRes> getMyRsvList();
+    // 내 예약 리스트 조회하기 (출발지와 도착지를 모두 보여주기)
+    List<MyRsvListRes> getMyRsvList();
 
     // 예약 추가하기
     // 이때는 출발지와 도착지를 둘다 받아야 됨
@@ -33,5 +34,5 @@ public interface ReservationService {
     // 그럼 합승한 사람 여부를 판단하고 변경 되어야 하는데 이걸 우예 짜지
     // 출발지 여부를 판단하고
 
-
+    void deleteRsv(Long rsvId, Long placeId); // 복합키 (예약 번호, 도착지 번호)
 }

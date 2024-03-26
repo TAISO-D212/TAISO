@@ -51,10 +51,13 @@ public class RsvDetail {
     @Column(name = "orders")
     private int orders; // 경유 순서
 
+    @Builder.Default
     private boolean depart_flag = false; // 출발지 여부
 
+    @Builder.Default
     private boolean board_flag = false; // 탑승 확인 여부
 
+    @Builder.Default
     private boolean stop_flag = false; // 하차 확인 여부
 
     private LocalDateTime arrivalTime;
