@@ -1,6 +1,8 @@
 # base 이미지 설정
 FROM amazoncorretto:17
 
+COPY .env /.env
+
 # jar 파일을 컨테이너 내부에 복사
 COPY build/libs/taiso-0.0.1-SNAPSHOT.jar /TAISO-app.jar
 
