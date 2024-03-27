@@ -7,6 +7,8 @@ import { NewReservation } from './pages/reservation/NewReservation.tsx';
 import { History } from './pages/history/History.tsx';
 import { NotFound } from './pages/NotFound.tsx';
 import { UserPage } from './pages/profile/UserPage.tsx';
+import { SetDeparture } from './pages/main/components/SetDeparture.tsx';
+import { SetArrival } from './pages/main/components/SetArrival.tsx';
 
 export const router = createBrowserRouter([
 	{ path: '/', element: <LoginPage /> },
@@ -14,6 +16,8 @@ export const router = createBrowserRouter([
 	{ path: '/main', element: <MainPage /> },
 	{ path: '/reservation', element: <Reservation /> },
 	{ path: '/reservation/new', element: <NewReservation /> },
+	{ path: '/setDeparture', element: <SetDeparture /> },
+	{ path: '/setArrival', element: <SetArrival /> },
 	{ path: '/history', element: <History /> },
 	// {path: '/favorite', element: <NotFound />},
 	{ path: '/profile', element: <UserPage /> },
