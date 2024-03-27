@@ -12,8 +12,10 @@ declare global {
 export const SetDeparture = () => {
 	const [map, setMap] = useState<any>();
 	const [ps, setPs] = useState<any>();
+	const [geocoder, setGeocoder] = useState<any>();
 	const [keyword, setKeyword] = useState<string>('');
 	const [startMarker, setStartMarker] = useState<any>();
+	const [address, setAddress] = useState<string>('');
 
 	const { currentLat, currentLng } = LatLngAddStore((state) => state);
 	const lat = currentLat;
@@ -31,13 +33,33 @@ export const SetDeparture = () => {
 		const newMap = new window.kakao.maps.Map(mapContainer, mapOption);
 		const newPs = new window.kakao.maps.services.Places();
 
+		const newGeocoder = new kakao.maps.services.Geocoder();
+
+		let newAddress = '';
+
+		newGeocoder.coord2Address(
+			newMap.getCenter().getLng(),
+			newMap.getCenter().getLat(),
+			function (result: any, status: any) {
+				if (status === kakao.maps.services.Status.OK) {
+					console.log(result);
+
+					newAddress = result[0].road_address
+						? result[0].road_address.address_name
+						: result[0].address.address_name;
+
+					setAddress(newAddress);
+				}
+			},
+		);
+
 		setMap(newMap);
 		setPs(newPs);
-
-		initMarker(newMap);
+		setGeocoder(newGeocoder);
+		initMarker(newMap, newGeocoder, newAddress);
 	}, []);
 
-	const initMarker = (map: any) => {
+	const initMarker = (map: any, geocoder: any, address: string) => {
 		if (!!startMarker === false) {
 			const startSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png'; // 출발 마커이미지의 주소입니다
 			const startSize = new kakao.maps.Size(50, 45); // 출발 마커이미지의 크기입니다
@@ -64,6 +86,7 @@ export const SetDeparture = () => {
 			const newStartMarker = new kakao.maps.Marker({
 				map: map, // 출발 마커가 지도 위에 표시되도록 설정합니다
 				position: startPosition,
+				zIndex: 1,
 				draggable: true, // 출발 마커가 드래그 가능하도록 설정합니다
 				image: startImage, // 출발 마커이미지를 설정합니다
 			});
@@ -77,12 +100,27 @@ export const SetDeparture = () => {
 			})(newStartMarker);
 
 			// 출발 마커에 dragend 이벤트를 등록합니다
-			(function (startMarker) {
+			(function (startMarker, geocoder, address) {
 				kakao.maps.event.addListener(startMarker, 'dragend', function () {
 					// 출발 마커의 드래그가 종료될 때 마커 이미지를 원래 이미지로 변경합니다
 					startMarker.setImage(startImage);
+					geocoder.coord2Address(
+						startMarker.getPosition().getLng(),
+						startMarker.getPosition().getLat(),
+						function (result: any, status: any) {
+							if (status === kakao.maps.services.Status.OK) {
+								console.log(result);
+
+								address = result[0].road_address
+									? result[0].road_address.address_name
+									: result[0].address.address_name;
+
+								setAddress(address);
+							}
+						},
+					);
 				});
-			})(newStartMarker);
+			})(newStartMarker, geocoder, address);
 
 			setStartMarker(newStartMarker);
 		}
@@ -178,8 +216,9 @@ export const SetDeparture = () => {
 					<div className='w-[100%] flex justify-evenly items-center'>
 						<div className='flex items-center'>
 							<input
-								className='w-[95%] px-[5%] font-["Pretendard-Bold"] rounded-sm border border-lightGray focus:outline-sky-500 focus:border-sky-500'
+								className='w-[95%] px-[5%] font-["Pretendard-Bold"] rounded-md border-2 border-slate-300 placeholder:text-slate-400 focus:outline-sky-500 focus:border-sky-500'
 								type='text'
+								placeholder='출발지를 입력해 주세요.'
 								value={keyword}
 								onChange={handleKeywordChange}
 							/>
@@ -192,8 +231,11 @@ export const SetDeparture = () => {
 					</div>
 				</form>
 			</div>
-			<div className='fixed z-10 bottom-0 w-[100%] h-[10%] flex justify-center items-center bg-white'>
-				<div className=' w-[70%] h-[70%] flex justify-center items-center bg-[#3422F2] rounded-full'>
+			<div className='fixed z-10 bottom-0 w-[100%] h-[15%] flex flex-col justify-center items-center bg-white'>
+				<div className='w-[100%] font-["Pretendard-Bold"] flex justify-center items-center text-[20px] my-3'>
+					{address}
+				</div>
+				<div className=' w-[70%] h-[40%] flex justify-center items-center bg-[#3422F2] rounded-full'>
 					<span className='flex justify-center w-[100%] font-["Pretendard-Bold"] text-[25px] text-white'>
 						출발지 설정
 					</span>
