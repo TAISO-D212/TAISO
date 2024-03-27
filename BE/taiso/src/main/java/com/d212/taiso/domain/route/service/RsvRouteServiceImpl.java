@@ -30,10 +30,10 @@ public class RsvRouteServiceImpl implements RsvRouteService {
             // 신규예약이면 이전 시간 예약 있는지 확인, 있으면 이전 목적지 없으면 마을회관 주소 받아와 locations에 add
 
             // 임시 위치 데이터 생성 : 출발지, 경유지1, 새로운 경유지, 목적지
-            locations.add(new LocationDto(37.23925005946422, 126.77316881517658, "마을회관"));
-            locations.add(new LocationDto(37.23925005935768, 126.77316881423511, "5일장"));
-            locations.add(new LocationDto(37.23925002345112, 126.77316876254113, "새마을금고"));
-            locations.add(new LocationDto(37.23925001223245, 126.77316853215425, "우리집"));
+            locations.add(new LocationDto(1, 37.23925005946422, 126.77316881517658));
+            locations.add(new LocationDto(2, 37.23925005935768, 126.77316881423511));
+            locations.add(new LocationDto(3, 37.23925002345112, 126.77316876254113));
+            locations.add(new LocationDto(4, 37.23925001223245, 126.77316853215425));
         }
 
         // 이후 AsyncService의 locationToRoute 호출
