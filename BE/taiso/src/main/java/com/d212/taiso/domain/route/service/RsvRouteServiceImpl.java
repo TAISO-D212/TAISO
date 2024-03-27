@@ -3,13 +3,15 @@ package com.d212.taiso.domain.route.service;
  * Created by 배성연 on 2024-03-21
  */
 
+import com.d212.taiso.domain.place.entity.Place;
+import com.d212.taiso.domain.reservation.entity.RsvDetail;
+import com.d212.taiso.domain.place.repository.PlaceRepository;
+import com.d212.taiso.domain.reservation.repository.RsvDetailRepository;
 import com.d212.taiso.domain.route.dto.LocationDto;
-import com.d212.taiso.domain.route.entity.RsvRoute;
-import com.d212.taiso.domain.route.repository.RsvRouteRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -18,25 +20,39 @@ import java.util.List;
 public class RsvRouteServiceImpl implements RsvRouteService {
 
     private final AsyncService asyncService;
+    private final PlaceRepository placeRepository;
+    private final RsvDetailRepository rsvDetailRepository;
 
     @Override
     public void locationToRoute(long rsvId, long placeId) {
-        List<LocationDto> locations = new LinkedList<>();
+        List<LocationDto> locations = new ArrayList<>();
+
+        // place_id==1인 곳 gps 정보 기본으로 설정
+        Place defaultStartPlace = placeRepository.findById(1L)
+            .orElseThrow(() -> new RuntimeException("기본 대기 위치가 존재하지 않습니다."));
+        locations.add(new LocationDto(defaultStartPlace.getId(), defaultStartPlace.getLatitude(),
+            defaultStartPlace.getLongitude()));
 
         if (rsvId > 0) {
-            // 신규예약 아니면 기존 위치 데이터 받아와 locations.add에 넣기
-
-        } else {
-            // 신규예약이면 이전 시간 예약 있는지 확인, 있으면 이전 목적지 없으면 마을회관 주소 받아와 locations에 add
-
-            // 임시 위치 데이터 생성 : 출발지, 경유지1, 새로운 경유지, 목적지
-            locations.add(new LocationDto(1, 37.23925005946422, 126.77316881517658));
-            locations.add(new LocationDto(2, 37.23925005935768, 126.77316881423511));
-            locations.add(new LocationDto(3, 37.23925002345112, 126.77316876254113));
-            locations.add(new LocationDto(4, 37.23925001223245, 126.77316853215425));
+            // 기존 예약이면 기존 위치 데이터 받아와 locations.add에 넣기
+            List<RsvDetail> rsvDetails = rsvDetailRepository.findByRsvId(rsvId);
+            for (RsvDetail detail : rsvDetails) {
+                Place place = placeRepository.findById(detail.getRsvDetailId().getPlace().getId())
+                    .orElseThrow(() -> new RuntimeException("경유지 장소가 존재하지 않습니다."));
+                locations.add(
+                    new LocationDto(place.getId(), place.getLatitude(), place.getLongitude()));
+            }
         }
 
+        // 목적지 정보 추가
+        Place destinationPlace = placeRepository.findById(placeId)
+            .orElseThrow(() -> new RuntimeException("목적지 장소가 존재하지 않습니다."));
+        locations.add(new LocationDto(destinationPlace.getId(), destinationPlace.getLatitude(),
+            destinationPlace.getLongitude()));
+
         // 이후 AsyncService의 locationToRoute 호출
+        log.info("locations 완성, rsvId : {}, placeId : {}, locations : {}", rsvId, placeId,
+            locations);
         asyncService.locationToRoute(locations, rsvId, placeId);
     }
 
