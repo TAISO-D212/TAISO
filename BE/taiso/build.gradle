@@ -74,6 +74,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-integration'
     implementation 'org.springframework.integration:spring-integration-mqtt:5.5.0' // 버전 확인
 
+    // .env용 의존성 : dotenv-java 라이브러리
+    implementation 'io.github.cdimascio:dotenv-java:2.2.0'
 
 }
 
