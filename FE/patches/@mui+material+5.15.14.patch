@@ -1,0 +1,13 @@
+diff --git a/node_modules/@mui/material/Select/Select.d.ts b/node_modules/@mui/material/Select/Select.d.ts
+index c39944e..f6b7f25 100644
+--- a/node_modules/@mui/material/Select/Select.d.ts
++++ b/node_modules/@mui/material/Select/Select.d.ts
+@@ -143,7 +143,7 @@ export interface BaseSelectProps<Value = unknown>
+    * If the value is an object it must have reference equality with the option in order to be selected.
+    * If the value is not an object, the string representation must match with the string representation of the option in order to be selected.
+    */
+-  value?: Value | '';
++  value?: Value | '' | number;
+   /**
+    * The variant to use.
+    * @default 'outlined'

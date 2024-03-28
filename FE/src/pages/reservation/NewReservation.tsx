@@ -52,7 +52,7 @@ export const NewReservation = () => {
 	};
 
 	const handleCntChange = (event: SelectChangeEvent) => {
-		setUserCnt(event.target.value as number);
+		setUserCnt(event.target.value as unknown as number);
 	};
 
 	return (
