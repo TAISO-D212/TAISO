@@ -12,8 +12,10 @@ declare global {
 export const SetArrival = () => {
 	const [map, setMap] = useState<any>();
 	const [ps, setPs] = useState<any>();
+	const [geocoder, setGeocoder] = useState<any>();
 	const [keyword, setKeyword] = useState<string>('');
 	const [arrivalMarker, setArrivalMarker] = useState<any>();
+	const [address, setAddress] = useState<string>('');
 
 	const { currentLat, currentLng } = LatLngAddStore((state) => state);
 	const lat = currentLat;
@@ -31,23 +33,37 @@ export const SetArrival = () => {
 		const newMap = new window.kakao.maps.Map(mapContainer, mapOption);
 		const newPs = new window.kakao.maps.services.Places();
 
+		const newGeocoder = new kakao.maps.services.Geocoder();
+
+		let newAddress = '';
+
+		newGeocoder.coord2Address(
+			newMap.getCenter().getLng(),
+			newMap.getCenter().getLat(),
+			function (result: any, status: any) {
+				if (status === kakao.maps.services.Status.OK) {
+					console.log(result);
+
+					newAddress = result[0].road_address
+						? result[0].road_address.address_name
+						: result[0].address.address_name;
+
+					setAddress(newAddress);
+				}
+			},
+		);
+
 		setMap(newMap);
 		setPs(newPs);
+		setGeocoder(newGeocoder);
+		initMarker(newMap, newGeocoder, newAddress);
 	}, []);
 
 	const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setKeyword(e.target.value);
 	};
 
-	function searchPlaces(e: React.FormEvent<HTMLFormElement>) {
-		e.preventDefault();
-		const searchOption = {
-			location: new window.kakao.maps.LatLng(lat, long),
-			radius: 20000,
-			sort: window.kakao.maps.services.SortBy.DISTANCE,
-		};
-		ps.keywordSearch(keyword, placesSearchCB, searchOption);
-
+	const initMarker = (map: any, geocoder: any, address: string) => {
 		if (!!arrivalMarker === false) {
 			const arriveSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/blue_b.png'; // 도착 마커이미지 주소입니다
 			const arriveSize = new kakao.maps.Size(50, 45); // 도착 마커이미지의 크기입니다
@@ -72,12 +88,14 @@ export const SetArrival = () => {
 			);
 
 			// 도착 마커가 표시될 위치입니다
-			const arrivePosition = new kakao.maps.LatLng(map.getCenter().getLat(), map.getCenter().getLng());
+			// const arrivePosition = new kakao.maps.LatLng(map.getCenter().getLat(), map.getCenter().getLng());
+			const arrivePosition = new kakao.maps.LatLng(lat, long);
 
 			// 도착 마커를 생성합니다
 			const newArriveMarker = new kakao.maps.Marker({
 				map: map, // 도착 마커가 지도 위에 표시되도록 설정합니다
 				position: arrivePosition,
+				zIndex: 1,
 				draggable: true, // 도착 마커가 드래그 가능하도록 설정합니다
 				image: arriveImage, // 도착 마커이미지를 설정합니다
 			});
@@ -88,18 +106,43 @@ export const SetArrival = () => {
 					// 도착 마커의 드래그가 시작될 때 마커 이미지를 변경합니다
 					arrivalMarker.setImage(arriveDragImage);
 				});
-			})(arrivalMarker);
+			})(newArriveMarker);
 
 			// 도착 마커에 dragend 이벤트를 등록합니다
-			(function (arrivalMarker) {
+			(function (arrivalMarker, geocoder, address) {
 				kakao.maps.event.addListener(arrivalMarker, 'dragend', function () {
 					// 도착 마커의 드래그가 종료될 때 마커 이미지를 원래 이미지로 변경합니다
 					arrivalMarker.setImage(arriveImage);
+					geocoder.coord2Address(
+						arrivalMarker.getPosition().getLng(),
+						arrivalMarker.getPosition().getLat(),
+						function (result: any, status: any) {
+							if (status === kakao.maps.services.Status.OK) {
+								console.log(result);
+
+								address = result[0].road_address
+									? result[0].road_address.address_name
+									: result[0].address.address_name;
+
+								setAddress(address);
+							}
+						},
+					);
 				});
-			})(arrivalMarker);
+			})(newArriveMarker, geocoder, address);
 
 			setArrivalMarker(newArriveMarker);
 		}
+	};
+
+	function searchPlaces(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+		const searchOption = {
+			location: new window.kakao.maps.LatLng(lat, long),
+			radius: 20000,
+			sort: window.kakao.maps.services.SortBy.DISTANCE,
+		};
+		ps.keywordSearch(keyword, placesSearchCB, searchOption);
 	}
 
 	// function placesSearchCB(data: any, status: any, pagination: any) {
