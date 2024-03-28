@@ -21,6 +21,9 @@ def calc_distance(locations):
         distance = distance_between(base_location, location, calculator)
         distanceList.append(distance)
     print("Calculated Distance List : ", distanceList)
+    if len(locations) == 3:
+        distance = distance_between(locations[0], locations[1], calculator)
+        distanceList.append(distance)
     return distanceList
 
 def distance_between(loc1, loc2, calculator):
