@@ -5,7 +5,7 @@ import threading
 import subprocess
 import paho.mqtt.client as mqtt
 
-topicList = [("connection/BE/start", 0), ("connection/BE/no", 0), ("distance/BE", 0)]
+topicList = [("connect/BE/start", 0), ("distance/BE", 0)]
 
 # 콜백 함수 정의
 def on_connect(client, userdata, flags, rc):
@@ -17,9 +17,15 @@ def on_message(client, userdata, msg):
     if msg.topic == "distance/BE":
         thread = threading.Thread(target=run_calc_distance, args=(msg.payload,))
         thread.start()
+    elif msg.topic == "connect/BE/start":
+        thread = threading.Thread(target=run_loc_publisher, args=(msg.payload,))
+        thread.start()
 
 def run_calc_distance(payload):
     subprocess.call(["python", "/home/ssafy/catkin_ws/src/mqtt_connection/scripts/calcDistance.py", payload])
+
+def run_loc_publisher(payload):
+    subprocess.call(["python", "/home/ssafy/catkin_ws/src/mqtt_connection/scripts/locPublisher.py", payload])
 
 # MQTT 클라이언트 인스턴스 생성
 client = mqtt.Client()
