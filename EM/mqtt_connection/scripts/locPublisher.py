@@ -16,13 +16,23 @@ def gps_callback(data):
     # GPS 데이터 저장
     last_gps_data = data
 
-def publish_gps_data(event):
+def publish_gps_data_BE(event):
     global last_gps_data
     if last_gps_data is not None:
         # GPS 데이터를 문자열로 변환
         gps_data = "%s %s" % (last_gps_data.latitude, last_gps_data.longitude)
         # MQTT 브로커에 GPS 데이터 발행
         mqtt_client.publish("location/BE", gps_data)
+
+
+def publish_gps_data_FE(event):
+    global last_gps_data
+    if last_gps_data is not None:
+        # GPS 데이터를 문자열로 변환
+        gps_data = "%s %s" % (last_gps_data.latitude, last_gps_data.longitude)
+        # MQTT 브로커에 GPS 데이터 발행
+        mqtt_client.publish("location/FE", gps_data)
+
 
 def main():
     # MQTT 브로커에 연결
@@ -35,8 +45,11 @@ def main():
     # GPS 데이터를 구독
     rospy.Subscriber("/gps", GPSMessage, gps_callback)
 
-    # 10초마다 publish_gps_data 함수 호출
-    rospy.Timer(rospy.Duration(10), publish_gps_data)
+    # 10초마다 publish_gps_data_BE 함수 호출
+    rospy.Timer(rospy.Duration(10), publish_gps_data_BE)
+
+    # 1초마다 publish_gps_data_BE 함수 호출
+    rospy.Timer(rospy.Duration(1), publish_gps_data_FE)
 
     # ROS 스핀, 콜백 함수를 계속해서 호출
     rospy.spin()
