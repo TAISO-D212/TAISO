@@ -65,7 +65,7 @@ export const LoginPage = () => {
 	if (loading)
 		return (
 			<>
-				<div className='flex flex-col justify-center overflow-hidden items-center animate-fadeIn'>
+				<div className='w-[100%] h-[100%] flex flex-col justify-center overflow-hidden items-center animate-fadeIn'>
 					<img src={Logo192} alt='TAISO LOGO 192SIZE' />
 					<div className="mt-[15px] font-['Pretendard-Bold'] text-[60px]">TAISO</div>
 					<div className='mt-[15px] w-[90%] h-100'>

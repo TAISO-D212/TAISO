@@ -96,7 +96,7 @@ export const Reservation = () => {
 						})}
 					</div>
 				) : (
-					<div className='fixed bottom-[90px] w-[100%] h-[60%] flex flex-col justify-center items-center'>
+					<div className='bottom-[90px] w-[100%] h-[60%] flex flex-col justify-center items-center'>
 						예약 가능한 내역이 없습니다.
 					</div>
 				)}
