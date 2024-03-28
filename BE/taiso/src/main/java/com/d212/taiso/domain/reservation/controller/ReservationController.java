@@ -33,7 +33,7 @@ public class ReservationController {
     public ResponseEntity<ResultResponse> mqttConnectionTest() {
         try {
             // 임시 새 경유지
-            rsvRouteService.locationToRoute(0, 2);
+            rsvRouteService.locationToRoute(8, 3);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
 

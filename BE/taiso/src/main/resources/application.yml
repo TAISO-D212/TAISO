@@ -14,6 +14,7 @@ server:
     accept-count: 100         # 작업큐의 사이즈
     connection-timeout: 20000 # timeout 판단 기준 시간, 20초
 
+
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver

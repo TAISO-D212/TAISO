@@ -124,7 +124,7 @@ export const SignUpPage = () => {
 						<Typography component='h1' variant='h5'>
 							회원가입
 						</Typography>
-						<Boxs component='form' noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+						<form className='pb-[40px]' noValidate onSubmit={handleSubmit}>
 							<FormControl component='fieldset' variant='standard'>
 								<Grid container spacing={2}>
 									<Grid item xs={12}>
@@ -181,7 +181,7 @@ export const SignUpPage = () => {
 								</Button>
 							</FormControl>
 							<FormHelperTexts>{registerError}</FormHelperTexts>
-						</Boxs>
+						</form>
 					</Box>
 				</Container>
 			</ThemeProvider>
