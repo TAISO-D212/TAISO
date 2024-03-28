@@ -92,7 +92,7 @@ export const KakaoMap = () => {
 		<>
 			<div id='map' className='fixed top-0 w-[100%] h-[70%] animate-fadeIn'></div>
 			<div
-				className='fixed w-[50px] h-[50px] bottom-[45%] right-[9px] z-10 flex flex-col justify-center items-center'
+				className='fixed w-[50px] h-[50px] bottom-[40%] right-[3%] z-10 flex flex-col justify-center items-center'
 				onClick={goCurrentLoc}>
 				<img src={CurrentLoc} alt='HOME_TAB' />
 			</div>

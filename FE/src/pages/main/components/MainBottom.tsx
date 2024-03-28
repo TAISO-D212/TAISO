@@ -14,10 +14,13 @@ export const MainBottom = () => {
 	};
 	return (
 		<>
-			<div className='fixed bottom-0 w-[100%] h-[35%] z-10 flex flex-col items-center bg-white border border-slate-200 rounded-t-[12px]'>
-				<div className='w-[80%] font-["Pretendard-Bold"] text-[20px] mt-5'>{userName} 님 탑승</div>
-				<div className='w-[80%] h-[36%] bg-white border-2 border-[#C4B5FC] rounded-lg divide-y divide-dashed divide-[#C4B5FC] my-7'>
-					<div className='h-[50%] flex items-center' onClick={goSetDeparture}>
+			<div className='fixed bottom-0 w-[100%] h-[35%] z-10 backdrop-blur-sm flex flex-col items-center border-slate-200 rounded-t-[12px]'>
+				<div className='w-[80%] font-["Pretendard-Bold"] text-[20px] mt-5'>
+					{userName} 님 안녕하세요 ✨
+				</div>
+				{/* <div className='w-[80%] h-[36%] backdrop-blur-sm border-2 border-[#C4B5FC] rounded-lg divide-y divide-dashed divide-[#C4B5FC] my-7'> */}
+				<div className='w-[80%] h-[36%] flex justify-center items-center font-["Pretendard-Bold"] bg-[#ebe8f9] text-[20px] border-2 border-[#C4B5FC] rounded-lg my-7'>
+					{/* <div className='h-[50%] flex items-center' onClick={goSetDeparture}>
 						<span className='mx-[5px]'>
 							<FaBusSimple color='navy' className='mx-[5px]' />
 						</span>
@@ -29,7 +32,8 @@ export const MainBottom = () => {
 						</span>
 						<span className='mx-[5px]'>목적지 : {}</span>
 						<span></span>
-					</div>
+					</div> */}
+					진행중인 내 예약이 없습니다.
 				</div>
 			</div>
 		</>
