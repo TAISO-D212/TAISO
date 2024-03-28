@@ -9,4 +9,6 @@ public interface RsvRouteService {
 
     void locationToRoute(long rsvId, long placeId);
 
+    void connectStart();
+
 }
