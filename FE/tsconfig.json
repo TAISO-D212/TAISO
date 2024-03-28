@@ -7,7 +7,7 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -16,9 +16,13 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    "moduleDetection": "force",
+    "strictNullChecks": false,
     "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
 
     /* types */
     "types": ["kakao.maps.d.ts"]

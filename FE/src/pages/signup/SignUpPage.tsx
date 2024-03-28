@@ -13,6 +13,7 @@ import {
 	Typography,
 	Container,
 } from '@mui/material/';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
 import { BackButton } from '../../components/BackButton';
@@ -44,6 +45,7 @@ export const SignUpPage = () => {
 	const [passwordError, setPasswordError] = useState<string>('');
 	const [nameError, setNameError] = useState<string>('');
 	const [registerError, setRegisterError] = useState<string>('');
+	const [color, setColor] = useState<string>('info');
 	const navigate = useNavigate();
 
 	const onhandlePost = async (data: FormData) => {
@@ -108,7 +110,7 @@ export const SignUpPage = () => {
 	};
 
 	return (
-		<div className='w-full h-lvh flex justify-center items-center animate-fadeIn'>
+		<div className='w-[100%] h-lvh flex justify-center items-center animate-fadeIn'>
 			<BackButton />
 			<ThemeProvider theme={theme}>
 				<Container component='main' maxWidth='xs'>
@@ -120,24 +122,33 @@ export const SignUpPage = () => {
 							flexDirection: 'column',
 							alignItems: 'center',
 						}}>
-						<Avatar sx={{ m: 1, bgcolor: '#3422F2' }} />
-						<Typography component='h1' variant='h5'>
+						<Avatar sx={{ width: 100, height: 100, m: 1, bgcolor: '#c4b5fc', marginBottom: '10%' }} />
+						<Typography component='h1' variant='h5' sx={{ marginBottom: '10%' }}>
 							회원가입
 						</Typography>
-						<Boxs component='form' noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+						<form className='pb-[40px]' noValidate onSubmit={handleSubmit}>
 							<FormControl component='fieldset' variant='standard'>
 								<Grid container spacing={2}>
 									<Grid item xs={12}>
-										<TextField
-											required
-											autoFocus
-											fullWidth
-											type='email'
-											id='email'
-											name='email'
-											label='이메일 주소'
-											error={emailError !== '' || false}
-										/>
+										<div className='flex'>
+											<TextField
+												required
+												autoFocus
+												sx={{ width: '80%' }}
+												type='email'
+												id='email'
+												name='email'
+												label='이메일 주소'
+												error={emailError !== '' || false}
+											/>
+											<Button
+												variant='contained'
+												color={color}
+												// TODO : 이메일 체크 후 버튼 색상 변경 -> 변경색은 success , error
+												sx={{ width: '10%', height: 55, display: 'inline' }}>
+												<CheckCircleIcon />
+											</Button>
+										</div>
 									</Grid>
 									<FormHelperTexts>{emailError}</FormHelperTexts>
 									<Grid item xs={12}>
@@ -176,12 +187,17 @@ export const SignUpPage = () => {
 									</Grid>
 									<FormHelperTexts>{nameError}</FormHelperTexts>
 								</Grid>
-								<Button type='submit' fullWidth variant='contained' sx={{ mt: 5, mb: 2 }} size='large'>
-									회원가입
+								<Button
+									type='submit'
+									fullWidth
+									variant='contained'
+									sx={{ mt: 5, mb: 2, bgcolor: '#c4b5fc' }}
+									size='large'>
+									<div className='font-["Pretendard-Bold"] text-[20px]'>회원가입</div>
 								</Button>
 							</FormControl>
 							<FormHelperTexts>{registerError}</FormHelperTexts>
-						</Boxs>
+						</form>
 					</Box>
 				</Container>
 			</ThemeProvider>
