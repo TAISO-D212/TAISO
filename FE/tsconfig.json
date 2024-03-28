@@ -18,6 +18,8 @@
     "strict": true,
     // "noUnusedLocals": true,
     // "noUnusedParameters": true,
+    "moduleDetection": "force",
+    "strictNullChecks": false,
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
     "allowJs": true,

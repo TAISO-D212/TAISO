@@ -12,3 +12,9 @@ export interface Member {
 export interface MemberError {
   error?: string
 }
+
+export interface SignUpInputType {
+  email: string,
+  pwd: string,
+  name: string
+}
