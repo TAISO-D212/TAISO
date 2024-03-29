@@ -28,6 +28,7 @@ public class Member {
     private String pwd;
     private String name; // username으로 쓰이는 것이 있어서 name으로 변환
     private String faceImg;
+    private String fcmToken;
     @CreatedDate
     private LocalDateTime createDate;
 
@@ -50,5 +51,8 @@ public class Member {
         this.deleteFlag = deleteFlag;
     }
 
+    public void changeFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
 }
 
