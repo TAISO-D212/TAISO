@@ -1,3 +1,16 @@
+diff --git a/node_modules/@mui/material/Button/Button.d.ts b/node_modules/@mui/material/Button/Button.d.ts
+index 63b0789..850b392 100644
+--- a/node_modules/@mui/material/Button/Button.d.ts
++++ b/node_modules/@mui/material/Button/Button.d.ts
+@@ -28,7 +28,7 @@ export interface ButtonOwnProps {
+    * @default 'primary'
+    */
+   color?: OverridableStringUnion<
+-    'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning',
++    'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning' | any,
+     ButtonPropsColorOverrides
+   >;
+   /**
 diff --git a/node_modules/@mui/material/Select/Select.d.ts b/node_modules/@mui/material/Select/Select.d.ts
 index c39944e..f6b7f25 100644
 --- a/node_modules/@mui/material/Select/Select.d.ts
@@ -11,3 +24,28 @@ index c39944e..f6b7f25 100644
    /**
     * The variant to use.
     * @default 'outlined'
+diff --git a/node_modules/@mui/material/Select/SelectInput.d.ts b/node_modules/@mui/material/Select/SelectInput.d.ts
+index f2d3fd9..d480dab 100644
+--- a/node_modules/@mui/material/Select/SelectInput.d.ts
++++ b/node_modules/@mui/material/Select/SelectInput.d.ts
+@@ -8,7 +8,7 @@ import { MenuProps } from '../Menu';
+  * The type of event depends on what caused the change.
+  * For example, when the browser auto-fills the `Select` you'll receive a `React.ChangeEvent`.
+  */
+-export type SelectChangeEvent<Value = string> =
++export type SelectChangeEvent<Value = string | number> =
+   | (Event & { target: { value: Value; name: string } })
+   | React.ChangeEvent<HTMLInputElement>;
+ 
+diff --git a/node_modules/@mui/material/SvgIcon/SvgIcon.d.ts b/node_modules/@mui/material/SvgIcon/SvgIcon.d.ts
+index f759ef5..c30ffbc 100644
+--- a/node_modules/@mui/material/SvgIcon/SvgIcon.d.ts
++++ b/node_modules/@mui/material/SvgIcon/SvgIcon.d.ts
+@@ -4,6 +4,7 @@ import { OverridableStringUnion } from '@mui/types';
+ import { Theme } from '../styles';
+ import { OverridableComponent, OverrideProps } from '../OverridableComponent';
+ import { SvgIconClasses } from './svgIconClasses';
++import type { TypographySystem } from '@mui/joy/styles';
+ 
+ export interface SvgIconPropsSizeOverrides {}
+ 
