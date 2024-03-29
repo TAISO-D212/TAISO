@@ -50,11 +50,19 @@ export const SignUpPage = () => {
 
 	const { moveToLogin } = useCustomLogin();
 
+	
+	const [email, setEmail] = useState<string>('');
+
+	// 이메일 입력시 변화
+	const handleEmailChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+		setEmail(e.target.value);
+	};
 
 	// 이메일 중복 확인
-	// const onHandleCheckEmail = async (email:) => {
-	// 	checkEmail(email)
-	// }
+	const onHandleCheckEmail = () => {
+		const result = checkEmail(email);
+		console.log(result);
+	};
 
 	// 회원 가입 로직
 	const onhandlePost = async (data: FormData) => {
@@ -148,13 +156,14 @@ export const SignUpPage = () => {
 												name='email'
 												label='이메일 주소'
 												error={emailError !== '' || false}
+												onChange={handleEmailChange}
 											/>
 											<Button
 												variant='contained'
 												color={color}
 												// TODO : 이메일 체크 후 버튼 색상 변경 -> 변경색은 success , error
 												sx={{ width: '10%', height: 55, display: 'inline' }}
-												>
+												onClick={onHandleCheckEmail}>
 												<CheckCircleIcon />
 											</Button>
 										</div>
