@@ -22,6 +22,7 @@ export const BottomNav = () => {
 	const handleClickLogout = () => {
 		doLogout();
 		alert('로그아웃되었습니다.');
+		moveToLogin();
 	};
 
 	const goProfile = () => {
