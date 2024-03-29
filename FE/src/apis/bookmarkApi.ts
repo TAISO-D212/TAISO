@@ -1,7 +1,7 @@
 import { viteConfig } from './viteConfig';
 import jwtAxios from '../utils/jwtUtil';
 import { BookmarkInputType, BookmarkListType } from '../interfaces/Bookmark';
-import { APIResponse } from '../interfaces';
+import { APIResponse } from '../interfaces/Index';
 
 const host = `${viteConfig.VITE_BASE_URL}/api/bookmarks`;
 

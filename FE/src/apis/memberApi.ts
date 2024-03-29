@@ -2,7 +2,7 @@ import axios from 'axios';
 import { viteConfig } from './viteConfig';
 import { SignUpInputType } from '../interfaces/Member';
 import jwtAxios from '../utils/jwtUtil';
-import { APIResponse } from '../interfaces';
+import { APIResponse } from '../interfaces/Index';
 
 export type TLoginParam = {
 	email: string;
