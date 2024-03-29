@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { createSearchParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { loginPostAsync, logout } from '../slices/loginSlice';
 import { AppDispatch, RootState } from '../store/LoginStore';
 import { TLoginParam } from '../apis/memberApi';
