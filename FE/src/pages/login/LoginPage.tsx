@@ -1,7 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { login, loginPostAsync } from '../../slices/loginSlice';
 import { useNavigate } from 'react-router-dom';
 import Logo192 from '../../assets/icon/icon_192.png';
 import Logo72 from '../../assets/icon/icon_72.png';

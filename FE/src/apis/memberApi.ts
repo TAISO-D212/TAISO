@@ -32,7 +32,7 @@ export const checkEmail = async (email: string): Promise<APIResponse<boolean>> =
 	return res.data;
 };
 
-export const join = async (signUpObj: SignUpInputType): Promise<APIResponse<boolean>> => {
+export const memberJoin = async (signUpObj: SignUpInputType): Promise<APIResponse<boolean>> => {
 	const header = { headers: { 'Content-Type': 'application/json' } };
 
 	const res = await axios.post(`${host}/join`, signUpObj, header);

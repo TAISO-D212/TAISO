@@ -1,6 +1,4 @@
 import { useState, FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import {
 	Avatar,
 	Button,
@@ -17,11 +15,14 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
 import { BackButton } from '../../components/BackButton';
+import { SignUpInputType } from '../../interfaces/Member';
+import { checkEmail, memberJoin } from '../../apis/memberApi';
+import useCustomLogin from '../../hooks/useCustomLogin';
 
 // 이메일, 비밀번호, 이름을 나타내는 인터페이스 정의
 interface FormData {
 	email: string;
-	password: string;
+	pwd: string;
 	name: string;
 	rePassword: string;
 }
@@ -46,16 +47,24 @@ export const SignUpPage = () => {
 	const [nameError, setNameError] = useState<string>('');
 	const [registerError, setRegisterError] = useState<string>('');
 	const [color, setColor] = useState<string>('info');
-	const navigate = useNavigate();
 
+	const { moveToLogin } = useCustomLogin();
+
+
+	// 이메일 중복 확인
+	// const onHandleCheckEmail = async (email:) => {
+	// 	checkEmail(email)
+	// }
+
+	// 회원 가입 로직
 	const onhandlePost = async (data: FormData) => {
-		const { email, name, password } = data;
-		const postData = { email, name, password };
-
+		const { email, name, pwd } = data;
+		const postData: SignUpInputType = { email, name, pwd };
 		try {
-			const response = await axios.post('/member/join', postData);
+			const response = memberJoin(postData);
 			console.log(response, '성공');
-			navigate('/login');
+			// 다시 로그인 하세요!!
+			moveToLogin();
 		} catch (err) {
 			console.log(err);
 			setRegisterError('회원가입에 실패하였습니다. 다시한번 확인해 주세요.');
@@ -69,10 +78,10 @@ export const SignUpPage = () => {
 		const joinData: FormData = {
 			email: data.get('email') as string,
 			name: data.get('name') as string,
-			password: data.get('password') as string,
+			pwd: data.get('pwd') as string,
 			rePassword: data.get('rePassword') as string,
 		};
-		const { email, name, password, rePassword } = joinData;
+		const { email, name, pwd, rePassword } = joinData;
 
 		// 이메일 유효성 체크
 		const emailRegex =
@@ -82,12 +91,11 @@ export const SignUpPage = () => {
 
 		// 비밀번호 유효성 체크
 		const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{8,25}$/;
-		if (!passwordRegex.test(password))
-			setPasswordState('숫자와 영문자 조합으로 8자리 이상 입력해주세요!');
+		if (!passwordRegex.test(pwd)) setPasswordState('숫자와 영문자 조합으로 8자리 이상 입력해주세요!');
 		else setPasswordState('');
 
 		// 비밀번호 같은지 체크
-		if (password !== rePassword) setPasswordError('비밀번호가 일치하지 않습니다.');
+		if (pwd !== rePassword) setPasswordError('비밀번호가 일치하지 않습니다.');
 		else setPasswordError('');
 
 		// 이름 유효성 검사
@@ -97,12 +105,12 @@ export const SignUpPage = () => {
 
 		if (
 			email &&
-			password &&
+			pwd &&
 			name &&
 			rePassword &&
 			emailRegex.test(email) &&
-			passwordRegex.test(password) &&
-			password === rePassword &&
+			passwordRegex.test(pwd) &&
+			pwd === rePassword &&
 			nameRegex.test(name)
 		) {
 			onhandlePost(joinData);
@@ -145,7 +153,8 @@ export const SignUpPage = () => {
 												variant='contained'
 												color={color}
 												// TODO : 이메일 체크 후 버튼 색상 변경 -> 변경색은 success , error
-												sx={{ width: '10%', height: 55, display: 'inline' }}>
+												sx={{ width: '10%', height: 55, display: 'inline' }}
+												>
 												<CheckCircleIcon />
 											</Button>
 										</div>
@@ -156,8 +165,8 @@ export const SignUpPage = () => {
 											required
 											fullWidth
 											type='password'
-											id='password'
-											name='password'
+											id='pwd'
+											name='pwd'
 											label='비밀번호'
 											error={passwordState !== '' || false}
 										/>
