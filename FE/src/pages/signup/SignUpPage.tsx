@@ -110,7 +110,7 @@ export const SignUpPage = () => {
 	};
 
 	return (
-		<div className='w-[100%] h-lvh flex justify-center items-center animate-fadeIn'>
+		<div className='w-[100%] h-[100] flex justify-center items-center animate-fadeIn'>
 			<BackButton />
 			<ThemeProvider theme={theme}>
 				<Container component='main' maxWidth='xs'>
