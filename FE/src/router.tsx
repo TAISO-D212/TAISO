@@ -20,6 +20,6 @@ export const router = createBrowserRouter([
 	{ path: '/setArrival', element: <SetArrival /> },
 	{ path: '/history', element: <History /> },
 	// {path: '/favorite', element: <NotFound />},
-	// { path: '/profile', element: <UserPage /> },
+	{ path: '/profile', element: <UserPage /> },
 	{ path: '/*', element: <NotFound /> },
 ]);
