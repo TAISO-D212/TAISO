@@ -3,6 +3,7 @@ package com.d212.taiso.global.security.config;
  * Created by 전근렬 on 2024-03-21
  */
 
+import com.d212.taiso.domain.member.controller.MemberController;
 import com.d212.taiso.global.security.filter.JWTCheckFilter;
 import com.d212.taiso.global.security.handler.APILoginFailHandler;
 import com.d212.taiso.global.security.handler.APILoginSuccessHandler;
@@ -65,6 +66,17 @@ public class CustomSecurityConfig {
         http.addFilterBefore(new JWTCheckFilter(),
             UsernamePasswordAuthenticationFilter.class);// JWT 체크
 
+        // 로그인 끝남
+        /* 여기서 MemberService.saveAlert 호출할 것... */
+
+        // MemberController 인스턴스를 먼저 생성해야 함
+//        MemberController memberController = new MemberController();
+
+//        // 이제 MemberController의 saveFcmToken 메서드 호출
+//        http.addFilterAfter((request, response, chain) -> {
+//            memberController.saveFcmToken("your_token_here");
+//            chain.doFilter(request, response);
+//        }, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
