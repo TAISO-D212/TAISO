@@ -25,6 +25,7 @@
     "axios": "^1.6.8",
     "dayjs": "^1.11.10",
     "framer-motion": "^11.0.18",
+    "mqtt": "^5.5.0",
     "patch-package": "^8.0.0",
     "react": "^18.2.0",
     "react-calendar": "^4.8.0",
@@ -40,6 +41,7 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@types/mqtt": "^2.5.0",
     "@types/react": "^18.2.72",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
