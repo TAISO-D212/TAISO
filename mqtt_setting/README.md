@@ -9,6 +9,11 @@
         - ```sudo nano custom_config.conf``` : 새 설정 파일 생성
         - ``` listener 1883``` : 기본 포트 번호 리스닝 활성화
         - ``` llow_anonymous true ``` : 익명 사용자 접근 허용(보안은 과제 사항)
+        - ``` listener 9001``` : FE 연결용 websocket 포트 번호 리스닝 활성화
+        - ``` protocol websockets``` : FE 연결용 websocket 프로토콜 접속 활성화
+        - ```cafile /path/to/ca.crt``` : 인증서(SSL/TLS) 파일 경로
+        - ```certfile /path/to/server.crt``` : 서버의 공개 키 포함하는 인증서 파일 경로
+        - ```keyfile /path/to/server.key``` : 서버의 비공개 키 포함하는 키 파일 경로
     - mosquitto 서비스 시작으로 설정 적용
         - ```sudo systemctl start mosquitto```
     - EC2 서버 시스템 부팅 시 자동으로 mosquitto 시작
