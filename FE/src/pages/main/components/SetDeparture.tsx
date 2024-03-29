@@ -205,6 +205,12 @@ export const SetDeparture = () => {
 
 	return (
 		<>
+			{/* TODO : 지도에서 찾기 토글 버튼으로 수정하기 -> 
+		지도에서 찾기 버튼 클릭
+		즐겨찾기 목록 안보이고, 지도 활성화
+		즐겨찾기 목록에서 즐겨찾기 삭제 만들기 (즐겨찾기 DELETE 방식으로 BE에 전달하기)
+		현위치 즐겨찾기 추가 만들기 (즐겨찾기 POST 방식으로 BE에 전달하기)
+		*/}
 			<div className='fixed z-10 top-0 w-[100%] h-[15%] flex-col justify-evenly items-end bg-white'>
 				<div className='flex'>
 					<BackButton />

@@ -80,14 +80,14 @@ export const History = () => {
 	return (
 		<>
 			<BackButton />
-			<div className='fixed w-[100%] h-[12%] top-0'>
+			<div className='w-[100%] h-[12%] z-10 animate-fadeIn'>
 				<div className='w-[100%] h-[100%] flex flex-col font-[#a9a9a9] justify-center items-center text-center'>
 					<div className="font-['Pretendard-Bold'] text-[26px] my-[2%]">이용내역</div>
 				</div>
 			</div>
-			<div className='fixed w-[100%] flex-col justify-center'>
+			<div className='fixed w-[100%] flex-col justify-center animate-fadeIn'>
 				{historyArr.length !== 0 ? (
-					<div className='fixed bottom-[90px] w-[100%] h-[75%] flex flex-col justify-center items-center divide-y divide-dashed divide-slate-300 overflow-hidden'>
+					<div className='fixed bottom-[90px] pt-[100px] w-[100%] h-[75%] flex flex-col justify-center items-center divide-y divide-dashed divide-slate-300 overflow-y-scroll'>
 						{historyArr.map((e) => {
 							return <HistoryListElement historyContent={e} />;
 						})}

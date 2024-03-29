@@ -65,7 +65,7 @@ export const NewReservation = () => {
 					</div>
 				</div>
 			</div>
-			<div className='fixed top-[15%] w-[100%] h-auto flex justify-center bg-white'>
+			<div className='fixed top-[15%] w-[100%] h-[70%] flex justify-center bg-white overflow-y-scroll'>
 				<AccordionGroup
 					variant='plain'
 					transition='0.2s'
