@@ -2,6 +2,7 @@ import axios from 'axios';
 import { viteConfig } from './viteConfig';
 import { SignUpInputType } from '../interfaces/Member';
 import jwtAxios from '../utils/jwtUtil';
+import { APIResponse } from '../interfaces';
 
 export type TLoginParam = {
 	email: string;
@@ -23,7 +24,7 @@ export const loginPost = async (loginParam: TLoginParam) => {
 	return res.data;
 };
 
-export const checkEmail = async (email: string) => {
+export const checkEmail = async (email: string): Promise<APIResponse<boolean>> => {
 	const header = { headers: { 'Content-Type': 'application/json' } };
 
 	const res = await axios.get(`${host}/ck/${email}`, header);
@@ -31,7 +32,7 @@ export const checkEmail = async (email: string) => {
 	return res.data;
 };
 
-export const join = async (signUpObj: SignUpInputType) => {
+export const join = async (signUpObj: SignUpInputType): Promise<APIResponse<boolean>> => {
 	const header = { headers: { 'Content-Type': 'application/json' } };
 
 	const res = await axios.post(`${host}/join`, signUpObj, header);
@@ -39,7 +40,7 @@ export const join = async (signUpObj: SignUpInputType) => {
 	return res.data;
 };
 
-export const deleteMember = async () => {
+export const deleteMember = async (): Promise<APIResponse<boolean>> => {
 	const res = await jwtAxios.delete(`${host}/`);
 	return res.data;
 };

@@ -50,11 +50,11 @@ export const BottomNav = () => {
 				<img src={Favorite} alt='FAVORITE_TAB' />
 				<div className='text-[12px] mt-[5px]'>즐겨찾기</div>
 			</div>
-			{/* <div className='w-[42px] flex flex-col justify-center items-center' onClick={goProfile}> */}
-			<div className='w-[42px] flex flex-col justify-center items-center' onClick={handleClickLogout}>
+			<div className='w-[42px] flex flex-col justify-center items-center' onClick={goProfile}>
+			{/* <div className='w-[42px] flex flex-col justify-center items-center' onClick={handleClickLogout}> */}
 				<img src={Profile} alt='PROFILE_TAB' />
-				{/* <div className='text-[12px] mt-[5px]'>내 정보</div> */}
-				<div className='text-[12px] mt-[5px]'>로그아웃</div>
+				<div className='text-[12px] mt-[5px]'>내 정보</div>
+				{/* <div className='text-[12px] mt-[5px]'>로그아웃</div> */}
 			</div>
 		</div>
 	);
