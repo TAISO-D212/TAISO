@@ -6,7 +6,7 @@ import {
 	RsvListType,
 	TogetherRsvInputType,
 } from '../interfaces/Reservation';
-import { APIResponse } from '../interfaces';
+import { APIResponse } from '../interfaces/Index';
 
 const host = `${viteConfig.VITE_BASE_URL}/api/reservations`;
 
