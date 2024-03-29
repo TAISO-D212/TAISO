@@ -18,7 +18,7 @@ import java.util.Map;
 @ToString
 public class MemberDTO extends User {
 
-    private String email, pwd, name, faceImg;
+    private String email, pwd, name, faceImg, fcmToken;
 
     private boolean deleteFlag;
 
@@ -26,12 +26,13 @@ public class MemberDTO extends User {
     private LocalDateTime createDate;
 
     // todo 보류
-    public MemberDTO(String email, String pwd, String name, boolean deleteFlag) {
+    public MemberDTO(String email, String pwd, String name, boolean deleteFlag, String fcmToken) {
         super(email, pwd, new ArrayList<>());
         this.email = email;
         this.pwd = pwd;
         this.name = name;
         this.deleteFlag = deleteFlag;
+        this.fcmToken = fcmToken;
     }
 
     // 이 객체를 주고 받는 것이 아니라 JWT라는 문자열을 만들어서 주고 받을 것인데 JWT 문자를 만들 때 이 데이터가 필요
@@ -43,6 +44,7 @@ public class MemberDTO extends User {
         dataMap.put("pwd", pwd);
         dataMap.put("name", name);
         dataMap.put("deleteFlag", deleteFlag);
+        dataMap.put("fcmToken", fcmToken);
         return dataMap;
     }
 }

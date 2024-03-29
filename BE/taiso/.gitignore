@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
+# FCM 비공개 키
+/src/main/resources/taiso-18ea8-firebase-adminsdk-m9qcd-e458ff02c9.json

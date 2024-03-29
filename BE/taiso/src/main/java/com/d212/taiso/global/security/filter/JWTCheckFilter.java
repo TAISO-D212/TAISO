@@ -104,8 +104,9 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             String pw = (String) claims.get("pwd");
             String nickname = (String) claims.get("nickname");
             Boolean deleteFlag = (Boolean) claims.get("deleteFlag");
+            String fcmToken = (String) claims.get("fcmToken");
 
-            MemberDTO memberDTO = new MemberDTO(email, pw, nickname, deleteFlag.booleanValue());
+            MemberDTO memberDTO = new MemberDTO(email, pw, nickname, deleteFlag.booleanValue(), fcmToken);
             log.info("-----------------------------------");
             log.info(memberDTO);
             log.info(memberDTO.getAuthorities());
