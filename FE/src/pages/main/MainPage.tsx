@@ -18,7 +18,7 @@ export const MainPage = () => {
 	return (
 		<>
 			{loading ? (
-				<div className='flex justify-center items-center'>
+				<div className='flex justify-center items-center w-[100%] h-[100%]'>
 					<img src={LoadingBus} alt='LOADING' />
 				</div>
 			) : (

@@ -3,5 +3,5 @@ interface ILayoutProps {
 }
 
 export const MainLayout = ({ children }: ILayoutProps) => {
-	return <div className='w-full h-dvh flex justify-center items-center'>{children}</div>;
+	return <div className='w-full h-dvh'>{children}</div>;
 };
