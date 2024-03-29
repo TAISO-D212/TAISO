@@ -4,31 +4,31 @@ import { BottomNav } from '../../components/BottomNav';
 import useCustomLogin from '../../hooks/useCustomLogin';
 
 export const UserPage = () => {
-	
 	const { isLogin, doLogout, moveToLogin } = useCustomLogin();
 
-	if (!isLogin) {
-		return moveToLogin();
-	}
-	
+	// if (!isLogin) {
+	// 	return moveToLogin();
+	// }
+
 	const handleClickLogout = () => {
 		doLogout();
-		alert("로그아웃되었습니다.")
+		alert('로그아웃되었습니다.');
+		moveToLogin();
 	};
 
 	// 북마크 받는 테스트
 	const handleClickGetBookmark = () => {
 		getBookmarkList().then((data) => {
-			console.log(data)
-		})
-	}
+			console.log(data);
+		});
+	};
 
 	// 예약 목록 받는 테스트
 	const handleClickGetRsvList = () => {
 		getRsvList().then((data) => {
-			console.log(data)
-		})
-	}
+			console.log(data);
+		});
+	};
 
 	return (
 		<>
@@ -37,11 +37,15 @@ export const UserPage = () => {
 				LOGOUT
 			</button>
 
-			<button className='rounded p-4 w-36 bg-red-500 text-xl text-black' onClick={handleClickGetBookmark}>
+			<button
+				className='rounded p-4 w-36 bg-red-500 text-xl text-black'
+				onClick={handleClickGetBookmark}>
 				북마크 Test
 			</button>
 
-			<button className='rounded p-4 w-36 bg-red-500 text-xl text-black' onClick={handleClickGetRsvList}>
+			<button
+				className='rounded p-4 w-36 bg-red-500 text-xl text-black'
+				onClick={handleClickGetRsvList}>
 				예약목록 Test
 			</button>
 			<BottomNav />
