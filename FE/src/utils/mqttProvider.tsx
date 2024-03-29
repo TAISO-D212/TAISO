@@ -22,7 +22,7 @@ export const MQTTProvider: React.FC<MQTTProviderProps> = ({ children }) => {
   const [locationData, setLocationData] = useState<LocationData[]>([]);
 
   useEffect(() => {
-    const client: MqttClient = mqtt.connect('ws://j10d212.p.ssafy.io:9001', {
+    const client: MqttClient = mqtt.connect('wss://j10d212.p.ssafy.io:9001', {
       path: '/mqtt',
     });
 
