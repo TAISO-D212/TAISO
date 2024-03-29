@@ -4,8 +4,8 @@ import { BottomNav } from '../../components/BottomNav';
 import useCustomLogin from '../../hooks/useCustomLogin';
 
 export const UserPage = () => {
-	const { isLogin, doLogout, moveToLogin } = useCustomLogin();
-
+	const { doLogout, moveToLogin } = useCustomLogin();
+	// 이거 활성화 하면 밑의 return부분 렌더링 되는 와중에 실행해서 터짐.
 	// if (!isLogin) {
 	// 	return moveToLogin();
 	// }
