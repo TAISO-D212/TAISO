@@ -41,7 +41,6 @@ public class BookmarkServiceImpl implements BookmarkService {
         // 요청한 멤버의 정보 가져오기
         Member member = commonUtil.getMember();
 
-        // 이게 맞냐??? (더 좋은 방식 알려줘!!!)
         Place place = Place.builder()
             .latitude(bookmarkAddReq.getLatitude())
             .longitude(bookmarkAddReq.getLongitude())
@@ -60,8 +59,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     public void deleteBookmark(Long bookmarkId) {
-        // 유저 인증도 해야되지 않나??
-        // 100번이어도 성공했다하는데??
+
         // 이거 유저 확인이랑 번호도 하는 것으로 해서 예약 처리 ㄱ
         Member member = commonUtil.getMember();
 
