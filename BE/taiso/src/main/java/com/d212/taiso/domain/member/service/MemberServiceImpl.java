@@ -39,7 +39,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberRes getMember() {
+    public MemberRes getMemberInfo() {
         Member member = commonUtil.getMember();
         return MemberRes.builder()
                 .email(member.getEmail())

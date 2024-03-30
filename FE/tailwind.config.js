@@ -1,11 +1,11 @@
-import { colorPalette } from "./src/constants/colorPalette.ts";
-
+// import { colorPalette } from "./src/constants/colorPalette.ts";
+import daisyui from 'daisyui';
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      colors: colorPalette,
+      // colors: colorPalette,
       keyframes: {
         "fade-in": {
           "0%": {
@@ -57,6 +57,6 @@ export default {
       Pretendard_Regular: ["Pretendard-Regular"],
       Pretendard_Bold: ["Prentendard-Bold"],
     },
-    plugins: [],
   },
+  plugins: [daisyui],
 };
