@@ -4,12 +4,15 @@ package com.d212.taiso.domain.member.service;
  */
 
 import com.d212.taiso.domain.member.dto.MemberJoinReq;
+import com.d212.taiso.domain.member.dto.MemberRes;
 import com.d212.taiso.domain.member.entity.Member;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface MemberService {
 
     boolean checkEmail(String email);
+
+    MemberRes getMember();
 
     void memberJoin(MemberJoinReq memberJoinReq);
 
