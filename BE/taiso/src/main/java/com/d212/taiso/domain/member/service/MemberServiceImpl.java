@@ -4,6 +4,7 @@ package com.d212.taiso.domain.member.service;
  */
 
 import com.d212.taiso.domain.member.dto.MemberJoinReq;
+import com.d212.taiso.domain.member.dto.MemberRes;
 import com.d212.taiso.domain.member.entity.Member;
 import com.d212.taiso.domain.member.repository.MemberRepository;
 import com.d212.taiso.global.result.error.ErrorCode;
@@ -35,6 +36,17 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean checkEmail(String email) {
         return memberRepository.existsByEmail(email);
+    }
+
+    @Override
+    public MemberRes getMember() {
+        Member member = commonUtil.getMember();
+        return MemberRes.builder()
+                .email(member.getEmail())
+                .name(member.getName())
+                .faceImg(member.getFaceImg())
+                .createDate(member.getCreateDate())
+                .build();
     }
 
     @Override
