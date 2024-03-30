@@ -1,17 +1,12 @@
-import { getBookmarkList } from '../../apis/bookmarkApi';
+import { useEffect, useState } from 'react';
 import { deleteMember, getMember } from '../../apis/memberApi';
-import { getRsvList } from '../../apis/reservationApi';
 import { BackButton } from '../../components/BackButton';
 import { BottomNav } from '../../components/BottomNav';
 import useCustomLogin from '../../hooks/useCustomLogin';
+import { MemberInfo } from '../../interfaces/Member';
 
 export const UserPage = () => {
 	const { doLogout, moveToLogin } = useCustomLogin();
-	// 이거 활성화 하면 밑의 return부분 렌더링 되는 와중에 실행해서 터짐.
-	// if (!isLogin) {
-	// 	return moveToLogin();
-	// }
-
 	const handleClickLogout = () => {
 		doLogout();
 		alert('로그아웃되었습니다.');
@@ -25,28 +20,26 @@ export const UserPage = () => {
 			alert('회원탈퇴되었습니다.');
 			moveToLogin(); // 회원탈퇴 후 로그인 페이지로 이동
 		}
-	}
+	};
 
-	// // 북마크 받는 테스트
-	// const handleClickGetBookmark = () => {
-	// 	getBookmarkList().then((res) => {
-	// 		console.log(res.data);
-	// 	});
-	// };
+	const [memberInfo, setMemberInfo] = useState<MemberInfo>(); // 회원 정보 상태값 설정
 
-	// // 예약 목록 받는 테스트
-	// const handleClickGetRsvList = () => {
-	// 	getRsvList().then((res) => {
-	// 		console.log(res.data);
-	// 	});
-	// };
+	useEffect(() => {
+		// 컴포넌트가 마운트되면 회원 정보를 가져옴
+		handleClickGetMemberInfo();
+	}, []);
 
-	// // 멤버 정보 받는 테스트
-	// const handleClickGetMemberInfo = () => {
-	// 	getMember().then((data) => {
-	// 		console.log(data);
-	// 	});
-	// };
+	// 멤버 정보 받는 테스트
+	const handleClickGetMemberInfo = () => {
+		getMember().then((res) => {
+			console.log(res);
+			// 응답 데이터에서 회원 정보 추출
+			const memberData = res.data;
+
+			// 추출한 회원 정보를 상태값으로 설정
+			setMemberInfo(memberData);
+		});
+	};
 
 	return (
 		<>
@@ -56,13 +49,14 @@ export const UserPage = () => {
 					내 정보
 				</div>
 				<div className='ml-10 mt-8 space-y-3'>
-					<p>이름: 김복순</p>
-					<p>email: user1@ssafy.com</p>
-					<hr className="my-4 border border-t border-violet-400 mr-10" /> 
+					<p>이름: {memberInfo?.name}</p>
+					<p>이메일: {memberInfo?.email}</p>
+					<hr className='my-4 border border-t border-violet-400 mr-10' />
 					<p onClick={handleClickLogout}>로그아웃</p>
 					<p onClick={handleclickdelete}>회원탈퇴</p>
-					<hr className="my-4 border border-t border-violet-400 mr-10" /> 
+					<hr className='my-4 border border-t border-violet-400 mr-10' />
 				</div>
+				<button onClick={handleClickGetMemberInfo}>test</button>
 			</div>
 			<BottomNav />
 		</>

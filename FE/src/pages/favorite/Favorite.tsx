@@ -1,5 +1,6 @@
 import { BackButton } from "../../components/BackButton"
 import { BottomNav } from "../../components/BottomNav"
+import { FavoriteListElement } from "./components/FavoriteListElement"
 
 export const Favorite = () => {
   return (
@@ -9,6 +10,7 @@ export const Favorite = () => {
 				<div className="justify-center text-center mt-6 font-['Pretendard-Bold'] text-[26px]">
 					즐겨찾기
 				</div>
+				<FavoriteListElement />
 			</div>
 			<BottomNav />
 		</>
