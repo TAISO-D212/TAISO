@@ -18,12 +18,12 @@ public class RsvAddReq {
 
     // 즐겨찾기 리스트로 추가 시
     // 근데 이거 널 값이면 안되잖아? -> db에 넣을 시에만 신경써주기
-    private Long startPlaceId;
+    private Long startBookmarkId;
 
     private double endLatitude;
     private double endLongitude;
     private String endAddress;
-    private Long endPlaceId;
+    private Long endBookmarkId;
 
 
     // 이렇게 해야 값이 들어가네....

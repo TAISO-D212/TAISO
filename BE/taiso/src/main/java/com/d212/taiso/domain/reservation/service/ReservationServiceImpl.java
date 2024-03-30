@@ -1,5 +1,7 @@
 package com.d212.taiso.domain.reservation.service;
 
+import com.d212.taiso.domain.bookmark.entity.Bookmark;
+import com.d212.taiso.domain.bookmark.repository.BookmarkRepository;
 import com.d212.taiso.domain.member.entity.Member;
 import com.d212.taiso.domain.place.entity.Place;
 import com.d212.taiso.domain.place.repository.PlaceRepository;
@@ -16,8 +18,6 @@ import com.d212.taiso.domain.reservation.repository.RsvDetailRepository;
 import com.d212.taiso.global.result.error.ErrorCode;
 import com.d212.taiso.global.result.error.exception.BusinessException;
 import com.d212.taiso.global.util.CommonUtil;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +37,7 @@ public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
     private final PlaceRepository placeRepository;
     private final RsvDetailRepository rsvDetailRepository;
+    private final BookmarkRepository bookmarkRepository;
 
     // Mapper
     private final ReservationMapper reservationMapper;
@@ -127,10 +128,13 @@ public class ReservationServiceImpl implements ReservationService {
         Place endPlace = null;
 
         // 즐겨찾기에 등록된 장소 ID를 통해 예약 시 (출발지)
-        if (rsvAddReq.getStartPlaceId() != null) {
-            // 해당 ID를 통해 장소 조회하기
-            startPlace = placeRepository.findPlaceById(rsvAddReq.getStartPlaceId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.PLACE_ID_NOT_EXIST));
+        if (rsvAddReq.getStartBookmarkId() != null) {
+            // 해당 북마크 ID를 통해 장소 조회하기
+
+            Bookmark bookmark = bookmarkRepository.findById(rsvAddReq.getStartBookmarkId())
+                    .orElseThrow(() -> new BusinessException(ErrorCode.BOOKMARK_NOT_EXIST));
+
+            startPlace = bookmark.getPlace();
 
         } else {
             // 장소를 직접 입력 후에 예약 시 (출발지)
@@ -141,11 +145,13 @@ public class ReservationServiceImpl implements ReservationService {
                 .build();
         }
 
-        // 즐겨찾기에 등록된 장소 ID를 통해 예약 시 (도착지)
-        if (rsvAddReq.getEndPlaceId() != null) {
-            // 해당 ID를 통해 장소 조회하기
-            endPlace = placeRepository.findPlaceById(rsvAddReq.getEndPlaceId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.PLACE_ID_NOT_EXIST));
+        // 즐겨찾기 ID를 통해 예약 시 (도착지)
+        if (rsvAddReq.getEndBookmarkId() != null) {
+
+            Bookmark bookmark = bookmarkRepository.findById(rsvAddReq.getEndBookmarkId())
+                    .orElseThrow(() -> new BusinessException(ErrorCode.BOOKMARK_NOT_EXIST));
+
+            endPlace = bookmark.getPlace();
 
         } else {
             // 장소를 직접 입력 후에 예약 시 (도착지)
@@ -203,9 +209,13 @@ public class ReservationServiceImpl implements ReservationService {
         Place place = null;
 
         // 즐겨찾기에 등록된 장소 ID를 통해 예약 시 (경유지)
-        if (rsvTogetherAddReq.getPlaceId() != null) {
-            place = placeRepository.findPlaceById(rsvTogetherAddReq.getPlaceId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.PLACE_ID_NOT_EXIST));
+        if (rsvTogetherAddReq.getBookmarkId() != null) {
+
+            Bookmark bookmark = bookmarkRepository.findById(rsvTogetherAddReq.getBookmarkId())
+                    .orElseThrow(() -> new BusinessException(ErrorCode.BOOKMARK_NOT_EXIST));
+
+            place = bookmark.getPlace();
+
         } else {
             // 장소를 직접 입력 후에 예약 시 (경유지)
             place = Place.builder()

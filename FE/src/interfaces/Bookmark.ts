@@ -5,7 +5,7 @@ export interface BookmarkInputType {
 	address: string;
 }
 
-export interface BookmarkListType {
+export interface BookmarkType {
 	bookmarkId : number
 	name : string
 	place : PlaceType 
