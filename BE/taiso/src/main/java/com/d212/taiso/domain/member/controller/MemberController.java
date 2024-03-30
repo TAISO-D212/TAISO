@@ -4,6 +4,7 @@ package com.d212.taiso.domain.member.controller;
  */
 
 import com.d212.taiso.domain.member.dto.MemberJoinReq;
+import com.d212.taiso.domain.member.dto.MemberRes;
 import com.d212.taiso.domain.member.service.MemberService;
 import com.d212.taiso.global.result.ResultCode;
 import com.d212.taiso.global.result.ResultResponse;
@@ -34,6 +35,13 @@ public class MemberController {
             log.debug("이메일 중복체크 에러 발생: {}", e);
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<ResultResponse> getMember() {
+        MemberRes memberRes = memberService.getMember();
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_MEMBER_SUCCESS, memberRes));
+
     }
 
     @PostMapping("/join")
