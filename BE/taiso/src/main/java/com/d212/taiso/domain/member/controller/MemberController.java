@@ -39,7 +39,7 @@ public class MemberController {
 
     @GetMapping("/")
     public ResponseEntity<ResultResponse> getMember() {
-        MemberRes memberRes = memberService.getMember();
+        MemberRes memberRes = memberService.getMemberInfo();
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_MEMBER_SUCCESS, memberRes));
 
     }

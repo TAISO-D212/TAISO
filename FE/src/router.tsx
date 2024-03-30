@@ -9,6 +9,7 @@ import { NotFound } from './pages/NotFound.tsx';
 import { UserPage } from './pages/profile/UserPage.tsx';
 import { SetDeparture } from './pages/main/components/SetDeparture.tsx';
 import { SetArrival } from './pages/main/components/SetArrival.tsx';
+import { Favorite } from './pages/favorite/Favorite.tsx';
 
 export const router = createBrowserRouter([
 	{ path: '/', element: <LoginPage /> },
@@ -19,7 +20,7 @@ export const router = createBrowserRouter([
 	{ path: '/setDeparture', element: <SetDeparture /> },
 	{ path: '/setArrival', element: <SetArrival /> },
 	{ path: '/history', element: <History /> },
-	// {path: '/favorite', element: <NotFound />},
+	{ path: '/favorite', element: <Favorite /> },
 	{ path: '/profile', element: <UserPage /> },
 	{ path: '/*', element: <NotFound /> },
 ]);

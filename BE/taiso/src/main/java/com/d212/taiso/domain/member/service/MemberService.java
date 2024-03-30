@@ -12,7 +12,7 @@ public interface MemberService {
 
     boolean checkEmail(String email);
 
-    MemberRes getMember();
+    MemberRes getMemberInfo();
 
     void memberJoin(MemberJoinReq memberJoinReq);
 
