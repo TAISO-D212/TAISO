@@ -48,15 +48,15 @@ export const UserPage = () => {
 				<div className="justify-center text-center mt-6 font-['Pretendard-Bold'] text-[26px]">
 					내 정보
 				</div>
-				<div className='ml-10 mt-8 space-y-3'>
+				<div className='ml-8 mt-8 space-y-3'>
 					<p>이름: {memberInfo?.name}</p>
 					<p>이메일: {memberInfo?.email}</p>
-					<hr className='my-4 border border-t border-violet-400 mr-10' />
+					<hr className='my-4 border-t border-violet-200' />
 					<p onClick={handleClickLogout}>로그아웃</p>
 					<p onClick={handleclickdelete}>회원탈퇴</p>
-					<hr className='my-4 border border-t border-violet-400 mr-10' />
+					<hr className='my-4 border-t border-violet-200' />
 				</div>
-				<button onClick={handleClickGetMemberInfo}>test</button>
+				{/* <button onClick={handleClickGetMemberInfo}>test</button> */}
 			</div>
 			<BottomNav />
 		</>
