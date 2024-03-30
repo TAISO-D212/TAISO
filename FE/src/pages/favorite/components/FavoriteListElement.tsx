@@ -1,35 +1,38 @@
-import { useEffect, useState } from 'react';
+import { deleteBookmark } from '../../../apis/bookmarkApi';
+import favoriteStar from '../../../assets/icon/favorite_star.png';
 import { BookmarkType } from '../../../interfaces/Bookmark';
-import { getBookmarkList } from '../../../apis/bookmarkApi';
 
-export const FavoriteListElement = () => {
-	const [bookmarkList, setBookmarkList] = useState<BookmarkType[]>([]);
-	useEffect(() => {
-		handleGetBookmarkList();
-	}, []);
+interface FavoriteListElementProps extends BookmarkType {
+	editMode: boolean;
+}
 
-	// bookmark 정보를 가져오는 함수
-	const handleGetBookmarkList = () => {
-		getBookmarkList().then((res) => {
-			const bookmarkData = res.data;
-			console.log(bookmarkData);
-			setBookmarkList(bookmarkData);
-		});
-	};
+export const FavoriteListElement = ({ bookmarkId, name, place, editMode }: FavoriteListElementProps) => {
 
-  // 삭제할 때는 bookmarkId를, 예약 때 위치정보 줄 시에는 placeId를 줘야합니다!!! -> 추가할 때만 해주면 되나??
-  // 백에서 수정을 해야되겠는데... -> 수정해서 이제 bookmarkId만 이용한다고 보면 됨 
+
+	const handleDeleteBookmark = (bookmarkId: number) => {
+		deleteBookmark(bookmarkId)
+		// 새로고침해야 사라지는 문제가 있음..
+		// 모달창 띄우고 거기서 확인 누를때마다 새로고침 되도록 구현하기.
+	}
 
 	return (
-		<>
-      <ul>
-        {bookmarkList.map((bookmark) => (
-          <li key={bookmark.bookmarkId}>
-            <p>이름: {bookmark.name}</p>
-            <p>주소: {bookmark.place.address}</p>
-          </li>
-        ))}
-      </ul>
-		</>
+			<ul>
+					<li className='ml-8 border-t border-violet-200'>
+							<div className='flex items-center justify-between'>
+									<div className='flex items-center'>
+											<div className='mr-2'>
+													<img className='w-6 h-6 opacity-50' src={favoriteStar} alt='star' />
+											</div>
+											<div>
+													<p className='mt-3 font-bold'>{name}</p>
+													<p className='mb-3 text-gray-400'>{place.address}</p>
+											</div>
+									</div>
+									{editMode && (
+											<button className='mr-8 text-red-500' onClick={() => handleDeleteBookmark(bookmarkId)}>삭제</button>
+									)}
+							</div>
+					</li>
+			</ul>
 	);
 };
