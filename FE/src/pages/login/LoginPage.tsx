@@ -101,7 +101,7 @@ export const LoginPage = () => {
 						onChange={handleChange}
 						placeholder='비밀번호'></input>
 					<div
-						className="h-14 w-[90%] bg-blue rounded-full text-white font-['Pretendard-Bold'] text-[20px] my-[5%] px-[5%] flex justify-center items-center"
+						className="h-14 w-[90%] bg-[#3422F2] rounded-full text-white font-['Pretendard-Bold'] text-[20px] my-[5%] px-[5%] flex justify-center items-center hover:cursor-pointer"
 						onClick={onClickLogInHandler}>
 						로그인
 					</div>

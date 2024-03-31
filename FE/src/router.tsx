@@ -9,18 +9,38 @@ import { NotFound } from './pages/NotFound.tsx';
 import { UserPage } from './pages/profile/UserPage.tsx';
 import { SetDeparture } from './pages/main/components/SetDeparture.tsx';
 import { SetArrival } from './pages/main/components/SetArrival.tsx';
+import { SetDepartureByMap } from './pages/main/components/SetDepartureByMap.tsx';
+import { SetArrivalByMap } from './pages/main/components/SetArrivalByMap.tsx';
 import { Favorite } from './pages/favorite/Favorite.tsx';
+import PageWithLogin from './pages/PageWithLogin.tsx';
+import PageWithoutLogin from './pages/PageWithoutLogin.tsx';
 
-export const router = createBrowserRouter([
-	{ path: '/', element: <LoginPage /> },
-	{ path: '/signup', element: <SignUpPage /> },
-	{ path: '/main', element: <MainPage /> },
-	{ path: '/reservation', element: <Reservation /> },
-	{ path: '/reservation/new', element: <NewReservation /> },
-	{ path: '/setDeparture', element: <SetDeparture /> },
-	{ path: '/setArrival', element: <SetArrival /> },
-	{ path: '/history', element: <History /> },
-	{ path: '/favorite', element: <Favorite /> },
-	{ path: '/profile', element: <UserPage /> },
-	{ path: '/*', element: <NotFound /> },
-]);
+export interface IRouterItem {
+	path: string;
+	element: JSX.Element;
+	withAuth: boolean;
+}
+
+export const rounterItems: IRouterItem[] = [
+	{ path: '/', element: <LoginPage />, withAuth: false },
+	{ path: '/signup', element: <SignUpPage />, withAuth: false },
+	{ path: '/main', element: <MainPage />, withAuth: true },
+	{ path: '/reservation', element: <Reservation />, withAuth: true },
+	{ path: '/reservation/new', element: <NewReservation />, withAuth: true },
+	{ path: '/setDeparture', element: <SetDeparture />, withAuth: true },
+	{ path: '/setArrival', element: <SetArrival />, withAuth: true },
+	{ path: '/setDepartureByMap', element: <SetDepartureByMap />, withAuth: true },
+	{ path: '/setArrivalByMap', element: <SetArrivalByMap />, withAuth: true },
+	{ path: '/history', element: <History />, withAuth: true },
+	{ path: '/favorite', element: <Favorite />, withAuth: true },
+	{ path: '/profile', element: <UserPage />, withAuth: true },
+	{ path: '/*', element: <NotFound />, withAuth: false },
+];
+
+export const router = createBrowserRouter(
+	rounterItems.map((routerItem: IRouterItem) => {
+		return routerItem.withAuth
+			? { path: routerItem.path, element: <PageWithLogin>{routerItem.element}</PageWithLogin> }
+			: { path: routerItem.path, element: <PageWithoutLogin> {routerItem.element}</PageWithoutLogin> };
+	}),
+);
