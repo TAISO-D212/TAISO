@@ -6,10 +6,10 @@ import { BookmarkType } from '../../interfaces/Bookmark';
 import { getBookmarkList } from '../../apis/bookmarkApi';
 
 export const Favorite = () => {
-	
 	const [bookmarkList, setBookmarkList] = useState<BookmarkType[]>([]);
 
 	const [editMode, setEditMode] = useState(false);
+	const [isPlaceSetting, setIsPlaceSetting] = useState(false);
 
 	useEffect(() => {
 		handleGetBookmarkList();
@@ -35,10 +35,17 @@ export const Favorite = () => {
 				<div className='flex ml-3 my-6 justify-between'>
 					<BackButton2 />
 					<div className="flex font-['Pretendard-Bold'] text-[26px] pl-2">즐겨찾기</div>
-					<div className='mt-2 mr-8 opacity-70' onClick={toggleEditMode}>편집</div>
+					<div className='mt-2 mr-8 opacity-70' onClick={toggleEditMode}>
+						편집
+					</div>
 				</div>
 				{bookmarkList.map((bookmark) => (
-					<FavoriteListElement key={bookmark.bookmarkId} {...bookmark} editMode={editMode}/>
+					<FavoriteListElement
+						key={bookmark.bookmarkId}
+						{...bookmark}
+						editMode={editMode}
+						isPlaceSetting={isPlaceSetting}
+					/>
 				))}
 			</div>
 			<BottomNav />

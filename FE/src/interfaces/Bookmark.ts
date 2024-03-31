@@ -6,14 +6,14 @@ export interface BookmarkInputType {
 }
 
 export interface BookmarkType {
-	bookmarkId : number
-	name : string
-	place : PlaceType 
+	bookmarkId?: number;
+	name?: string;
+	place?: PlaceType;
 }
 
 export interface PlaceType {
-	id : number
-	latitude : number
-	longitude : number
-	address : string
+	id: number;
+	latitude: number;
+	longitude: number;
+	address: string;
 }
