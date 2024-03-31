@@ -19,7 +19,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
     // 현재 시간 이후의 모든 예약 리스트 조회
-    @Query("select r from Reservation r where r.time >= :currentTime")
+    @Query("select r from Reservation r where r.time >= :currentTime order by r.time")
     List<Reservation> findAllAfterCurrentTime(LocalDateTime currentTime);
 
 
