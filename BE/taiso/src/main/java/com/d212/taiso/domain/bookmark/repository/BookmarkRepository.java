@@ -14,10 +14,11 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     // 해당 멤버에 대한 즐겨찾기(장소) 목록 가져오기
 
     @Query("select " +
-        "new com.d212.taiso.domain.bookmark.dto.BookmarkListRes(b.id, b.name ,b.place) " +
-        "from " +
-        "Bookmark b " +
-        "where b.member = :member ")
+            "new com.d212.taiso.domain.bookmark.dto.BookmarkListRes(b.id, b.name ,b.place) " +
+            "from " +
+            "Bookmark b " +
+            "where b.member = :member " +
+            "order by b.id desc")
     List<BookmarkListRes> findBookmarkListResByMember(Member member);
 
     Optional<Bookmark> findBookmarkByMemberAndId(Member member, Long bookmarkId);

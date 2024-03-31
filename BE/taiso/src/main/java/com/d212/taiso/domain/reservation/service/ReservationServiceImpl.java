@@ -76,13 +76,13 @@ public class ReservationServiceImpl implements ReservationService {
 //            .toList();
     }
 
-    // 이거 안된다면 양방향으로 설정하면 될 듯???
-    // 그리고 그냥 객체로 준다면 이 짓도 안해도 되긴 할 듯.
+    // Todo 이거 시간 오름차순으로 구현하려고 했는데 시간순으로 조회를 하려면
+    // Detail에 있는 arrivalTime로 조회를 해야 되는데 null값이라 의미 없음.
+    // 그래서 arrivalTime를 time을 통해서 넣어주던가 해야됨.
     @Override
     public List<MyRsvListRes> getMyRsvList() {
         Member member = commonUtil.getMember();
         List<RsvDetail> rsvDetailList = rsvDetailRepository.findRsvDetailByMember(member);
-
         return rsvDetailList.stream()
             .map(this::mapToMyRsvListRes)
             .collect(Collectors.toList());
