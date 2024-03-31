@@ -1,12 +1,12 @@
 import { viteConfig } from './viteConfig';
 import jwtAxios from '../utils/jwtUtil';
-import { BookmarkInputType, BookmarkListType } from '../interfaces/Bookmark';
+import { BookmarkInputType, BookmarkType } from '../interfaces/Bookmark';
 import { APIResponse } from '../interfaces/Index';
 
 const host = `${viteConfig.VITE_BASE_URL}/api/bookmarks`;
 
 // 북마크 가져오기
-export const getBookmarkList = async ():Promise<APIResponse<BookmarkListType>> => {
+export const getBookmarkList = async ():Promise<APIResponse<BookmarkType>> => {
 	const res = await jwtAxios.get(`${host}/`);
 	return res.data;
 };
