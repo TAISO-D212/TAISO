@@ -73,9 +73,16 @@ public class ReservationController {
     public ResponseEntity<ResultResponse> addTogetherRsv(@PathVariable("rsvId") Long rsvId,
         @RequestBody
         RsvTogetherAddReq rsvTogetherAddReq) {
-        reservationService.addTogetherRsv(rsvId, rsvTogetherAddReq);
-        return ResponseEntity.ok(
-            ResultResponse.of(ResultCode.ADD_TOGETHER_RESERVATION_SUCCESS, true));
+        String message = reservationService.addTogetherRsv(rsvId, rsvTogetherAddReq);
+
+        if (!"합승 예약이 성공적으로 추가되었습니다.".equals(message)) {
+            return ResponseEntity.ok(
+                ResultResponse.of(ResultCode.ADD_RESERVATION_FAIL, message)
+            );
+        } else {
+            return ResponseEntity.ok(
+                ResultResponse.of(ResultCode.ADD_TOGETHER_RESERVATION_SUCCESS, message));
+        }
     }
 
     @DeleteMapping("/{rsvId}/{placeId}")
