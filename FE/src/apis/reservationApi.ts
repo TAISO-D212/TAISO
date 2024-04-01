@@ -32,7 +32,7 @@ export const addRsv = async (rsvObj: RsvInputType): Promise<APIResponse<string>>
 export const addTogetherRsv = async (
 	rsvId: number,
 	togetherRsvObj: TogetherRsvInputType,
-): Promise<APIResponse<boolean>> => {
+): Promise<APIResponse<string>> => {
 	const res = await jwtAxios.post(`${host}/${rsvId}`, togetherRsvObj);
 	return res.data;
 };
