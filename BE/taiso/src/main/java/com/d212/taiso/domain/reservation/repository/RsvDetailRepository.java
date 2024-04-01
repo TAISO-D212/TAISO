@@ -12,6 +12,8 @@ public interface RsvDetailRepository extends JpaRepository<RsvDetail, RsvDetailI
 
     Optional<RsvDetail> findRsvDetailByMemberAndRsvDetailId(Member member, RsvDetailId rsvDetailId);
 
+    List<RsvDetail> findRsvDetailsByMemberOrderByArrivalTime(Member member);
+
     List<RsvDetail> findRsvDetailByMember(Member member);
 
     @Query("SELECT rd FROM RsvDetail rd WHERE rd.rsvDetailId.reservation.id = :rsvId order by rd.orders")

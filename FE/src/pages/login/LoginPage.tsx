@@ -1,7 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { login, loginPostAsync } from '../../slices/loginSlice';
 import { useNavigate } from 'react-router-dom';
 import Logo192 from '../../assets/icon/icon_192.png';
 import Logo72 from '../../assets/icon/icon_72.png';
@@ -12,15 +10,21 @@ import useCustomLogin from '../../hooks/useCustomLogin';
 export const LoginPage = () => {
 	const navigate = useNavigate();
 
+	const { isLogin } = useCustomLogin();
+
 	const [loading, setLoading] = useState(true);
 	// const [modalIsOpen, setModalIsOpen] = useState(false);
 
 	const { doLogin } = useCustomLogin();
 
 	useEffect(() => {
-		setTimeout(() => {
-			setLoading(false);
-		}, 2000);
+		if (isLogin) {
+			navigate('/main');
+		} else {
+			setTimeout(() => {
+				setLoading(false);
+			}, 2000);
+		}
 	}, []);
 
 	// const handleSignUpModal = () => {
@@ -65,7 +69,7 @@ export const LoginPage = () => {
 	if (loading)
 		return (
 			<>
-				<div className='w-[100%] h-[100%] flex flex-col justify-center overflow-hidden items-center animate-fadeIn'>
+				<div className='w-[100%] h-[100%] flex flex-col justify-center items-center animate-fadeIn'>
 					<img src={Logo192} alt='TAISO LOGO 192SIZE' />
 					<div className="mt-[15px] font-['Pretendard-Bold'] text-[60px]">TAISO</div>
 					<div className='mt-[15px] w-[90%] h-100'>
@@ -76,7 +80,7 @@ export const LoginPage = () => {
 		);
 	return (
 		<>
-			<div className='w-[90%] h-[90%] flex flex-col justify-center items-center'>
+			<div className='w-[100%] h-[100%] flex flex-col justify-center items-center'>
 				<div className='w-[90%] h-24 flex justify-evenly items-center my-[5%]'>
 					<div>
 						<img src={Logo72} alt='TAISO LOGO 72SIZE' />
@@ -103,7 +107,7 @@ export const LoginPage = () => {
 						onChange={handleChange}
 						placeholder='비밀번호'></input>
 					<div
-						className="h-14 w-[90%] bg-blue rounded-full text-white font-['Pretendard-Bold'] text-[20px] my-[5%] px-[5%] flex justify-center items-center"
+						className="h-14 w-[90%] bg-[#3422F2] rounded-full text-white font-['Pretendard-Bold'] text-[20px] my-[5%] px-[5%] flex justify-center items-center hover:cursor-pointer"
 						onClick={onClickLogInHandler}>
 						로그인
 					</div>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { viteConfig } from './viteConfig';
-import { SignUpInputType } from '../interfaces/Member';
+import { MemberInfo, SignUpInputType } from '../interfaces/Member';
 import jwtAxios from '../utils/jwtUtil';
 import { APIResponse } from '../interfaces/Index';
 
@@ -32,7 +32,12 @@ export const checkEmail = async (email: string): Promise<APIResponse<boolean>> =
 	return res.data;
 };
 
-export const join = async (signUpObj: SignUpInputType): Promise<APIResponse<boolean>> => {
+export const getMember = async ():Promise<APIResponse<MemberInfo>> => {
+	const res = await jwtAxios.get(`${host}/`);
+	return res.data
+}
+
+export const memberJoin = async (signUpObj: SignUpInputType): Promise<APIResponse<boolean>> => {
 	const header = { headers: { 'Content-Type': 'application/json' } };
 
 	const res = await axios.post(`${host}/join`, signUpObj, header);

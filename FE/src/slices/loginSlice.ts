@@ -37,7 +37,7 @@ const loginSlice = createSlice({
 		logout: () => {
 			console.log('logout......');
 			removeCookie('member');
-      
+
 			return { email: '' };
 		},
 	},

@@ -15,6 +15,7 @@ public enum ResultCode {
     LOGIN_SUCCESS(200, "로그인에 성공하였습니다."),
     EMAIL_DO_EXIST(200, "이미 존재하는 이메일 입니다."),
     EMAIL_DO_NOT_EXIST(200, "사용 가능한 이메일 입니다."),
+    GET_MEMBER_SUCCESS(200, "회원 조회에 성공하였습니다."),
     MEMBER_DELETE_SUCCESS(200, "회원 탈퇴에 성공하였습니다."),
 
     //Bookmark

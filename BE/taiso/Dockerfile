@@ -2,6 +2,7 @@
 FROM amazoncorretto:17
 
 COPY .env /.env
+COPY src/main/resources/taiso-18ea8-firebase-adminsdk-m9qcd-e458ff02c9.json src/main/resources/taiso-18ea8-firebase-adminsdk-m9qcd-e458ff02c9.json
 
 # jar 파일을 컨테이너 내부에 복사
 COPY build/libs/taiso-0.0.1-SNAPSHOT.jar /TAISO-app.jar

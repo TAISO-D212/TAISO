@@ -47,7 +47,8 @@ public class CustomUserDetailsService implements UserDetailsService {
             member.getEmail(),
             member.getPwd(),
             member.getName(),
-            member.isDeleteFlag());
+            member.isDeleteFlag(),
+            member.getFcmToken());
 
         log.info(memberDTO);
 

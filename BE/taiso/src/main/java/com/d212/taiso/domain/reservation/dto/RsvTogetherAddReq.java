@@ -14,7 +14,7 @@ public class RsvTogetherAddReq {
 
     // 위치 정보는 필요 (히치 하이킹 할 위치로)
 
-    private Long placeId; // 만약에 즐겨찾기 리스트로 저장 시 (경유지 ID)
+    private Long bookmarkId; // 만약에 즐겨찾기 리스트로 저장 시 (경유지 ID)
 
     private double latitude; // 위도
 

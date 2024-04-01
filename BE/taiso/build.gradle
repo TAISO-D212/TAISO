@@ -77,7 +77,8 @@ dependencies {
     // .env용 의존성 : dotenv-java 라이브러리
     implementation 'io.github.cdimascio:dotenv-java:3.0.0'
 
-
+    // GoogleCredentials용 의존성 : Firebase Admin SDK
+    implementation 'com.google.firebase:firebase-admin:9.2.0'
 }
 
 
