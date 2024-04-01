@@ -5,11 +5,34 @@ import { BottomNav } from '../../components/BottomNav';
 import { MainBottom } from './components/MainBottom';
 import { CurLocCar } from '../reservation/components/CurLocCar';
 // import { SetCurrentLoc } from './components/SetCurrentLoc';
+import NewReservationStore from '../../store/NewReservationStore';
 
 export const MainPage = () => {
+	const {
+		setStartBookmarkId,
+		setStartLatitude,
+		setStartLongitude,
+		setStartAddress,
+		setEndBookmarkId,
+		setEndLatitude,
+		setEndLongitude,
+		setEndAddress,
+		setTime,
+		setCnt,
+	} = NewReservationStore();
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
+		setStartBookmarkId(null);
+		setStartLatitude(null);
+		setStartLongitude(null);
+		setStartAddress(null);
+		setEndBookmarkId(null);
+		setEndLatitude(null);
+		setEndLongitude(null);
+		setEndAddress(null);
+		setTime(null);
+		setCnt(1);
 		setTimeout(() => {
 			setLoading((prev) => !prev);
 		}, 1000);
