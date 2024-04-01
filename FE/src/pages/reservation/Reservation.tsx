@@ -1,60 +1,22 @@
 import { BottomNav } from '../../components/BottomNav';
-import axios from 'axios';
 import { ReservationListElement } from './components/ReservationListElement.tsx';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { BackButton } from '../../components/BackButton.tsx';
 import ReservationButton from '../../assets/image/reservation_button.png';
-
-interface IReservationItem {
-	pid: number;
-	startName: string;
-	endName: string;
-	startDate: string;
-	currentMember: number;
-	totalMember: number;
-}
+import { getRsvList } from '../../apis/reservationApi.ts';
+import { RsvListType } from '../../interfaces/Reservation.ts';
 
 export const Reservation = () => {
-	const [requestArray, setRequestArray] = useState<IReservationItem[]>([]);
+	const [rsvList, setRsvList] = useState<RsvListType[]>([]);
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		// dummy data
-		setRequestArray([
-			{
-				pid: 1,
-				startName: '출발지',
-				endName: '도착지',
-				startDate: '2022-01-01T00:00:00.000Z',
-				currentMember: 1,
-				totalMember: 4,
-			},
-			{
-				pid: 2,
-				startName: '출발지',
-				endName: '도착지',
-				startDate: '2022-01-01T00:00:00.000Z',
-				currentMember: 1,
-				totalMember: 4,
-			},
-			{
-				pid: 3,
-				startName: '출발지',
-				endName: '도착지',
-				startDate: '2022-01-01T00:00:00.000Z',
-				currentMember: 1,
-				totalMember: 4,
-			},
-			{
-				pid: 4,
-				startName: '출발지',
-				endName: '도착지',
-				startDate: '2022-01-01T00:00:00.000Z',
-				currentMember: 1,
-				totalMember: 4,
-			},
-		]);
+		getRsvList().then((res) => {
+			// setRsvList(res.data);
+			console.log(res.data);
+			setRsvList(res.data);
+		});
 	}, []);
 
 	// useEffect(() => {
@@ -89,9 +51,9 @@ export const Reservation = () => {
 				</div>
 			</div>
 
-			{requestArray.length !== 0 ? (
+			{rsvList.length !== 0 ? (
 				<div className='fixed bottom-[90px] w-[100%] h-[74%] pt-60 flex flex-col justify-center items-center animate-fadeIn overflow-hidden overflow-y-scroll'>
-					{requestArray.map((e) => {
+					{rsvList.map((e) => {
 						return <ReservationListElement reservationContent={e} />;
 					})}
 				</div>
