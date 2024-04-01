@@ -2,7 +2,7 @@ import MyLocationIcon from '@mui/icons-material/MyLocation';
 import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+// import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import { deleteRsv } from '../../../apis/reservationApi';
 
 interface IRsvListElementProps {
@@ -24,7 +24,7 @@ interface IRsvListElementProps {
 }
 
 export const HistoryListElement = ({ rsvContent, editMode }: IRsvListElementProps) => {
-	const handleCancleRsv = (rsvId: number, placeId: number) => {
+	const handleCancelRsv = (rsvId: number, placeId: number) => {
 		console.log('예약 ID', rsvId, '출발지 ID', placeId);
 		deleteRsv(rsvId, placeId).then((res) => {
 			console.log(res);
@@ -51,22 +51,24 @@ export const HistoryListElement = ({ rsvContent, editMode }: IRsvListElementProp
 					<FmdGoodIcon sx={{ color: '#C4B5FC' }} />
 					<div className='px-2'>{rsvContent.endAddress}</div>
 				</div>
-				<div className='flex my-1'>
-					<AccessTimeIcon sx={{ color: '#C4B5FC' }} />
-					<div className='px-2'>{`${rsvContent?.time?.substring(11, 13)}시 ~ ${endTime}시`}</div>
+				<div className='flex my-1 justify-between'>
+					<div className='flex'>
+						<AccessTimeIcon sx={{ color: '#C4B5FC' }} />
+						<div className='px-2'>{`${rsvContent?.time?.substring(11, 13)}시 ~ ${endTime}시`}</div>
+					</div>
+					{editMode && (
+						<button
+							className='mr-8 text-red-500'
+							onClick={() => handleCancelRsv(rsvContent.rsvId, rsvContent.startPlaceId)}>
+							삭제
+						</button>
+					)}
 				</div>
 				{/* <div className='flex my-1'>
 					<AccessTimeFilledIcon sx={{ color: '#C4B5FC' }} />
 					<div className='px-2'>{`${rsvContent?.arrivalTime?.substring(12, 14)}시 ${rsvContent?.arrivalTime?.substring(15, 17)}분`}</div>
 				</div> */}
 			</div>
-			{editMode && (
-				<button
-					className='mr-8 text-red-500'
-					onClick={() => handleCancleRsv(rsvContent.rsvId, rsvContent.startPlaceId)}>
-					삭제
-				</button>
-			)}
 		</div>
 	);
 };

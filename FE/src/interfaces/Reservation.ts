@@ -32,7 +32,7 @@ export interface RsvListType {
 	cnt: number;
 }
 
-export interface MyRsvListType {
+export interface MyRsvType {
 	rsvId: number;
 	startPlaceId: number;
 	startLatitude: number;

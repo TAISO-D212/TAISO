@@ -3,10 +3,10 @@ import { BottomNav } from '../../components/BottomNav';
 import { useState, useEffect } from 'react';
 import { HistoryListElement } from './components/HistoryListElement';
 import { getMyRsvList } from '../../apis/reservationApi';
-import { MyRsvListType } from '../../interfaces/Reservation';
+import { MyRsvType } from '../../interfaces/Reservation';
 
 export const History = () => {
-	const [myRsv, setMyRsv] = useState<MyRsvListType[]>([]);
+	const [myRsv, setMyRsv] = useState<MyRsvType[]>([]);
 	const [editMode, setEditMode] = useState<boolean>(false);
 
 	useEffect(() => {
@@ -16,7 +16,7 @@ export const History = () => {
 		});
 	}, []);
 
-	let content = (
+	const content = (
 		<>
 			<div className='w-[100%] h-[70%] flex-col justify-center animate-fadeIn'>
 				{myRsv.length !== 0 ? (
