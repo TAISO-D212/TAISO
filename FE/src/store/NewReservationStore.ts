@@ -2,16 +2,16 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
 interface NewReservationStoreState {
-	startPlaceId?: number | null;
-	setStartPlaceId?: (value: number | null) => void;
+	startBookmarkId?: number | null;
+	setStartBookmarkId?: (value: number | null) => void;
 	startLatitude?: number | null;
 	setStartLatitude?: (value: number | null) => void;
 	startLongitude?: number | null;
 	setStartLongitude?: (value: number | null) => void;
 	startAddress?: string | null;
 	setStartAddress?: (value: string | null) => void;
-	endPlaceId?: number | null;
-	setEndPlaceId?: (value: number | null) => void;
+	endBookmarkId?: number | null;
+	setEndBookmarkId?: (value: number | null) => void;
 	endLatitude?: number | null;
 	setEndLatitude?: (value: number | null) => void;
 	endLongitude?: number | null;
@@ -42,16 +42,16 @@ interface NewReservationStoreState {
 const NewReservationStore = create(
 	persist<NewReservationStoreState>(
 		(set) => ({
-			startPlaceId: null,
-			setStartPlaceId: (value) => set({ startPlaceId: value }),
+			startBookmarkId: null,
+			setStartBookmarkId: (value) => set({ startBookmarkId: value }),
 			startLatitude: null,
 			setStartLatitude: (value) => set({ startLatitude: value }),
 			startLongitude: null,
 			setStartLongitude: (value) => set({ startLongitude: value }),
 			startAddress: null,
 			setStartAddress: (value) => set({ startAddress: value }),
-			endPlaceId: null,
-			setEndPlaceId: (value) => set({ endPlaceId: value }),
+			endBookmarkId: null,
+			setEndBookmarkId: (value) => set({ endBookmarkId: value }),
 			endLatitude: null,
 			setEndLatitude: (value) => set({ endLatitude: value }),
 			endLongitude: null,
@@ -60,7 +60,7 @@ const NewReservationStore = create(
 			setEndAddress: (value) => set({ endAddress: value }),
 			time: null,
 			setTime: (value) => set({ time: value }),
-			cnt: null,
+			cnt: 1,
 			setCnt: (value) => set({ cnt: value }),
 			// description: '',
 			// title: '',

@@ -32,11 +32,11 @@ import { RsvInputType } from '../../interfaces/Reservation';
 
 export const NewReservation = () => {
 	const {
-		setStartPlaceId,
+		setStartBookmarkId,
 		setStartLatitude,
 		setStartLongitude,
 		setStartAddress,
-		setEndPlaceId,
+		setEndBookmarkId,
 		setEndLatitude,
 		setEndLongitude,
 		setEndAddress,
@@ -44,11 +44,11 @@ export const NewReservation = () => {
 		setCnt,
 	} = NewReservationStore();
 	const [rsvObj, setRsvObj] = useState<RsvInputType>({
-		startPlaceId: null,
+		startBookmarkId: null,
 		startLatitude: null,
 		startLongitude: null,
 		startAddress: null,
-		endPlaceId: null,
+		endBookmarkId: null,
 		endLatitude: null,
 		endLongitude: null,
 		endAddress: null,
@@ -61,11 +61,11 @@ export const NewReservation = () => {
 	const [userCnt, setUserCnt] = useState<number>(1);
 	const navigate = useNavigate();
 
-	const startPlaceId = JSON.parse(localStorage.getItem('NewReservation')).state?.startPlaceId;
+	const startBookmarkId = JSON.parse(localStorage.getItem('NewReservation')).state?.startPlaceId;
 	const startLatitude = JSON.parse(localStorage.getItem('NewReservation')).state?.startLatitude;
 	const startLongitude = JSON.parse(localStorage.getItem('NewReservation')).state?.startLongitude;
 	const startAddress = JSON.parse(localStorage.getItem('NewReservation')).state?.startAddress;
-	const endPlaceId = JSON.parse(localStorage.getItem('NewReservation')).state?.endPlaceId;
+	const endBookmarkId = JSON.parse(localStorage.getItem('NewReservation')).state?.endPlaceId;
 	const endLatitude = JSON.parse(localStorage.getItem('NewReservation')).state?.endLatitude;
 	const endLongitude = JSON.parse(localStorage.getItem('NewReservation')).state?.endLongitude;
 	const endAddress = JSON.parse(localStorage.getItem('NewReservation')).state?.endAddress;
@@ -74,11 +74,11 @@ export const NewReservation = () => {
 
 	useEffect(() => {
 		setRsvObj({
-			startPlaceId,
+			startBookmarkId,
 			startLatitude,
 			startLongitude,
 			startAddress,
-			endPlaceId,
+			endBookmarkId,
 			endLatitude,
 			endLongitude,
 			endAddress,
@@ -113,13 +113,14 @@ export const NewReservation = () => {
 	};
 
 	const submitNewRsv = () => {
+		console.log(rsvObj);
 		addRsv(rsvObj).then((res) => {
 			console.log(res);
-			setStartPlaceId(null);
+			setStartBookmarkId(null);
 			setStartLatitude(null);
 			setStartLongitude(null);
 			setStartAddress(null);
-			setEndPlaceId(null);
+			setEndBookmarkId(null);
 			setEndLatitude(null);
 			setEndLongitude(null);
 			setEndAddress(null);
