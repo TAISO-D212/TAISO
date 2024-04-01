@@ -1,0 +1,14 @@
+<launch>
+    <node pkg="taiso_ad" type="mgeo_pub.py" name="mgeo_pub"  />
+    <node pkg="taiso_ad" type="gpsimu_parser.py" name="gpsimu_parser" />
+    <node pkg="taiso_ad" type="global_path_pub_2.py" name="global_path_pub"  />
+    <node pkg="taiso_ad" type="local_path_pub.py" name="local_path_pub" />    
+    <node pkg="taiso_ad" type="tf_pub.py" name="tf"  />
+    <node pkg="taiso_ad" type="path_point_pub.py" name="path_point_pub"  />
+    <node pkg="taiso_ad" type="acc.py" name="acc" />
+
+    <node pkg="taiso_ad" type="detect_stop_line.py" name="detect_stop_line" />
+    <node pkg="taiso_ad" type="get_traffic_light.py" name="get_traffic_light" />
+
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find taiso_ad)/rviz/lane_detection_rviz.rviz" />
+</launch>
