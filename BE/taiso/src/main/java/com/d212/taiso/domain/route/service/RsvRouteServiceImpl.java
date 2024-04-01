@@ -25,6 +25,11 @@ public class RsvRouteServiceImpl implements RsvRouteService {
     private final PlaceRepository placeRepository;
     private final RsvDetailRepository rsvDetailRepository;
 
+
+    public void startConnection() {
+
+    }
+
     @Override
     public void locationToRoute(long rsvId, long placeId) {
         List<LocationDto> locations = new ArrayList<>();

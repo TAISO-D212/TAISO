@@ -7,6 +7,8 @@ import com.d212.taiso.domain.route.entity.RsvRoute;
 
 public interface RsvRouteService {
 
+    void
+
     void locationToRoute(long rsvId, long placeId);
 
     void connectStart();

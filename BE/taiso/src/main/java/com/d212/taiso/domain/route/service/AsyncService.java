@@ -84,11 +84,14 @@ public class AsyncService {
             if (originDistStr == null) {
                 // 신규 예약 시 -> [새 경유지와 주차장, 목적지, 주차장-목적지 거리]
                 //          주차장     목적지     새 경유지
-                // 주차장
-                // 목적지
-                // 새 경유지
+                // 주차장               2번          0번
+                // 목적지      2번                   1번
+                // 새 경유지   0번       1번
                 lastNum = 3;
                 distTable = new int[lastNum][lastNum];
+                StringTokenizer stk = new StringTokenizer((originDistStr));
+                int dist0 = Integer.parseInt(stk.nextToken());
+                
 
             } else {
                 // 경유지 추가 시 -> [새 경유지와 주차장, 목적지, 경유지1까지 각각 거리]
