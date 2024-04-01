@@ -14,6 +14,7 @@ import { SetArrivalByMap } from './pages/main/components/SetArrivalByMap.tsx';
 import { Favorite } from './pages/favorite/Favorite.tsx';
 import PageWithLogin from './pages/PageWithLogin.tsx';
 import PageWithoutLogin from './pages/PageWithoutLogin.tsx';
+import { CurLocCar } from './pages/reservation/components/CurLocCar.tsx';
 
 export interface IRouterItem {
 	path: string;
@@ -32,6 +33,7 @@ export const rounterItems: IRouterItem[] = [
 	{ path: '/setDepartureByMap', element: <SetDepartureByMap />, withAuth: true },
 	{ path: '/setArrivalByMap', element: <SetArrivalByMap />, withAuth: true },
 	{ path: '/history', element: <History />, withAuth: true },
+	{ path: '/move', element: <CurLocCar />, withAuth: true },
 	{ path: '/favorite', element: <Favorite />, withAuth: true },
 	{ path: '/profile', element: <UserPage />, withAuth: true },
 	{ path: '/*', element: <NotFound />, withAuth: false },
