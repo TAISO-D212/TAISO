@@ -9,6 +9,7 @@ interface FavoriteListElementProps extends BookmarkType {
 	editMode: boolean;
 	isPlaceStartSetting: boolean;
 	isPlaceEndSetting: boolean;
+	onClickDelete: (bookmarkId: number) => void;
 }
 
 export const FavoriteListElement = ({
@@ -18,11 +19,11 @@ export const FavoriteListElement = ({
 	editMode,
 	isPlaceStartSetting,
 	isPlaceEndSetting,
+	onClickDelete,
 }: FavoriteListElementProps) => {
 	const handleDeleteBookmark = (bookmarkId: number) => {
 		deleteBookmark(bookmarkId);
-		// 새로고침해야 사라지는 문제가 있음..
-		// 모달창 띄우고 거기서 확인 누를때마다 새로고침 되도록 구현하기.
+		onClickDelete(bookmarkId);
 	};
 
 	const navigate = useNavigate();

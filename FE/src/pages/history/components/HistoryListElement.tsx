@@ -21,14 +21,18 @@ interface IRsvListElementProps {
 		cnt: number;
 	};
 	editMode: boolean;
+	onClickDelete: (rsvId : number) => void
 }
 
-export const HistoryListElement = ({ rsvContent, editMode }: IRsvListElementProps) => {
+
+
+export const HistoryListElement = ({ rsvContent, editMode, onClickDelete }: IRsvListElementProps) => {
 	const handleCancelRsv = (rsvId: number, placeId: number) => {
 		console.log('예약 ID', rsvId, '출발지 ID', placeId);
 		deleteRsv(rsvId, placeId).then((res) => {
 			console.log(res);
 		});
+		onClickDelete(rsvContent.rsvId)
 	};
 
 	const endTime =
