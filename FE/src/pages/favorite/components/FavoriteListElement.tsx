@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { BookmarkType } from '../../../interfaces/Bookmark';
 import NewReservationStore from '../../../store/NewReservationStore';
 import { useNavigate } from 'react-router-dom';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 interface FavoriteListElementProps extends BookmarkType {
 	editMode: boolean;
@@ -84,12 +85,12 @@ export const FavoriteListElement = ({
 					)}
 					{isPlaceStartSetting && (
 						<button className='mr-8 text-green-500' onClick={handleStartPlaceSetting}>
-							장소 선택
+							<ArrowForwardIosIcon sx={{ color: '#C4B5FC' }} />
 						</button>
 					)}
 					{isPlaceEndSetting && (
 						<button className='mr-8 text-blue-500' onClick={handleEndPlaceSetting}>
-							장소 선택
+							<ArrowForwardIosIcon sx={{ color: '#C4B5FC' }} />
 						</button>
 					)}
 				</div>

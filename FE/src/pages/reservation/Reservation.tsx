@@ -39,7 +39,7 @@ export const Reservation = () => {
 				{rsvList.length !== 0 ? (
 					<div className='flex flex-col justify-center items-center'>
 						{rsvList.map((e) => {
-							return <ReservationListElement reservationContent={e} />;
+							return <ReservationListElement key={e.rsvId} reservationContent={e} />;
 						})}
 					</div>
 				) : (
