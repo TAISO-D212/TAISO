@@ -6,7 +6,6 @@ import { BackButton2 } from '../../components/BackButton2.tsx';
 import { getRsvList } from '../../apis/reservationApi.ts';
 import { RsvListType } from '../../interfaces/Reservation.ts';
 
-
 export const Reservation = () => {
 	const [rsvList, setRsvList] = useState<RsvListType[]>([]);
 	const navigate = useNavigate();
@@ -31,25 +30,25 @@ export const Reservation = () => {
 					<div className="flex mr-14 font-['Pretendard-Bold'] text-[26px] pl-2">예약목록</div>
 					<div></div>
 				</div>
-				<div className='flex justify-between border border-violet-200 rounded-3xl px-4 py-3 mx-6 text-lg font-medium shadow-md '>
+				<div className='flex justify-between border border-violet-200 rounded-3xl px-4 py-3 mx-6 text-lg font-medium shadow-md mb-3'>
 					<p> 원하는 목적지가 없으신가요?</p>
 					<button className='btn btn-sm' onClick={goNewReservation}>
 						NEW
 					</button>
 				</div>
-			{rsvList.length !== 0 ? (
-				<div className='fixed bottom-[90px] w-[100%] h-[74%] pt-60 flex flex-col justify-center items-center animate-fadeIn overflow-hidden overflow-y-scroll'>
-					{rsvList.map((e) => {
-						return <ReservationListElement reservationContent={e} />;
-					})}
-				</div>
-			) : (
-				<div className='bottom-[90px] w-[100%] h-[60%] flex flex-col justify-center items-center font-["Pretendard-Bold"] text-[20px]'>
-					예약 가능한 내역이 없습니다.
-				</div>
-			)}
-			<BottomNav />
-		</div>
+				{rsvList.length !== 0 ? (
+					<div className='flex flex-col justify-center items-center'>
+						{rsvList.map((e) => {
+							return <ReservationListElement reservationContent={e} />;
+						})}
+					</div>
+				) : (
+					<div className='flex flex-col justify-center items-center font-["Pretendard-Bold"] text-[20px] mt-4'>
+						예약 가능한 내역이 없습니다.
+					</div>
+				)}
+				<BottomNav />
+			</div>
 		</>
 	);
 };
