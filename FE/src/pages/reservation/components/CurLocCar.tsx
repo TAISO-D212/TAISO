@@ -162,7 +162,7 @@ export const CurLocCar = () => {
 				const polyline = new window.kakao.maps.Polyline({
 					path: locationList,
 					strokeWeight: 7.5,
-					strokeColor: '#4ACF9A',
+					strokeColor: '#8F72F9',
 					strokeOpacity: 0.7,
 					strokeStyle: 'solid',
 				});
