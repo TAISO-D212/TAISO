@@ -30,6 +30,11 @@ export const Favorite = () => {
 		setEditMode(!editMode);
 	};
 
+	//삭제 함수
+	const onClickDelete = (bookmarkId: number) => {
+		setBookmarkList(bookmarkList.filter((bookmark) => bookmark.bookmarkId !== bookmarkId));
+	};
+
 	return (
 		<>
 			<div className='animate-fadeIn flex flex-col'>
@@ -37,7 +42,7 @@ export const Favorite = () => {
 					<BackButton2 />
 					<div className="flex font-['Pretendard-Bold'] text-[26px] pl-2">즐겨찾기</div>
 					<div className='mt-2 mr-8 opacity-70' onClick={toggleEditMode}>
-					{editMode ? '취소' : '편집'}
+						{editMode ? '취소' : '편집'}
 					</div>
 				</div>
 				{bookmarkList.map((bookmark) => (
@@ -47,6 +52,7 @@ export const Favorite = () => {
 						editMode={editMode}
 						isPlaceStartSetting={isPlaceStartSetting}
 						isPlaceEndSetting={isPlaceEndSetting}
+						onClickDelete = {onClickDelete}
 					/>
 				))}
 			</div>

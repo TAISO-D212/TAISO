@@ -16,13 +16,17 @@ export const History = () => {
 		});
 	}, []);
 
+	const onClickDelete = (rsvId: number) => {
+		setMyRsv(myRsv.filter((myRv) => myRv.rsvId !== rsvId));
+	};
+
 	const content = (
 		<>
 			<div className='w-[100%] h-[70%] flex-col justify-center animate-fadeIn'>
 				{myRsv.length !== 0 ? (
 					<div className=' w-[100%] h-[75%] flex flex-col justify-center items-center overflow-y-scroll'>
 						{myRsv.map((e) => {
-							return <HistoryListElement key={e.rsvId} rsvContent={e} editMode={editMode} />;
+							return <HistoryListElement key={e.rsvId} rsvContent={e} editMode={editMode} onClickDelete={onClickDelete}/>;
 						})}
 					</div>
 				) : (
