@@ -5,7 +5,6 @@ import MapIcon from '@mui/icons-material/Map';
 import { getBookmarkList } from '../../../apis/bookmarkApi';
 import { BookmarkType } from '../../../interfaces/Bookmark';
 import { FavoriteListElement } from '../../favorite/components/FavoriteListElement';
-
 export const SetArrival = () => {
 	const navigate = useNavigate();
 	const [bookmarkList, setBookmarkList] = useState<BookmarkType[]>([]);

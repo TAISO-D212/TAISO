@@ -9,6 +9,7 @@ export const UserPage = () => {
 	const { doLogout, moveToLogin } = useCustomLogin();
 	const handleClickLogout = () => {
 		doLogout();
+		localStorage.removeItem('NewReservation');
 		alert('로그아웃되었습니다.');
 		moveToLogin();
 	};

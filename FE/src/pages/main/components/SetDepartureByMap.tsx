@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import LatLngAddStore from '../../../store/LatLngAddStore';
-import { BackButton } from '../../../components/BackButton';
+import { HomeBackButton } from '../../../components/HomeBackButton';
 import { BookmarkInputType } from '../../../interfaces/Bookmark';
 import { useNavigate } from 'react-router-dom';
 import NewReservationStore from '../../../store/NewReservationStore';
@@ -300,7 +300,7 @@ export const SetDepartureByMap = () => {
 			{modal}
 			<div className='fixed z-10 top-0 w-[100%] h-[15%] flex-col justify-evenly items-end bg-white'>
 				<div className='flex'>
-					<BackButton />
+					<HomeBackButton />
 					<div className='fixed flex justify-center w-[100%] top-[3%] mx-[5px] font-["Pretendard-Bold"] text-[25px]'>
 						<div>장소 찾기</div>
 					</div>
@@ -309,7 +309,7 @@ export const SetDepartureByMap = () => {
 					<div className='w-[100%] flex justify-evenly items-center'>
 						<div className='flex items-center'>
 							<input
-								className='w-[95%] px-[5%] font-["Pretendard-Bold"] rounded-md border-2 border-slate-300 placeholder:text-slate-400 focus:outline-sky-500 focus:border-sky-500'
+								className='w-[100%] pl-[10%] py-1 font-["Pretendard-Bold"] rounded-md border-2 border-slate-300 placeholder:text-slate-400 focus:outline-sky-500 focus:border-sky-500'
 								type='text'
 								placeholder='출발지를 입력해 주세요.'
 								value={keyword}
@@ -318,8 +318,8 @@ export const SetDepartureByMap = () => {
 						</div>
 						<button
 							type='submit'
-							className='flex justify-center w-[15%] bg-[#C4B5FC] border border-none rounded-md'>
-							<span className='w-[100%] font-["Pretendard-Bold"] rounded-lg text-white'>검색</span>
+							className='flex justify-center py-[5px] w-[15%] bg-[#C4B5FC] border border-none rounded-md'>
+							<span className='w-[100%] font-["Pretendard-Bold"] rounded-sm text-white'>검색</span>
 						</button>
 					</div>
 				</form>
