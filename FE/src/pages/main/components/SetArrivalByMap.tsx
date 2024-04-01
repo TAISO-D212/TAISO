@@ -25,7 +25,7 @@ export const SetArrivalByMap = () => {
 	const [endLat, setEndLat] = useState<number | null>();
 	const [endLng, setEndLng] = useState<number | null>();
 
-	const { setEndAddress, setEndLatitude, setEndLongitude, setEndPlaceId } = NewReservationStore();
+	const { setEndAddress, setEndLatitude, setEndLongitude, setEndBookmarkId } = NewReservationStore();
 
 	const { currentLat, currentLng } = LatLngAddStore((state) => state);
 	const lat = currentLat;
@@ -72,7 +72,7 @@ export const SetArrivalByMap = () => {
 	}, []);
 
 	const handleSetEndLoc = () => {
-		setEndPlaceId(null);
+		setEndBookmarkId(null);
 		setEndAddress(address);
 		setEndLatitude(endLat);
 		setEndLongitude(endLng);

@@ -25,7 +25,7 @@ export const SetDepartureByMap = () => {
 	const [startLat, setStartLat] = useState<number | null>();
 	const [startLng, setStartLng] = useState<number | null>();
 
-	const { setStartAddress, setStartLatitude, setStartLongitude, setStartPlaceId } =
+	const { setStartAddress, setStartLatitude, setStartLongitude, setStartBookmarkId } =
 		NewReservationStore();
 
 	const { currentLat, currentLng } = LatLngAddStore((state) => state);
@@ -73,7 +73,7 @@ export const SetDepartureByMap = () => {
 	}, []);
 
 	const handleSetStartLoc = () => {
-		setStartPlaceId(null);
+		setStartBookmarkId(null);
 		setStartAddress(address);
 		setStartLatitude(startLat);
 		setStartLongitude(startLng);

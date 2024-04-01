@@ -28,16 +28,16 @@ export const FavoriteListElement = ({
 	const navigate = useNavigate();
 
 	const {
-		startPlaceId,
-		setStartPlaceId,
+		startBookmarkId,
+		setStartBookmarkId,
 		startLatitude,
 		setStartLatitude,
 		startLongitude,
 		setStartLongitude,
 		startAddress,
 		setStartAddress,
-		endPlaceId,
-		setEndPlaceId,
+		endBookmarkId,
+		setEndBookmarkId,
 		endLatitude,
 		setEndLatitude,
 		endLongitude,
@@ -48,7 +48,7 @@ export const FavoriteListElement = ({
 
 	const handleStartPlaceSetting = () => {
 		// 장소 설정 기능
-		setStartPlaceId(bookmarkId);
+		setStartBookmarkId(bookmarkId);
 		setStartLatitude(place.latitude);
 		setStartLongitude(place.longitude);
 		setStartAddress(place.address);
@@ -57,7 +57,7 @@ export const FavoriteListElement = ({
 
 	const handleEndPlaceSetting = () => {
 		// 장소 설정 기능
-		setEndPlaceId(bookmarkId);
+		setEndBookmarkId(bookmarkId);
 		setEndLatitude(place.latitude);
 		setEndLongitude(place.longitude);
 		setEndAddress(place.address);
