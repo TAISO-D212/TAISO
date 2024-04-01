@@ -68,7 +68,15 @@ export const FavoriteListElement = ({
 		<ul>
 			<li className='ml-8 border-t border-violet-200'>
 				<div className='flex items-center justify-between'>
-					<div className='flex items-center'>
+					<div
+						className='flex items-center'
+						onClick={
+							isPlaceStartSetting
+								? handleStartPlaceSetting
+								: isPlaceEndSetting
+									? handleEndPlaceSetting
+									: null
+						}>
 						<div className='mr-2'>
 							<img className='w-6 h-6 opacity-50' src={favoriteStar} alt='star' />
 						</div>
