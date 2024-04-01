@@ -132,7 +132,7 @@ public class ReservationServiceImpl implements ReservationService {
             // 해당 북마크 ID를 통해 장소 조회하기
 
             Bookmark bookmark = bookmarkRepository.findById(rsvAddReq.getStartBookmarkId())
-                    .orElseThrow(() -> new BusinessException(ErrorCode.BOOKMARK_NOT_EXIST));
+                .orElseThrow(() -> new BusinessException(ErrorCode.BOOKMARK_NOT_EXIST));
 
             startPlace = bookmark.getPlace();
 
@@ -149,7 +149,7 @@ public class ReservationServiceImpl implements ReservationService {
         if (rsvAddReq.getEndBookmarkId() != null) {
 
             Bookmark bookmark = bookmarkRepository.findById(rsvAddReq.getEndBookmarkId())
-                    .orElseThrow(() -> new BusinessException(ErrorCode.BOOKMARK_NOT_EXIST));
+                .orElseThrow(() -> new BusinessException(ErrorCode.BOOKMARK_NOT_EXIST));
 
             endPlace = bookmark.getPlace();
 
@@ -195,7 +195,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public void addTogetherRsv(Long rsvId, RsvTogetherAddReq rsvTogetherAddReq) {
+    public String addTogetherRsv(Long rsvId, RsvTogetherAddReq rsvTogetherAddReq) {
 
         // 요청한 멤버의 정보 가져오기
         Member member = commonUtil.getMember();
@@ -205,6 +205,14 @@ public class ReservationServiceImpl implements ReservationService {
             .orElseThrow(() -> new BusinessException(ErrorCode.RESERVATION_NOT_EXIST));
 
         // 예약 인원 수가 초과되었을 시 저장 실패
+        // 기존 예약 인원 수 + 경유지 예약 인원 수
+        int totalCnt = reservation.getCnt() + rsvTogetherAddReq.getCnt();
+
+        if (totalCnt > 4) {
+            return "예약 인원 수가 초과되었습니다.";
+        }
+
+        // 시간이 초과되었을 경우
 
         Place place = null;
 
@@ -212,7 +220,7 @@ public class ReservationServiceImpl implements ReservationService {
         if (rsvTogetherAddReq.getBookmarkId() != null) {
 
             Bookmark bookmark = bookmarkRepository.findById(rsvTogetherAddReq.getBookmarkId())
-                    .orElseThrow(() -> new BusinessException(ErrorCode.BOOKMARK_NOT_EXIST));
+                .orElseThrow(() -> new BusinessException(ErrorCode.BOOKMARK_NOT_EXIST));
 
             place = bookmark.getPlace();
 
@@ -240,16 +248,14 @@ public class ReservationServiceImpl implements ReservationService {
         // 경유지 수 + 1
         int stopCnt = reservation.getStopCnt() + 1;
 
-        // 기존 예약 인원 수 + 경유지 예약 인원 수
-        int cnt = reservation.getCnt() + rsvTogetherAddReq.getCnt();
-
         // 이런 변화는 저장 필요 x
         reservation.changeStopCnt(stopCnt);
-        reservation.changeCnt(cnt);
+        reservation.changeCnt(totalCnt);
 
         placeRepository.save(place);
         rsvDetailRepository.save(rsvDetail);
 
+        return "합승 예약이 성공적으로 추가되었습니다.";
     }
 
     @Override
