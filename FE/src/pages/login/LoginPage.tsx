@@ -10,15 +10,21 @@ import useCustomLogin from '../../hooks/useCustomLogin';
 export const LoginPage = () => {
 	const navigate = useNavigate();
 
+	const { isLogin } = useCustomLogin();
+
 	const [loading, setLoading] = useState(true);
 	// const [modalIsOpen, setModalIsOpen] = useState(false);
 
 	const { doLogin } = useCustomLogin();
 
 	useEffect(() => {
-		setTimeout(() => {
-			setLoading(false);
-		}, 2000);
+		if (isLogin) {
+			navigate('/main');
+		} else {
+			setTimeout(() => {
+				setLoading(false);
+			}, 2000);
+		}
 	}, []);
 
 	// const handleSignUpModal = () => {
