@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { BackButton2 } from '../../components/BackButton2.tsx';
 import { getRsvList } from '../../apis/reservationApi.ts';
-import { RsvListType } from '../../interfaces/Reservation.ts';
+import { RsvType } from '../../interfaces/Reservation.ts';
 
 export const Reservation = () => {
-	const [rsvList, setRsvList] = useState<RsvListType[]>([]);
+	const [rsvList, setRsvList] = useState<RsvType[]>([]);
 	const navigate = useNavigate();
 
 	useEffect(() => {

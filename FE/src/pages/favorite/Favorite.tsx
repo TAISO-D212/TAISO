@@ -37,7 +37,7 @@ export const Favorite = () => {
 					<BackButton2 />
 					<div className="flex font-['Pretendard-Bold'] text-[26px] pl-2">즐겨찾기</div>
 					<div className='mt-2 mr-8 opacity-70' onClick={toggleEditMode}>
-						편집
+					{editMode ? '취소' : '편집'}
 					</div>
 				</div>
 				{bookmarkList.map((bookmark) => (

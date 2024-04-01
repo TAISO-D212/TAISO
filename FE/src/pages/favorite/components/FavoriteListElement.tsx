@@ -1,6 +1,5 @@
 import { deleteBookmark } from '../../../apis/bookmarkApi';
 import favoriteStar from '../../../assets/icon/favorite_star.png';
-import { useState } from 'react';
 import { BookmarkType } from '../../../interfaces/Bookmark';
 import NewReservationStore from '../../../store/NewReservationStore';
 import { useNavigate } from 'react-router-dom';
