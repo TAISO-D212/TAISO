@@ -31,7 +31,7 @@ export const Reservation = () => {
 					<div></div>
 				</div>
 				<div className='flex justify-between border border-violet-200 rounded-3xl px-4 py-3 mx-6 text-lg font-medium shadow-md mb-3'>
-					<p> 원하는 목적지가 없으신가요?</p>
+					<button> 원하는 목적지가 없으신가요?</button>
 					<button className='btn btn-sm' onClick={goNewReservation}>
 						NEW
 					</button>
