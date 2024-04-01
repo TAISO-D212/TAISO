@@ -38,7 +38,7 @@ export const SetDeparture = () => {
 				<div className='flex'>
 					<BackButton />
 					<div className='fixed flex justify-center w-[100%] top-[3%] mx-[5px] font-["Pretendard-Bold"] text-[25px]'>
-						<div>장소 찾기</div>
+						<div>출발 장소 찾기</div>
 					</div>
 				</div>
 			</div>

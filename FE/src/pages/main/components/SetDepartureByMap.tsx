@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import LatLngAddStore from '../../../store/LatLngAddStore';
 import { BackButton } from '../../../components/BackButton';
 import { BookmarkInputType } from '../../../interfaces/Bookmark';
@@ -21,9 +21,23 @@ export const SetDepartureByMap = () => {
 	const [geocoder, setGeocoder] = useState<any>();
 	const [keyword, setKeyword] = useState<string>('');
 	const [startMarker, setStartMarker] = useState<any>();
+	const [name, setName] = useState<string>('');
 	const [address, setAddress] = useState<string>('');
 	const [startLat, setStartLat] = useState<number | null>();
 	const [startLng, setStartLng] = useState<number | null>();
+	const modalRef = useRef<HTMLDialogElement>(null);
+
+	const openModal = () => {
+		if (modalRef.current) {
+			modalRef.current.showModal();
+		}
+	};
+
+	const closeModal = () => {
+		if (modalRef.current) {
+			modalRef.current.close();
+		}
+	};
 
 	const { setStartAddress, setStartLatitude, setStartLongitude, setStartBookmarkId } =
 		NewReservationStore();
@@ -228,7 +242,7 @@ export const SetDepartureByMap = () => {
 
 	const fetchFavorite = () => {
 		const favoriteObj: BookmarkInputType = {
-			name: address,
+			name,
 			latitude: startLat,
 			longitude: startLng,
 			address: address,
@@ -243,14 +257,47 @@ export const SetDepartureByMap = () => {
 		});
 	};
 
+	const handleFavoriteName = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setName(e.target.value as string);
+	};
+
+	let modal = (
+		<>
+			{/* Open the modal using document.getElementById('ID').showModal() method */}
+			<dialog ref={modalRef} id='my_modal_1' className='modal'>
+				<div className='modal-box'>
+					<h3 className='font-bold text-lg'>즐겨찾기 추가</h3>
+					<p className='py-4'>현재 위치의 이름을 추가해주세요.</p>
+					<input
+						type='text'
+						placeholder='즐겨찾기 이름'
+						className='input input-bordered w-full'
+						onChange={handleFavoriteName}
+					/>
+					<div className='modal-action'>
+						<form method='dialog'>
+							{/* if there is a button in form, it will close the modal */}
+							<button className='btn mx-5'>취소</button>
+							<button className='btn bg-[#C4B5FC] text-white' onClick={fetchFavorite}>
+								추가
+							</button>
+						</form>
+					</div>
+				</div>
+			</dialog>
+		</>
+	);
+
 	return (
 		<>
 			{/* TODO : 지도에서 찾기 토글 버튼으로 수정하기 -> 
 		지도에서 찾기 버튼 클릭
 		즐겨찾기 목록 안보이고, 지도 활성화
 		즐겨찾기 목록에서 즐겨찾기 삭제 만들기 (즐겨찾기 DELETE 방식으로 BE에 전달하기)
-		현위치 즐겨찾기 추가 만들기 (즐겨찾기 POST 방식으로 BE에 전달하기)
+		현위치 즐겨찾기 추
+		가 만들기 (즐겨찾기 POST 방식으로 BE에 전달하기)
 		*/}
+			{modal}
 			<div className='fixed z-10 top-0 w-[100%] h-[15%] flex-col justify-evenly items-end bg-white'>
 				<div className='flex'>
 					<BackButton />
@@ -277,16 +324,16 @@ export const SetDepartureByMap = () => {
 					</div>
 				</form>
 			</div>
-			<div className='fixed z-10 bottom-0 w-[100%] h-[15%] flex flex-col justify-center items-center bg-white'>
+			<div className='fixed z-10 bottom-0 w-[100%] h-[20%] flex flex-col justify-center items-center bg-white'>
 				<div className='w-[100%] font-["Pretendard-Bold"] flex justify-center items-center text-[20px] my-3'>
 					{address}
 				</div>
-				<div className='w-[65%] mb-3' onClick={fetchFavorite}>
+				<div className='w-[65%] mb-3' onClick={openModal}>
 					<StarIcon sx={{ color: '#fcfc9c' }} />
 					<span>현 위치 즐겨찾기 추가 {'>'}</span>
 				</div>
 				<div
-					className=' w-[70%] h-[40%] flex justify-center items-center bg-[#3422F2] rounded-full'
+					className=' w-[70%] h-[40%] mb-2 flex justify-center items-center bg-[#3422F2] rounded-full'
 					onClick={handleSetStartLoc}>
 					<span className='flex justify-center w-[100%] font-["Pretendard-Bold"] text-[25px] text-white'>
 						출발지 설정
