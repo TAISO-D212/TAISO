@@ -1,9 +1,9 @@
 export interface RsvInputType {
-	startPlaceId?: number;
+	startBookmarkId?: number;
 	startLatitude?: number;
 	startLongitude?: number;
 	startAddress?: string;
-	endPlaceId?: number;
+	endBookmarkId?: number;
 	endLatitude?: number;
 	endLongitude?: number;
 	endAddress?: string;
@@ -13,7 +13,7 @@ export interface RsvInputType {
 
 // 합승 시에는 출발지만 정보 기입 (도착지 x)
 export interface TogetherRsvInputType {
-	placeId?: number;
+	bookmarkId?: number;
 	latitude?: number;
 	longitude?: number;
 	address?: string;
