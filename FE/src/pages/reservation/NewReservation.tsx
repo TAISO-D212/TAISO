@@ -53,7 +53,7 @@ export const NewReservation = () => {
 		endLongitude: null,
 		endAddress: null,
 		time: '',
-		cnt: 0,
+		cnt: 1,
 	});
 	const [date, setDate] = useState<Dayjs | null | undefined>(dayjs());
 	const [daytime, setDaytime] = useState<string>('오전');
@@ -61,11 +61,11 @@ export const NewReservation = () => {
 	const [userCnt, setUserCnt] = useState<number>(1);
 	const navigate = useNavigate();
 
-	const startBookmarkId = JSON.parse(localStorage.getItem('NewReservation')).state?.startPlaceId;
+	const startBookmarkId = JSON.parse(localStorage.getItem('NewReservation')).state?.startBookmarkId;
 	const startLatitude = JSON.parse(localStorage.getItem('NewReservation')).state?.startLatitude;
 	const startLongitude = JSON.parse(localStorage.getItem('NewReservation')).state?.startLongitude;
 	const startAddress = JSON.parse(localStorage.getItem('NewReservation')).state?.startAddress;
-	const endBookmarkId = JSON.parse(localStorage.getItem('NewReservation')).state?.endPlaceId;
+	const endBookmarkId = JSON.parse(localStorage.getItem('NewReservation')).state?.endBookmarkId;
 	const endLatitude = JSON.parse(localStorage.getItem('NewReservation')).state?.endLatitude;
 	const endLongitude = JSON.parse(localStorage.getItem('NewReservation')).state?.endLongitude;
 	const endAddress = JSON.parse(localStorage.getItem('NewReservation')).state?.endAddress;
@@ -100,10 +100,9 @@ export const NewReservation = () => {
 	};
 
 	const handleRsvTimeChange = (event: SelectChangeEvent) => {
-		console.log(date?.format('YYYY-MM-DD') + 'T' + event.target.value);
 		setRsvTime(event.target.value as string);
 		if (date) {
-			setTime(date?.format('YYYY-MM-DD') + 'T' + event.target.value);
+			setTime(date?.format('YYYY-MM-DD ') + event.target.value);
 		}
 	};
 
