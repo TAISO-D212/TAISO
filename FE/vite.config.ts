@@ -14,7 +14,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: "./index.html",
-        sw: "./public/firebase-messagin-sw.js",
+        sw: "./public/firebase-messaging-sw.js",
       },
     },
   },
