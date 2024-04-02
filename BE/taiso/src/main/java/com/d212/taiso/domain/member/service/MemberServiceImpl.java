@@ -87,6 +87,14 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
     }
 
+    //
+    public String getfcmToken(){
+
+        Member member = commonUtil.getMember();
+        return member.getFcmToken();
+    }
+
+
 
 //    @Transactional //해당 메서드가 트랜잭션 내에서 실행되어야 함을 나타냄. 메서드 내에서 발생하는 모든 데이터베이스 작업은 하나의 트랜잭션으로 묶임.
 //    //알림을 저장하는 메서드 -> 토큰을 매개변수로 받아들임.
