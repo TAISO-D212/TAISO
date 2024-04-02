@@ -1,10 +1,22 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <!-- TODO : PWA 설정 -->
+    <link rel="icon" href="/assets/icon/icon_48.png" />
+    <!-- PWA 설정 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="./src/index.css" rel="stylesheet" />
+    <link href="/src/index.css" rel="stylesheet" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/assets/icon/icon_152.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="TAISO" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <meta name="description" content="시골 마을버스 타이소" />
+    <meta name="theme-color" content="#D9D9D9" />
     <!-- 카카오 맵 -->
     <script
       type="text/javascript"
@@ -18,5 +30,21 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        // Register a service worker hosted at the root of the
+        // site using the default scope.
+        navigator.serviceWorker
+          .register("/sw.js")
+          .then((registration) => {
+            console.log("Service worker registration succeeded:", registration);
+          })
+          .catch((err) => {
+            console.log("Service worker registration failed:", error);
+          });
+      } else {
+        console.log("Service workers are not supported.");
+      }
+    </script>
   </body>
 </html>
