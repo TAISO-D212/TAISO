@@ -9,8 +9,8 @@ export const Favorite = () => {
 	const [bookmarkList, setBookmarkList] = useState<BookmarkType[]>([]);
 
 	const [editMode, setEditMode] = useState(false);
-	const [isPlaceStartSetting, setIsPlaceStartSetting] = useState(false);
-	const [isPlaceEndSetting, setIslaceEndSetting] = useState(false);
+	const [isPlaceStartSetting] = useState(false);
+	const [isPlaceEndSetting] = useState(false);
 
 	useEffect(() => {
 		handleGetBookmarkList();
