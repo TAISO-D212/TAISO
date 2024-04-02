@@ -82,10 +82,17 @@ class pure_pursuit :
                 
                 self.current_waypoint = self.get_current_waypoint(self.status_msg, self.global_path)
                 
-                if self.traffic_light == True and self.stopline and self.traffic_light_status==1:
+                if 0 < (abs(self.current_position.x - 130.277) + abs(self.current_position.y - 1461.641)) < 9:
+                    self.ctrl_cmd_msg.steering = 1.0
                     self.target_velocity = 0.0
+                    if round((self.status_msg.velocity.x**2 + self.status_msg.velocity.y**2) ** 0.5, 3) == 0: # 현재 속도가 0일 때
+                        rospy.sleep(5)
+                        self.target_velocity = 10 
                 else:
-                    self.target_velocity = self.velocity_list[self.current_waypoint] * 3.6    
+                    if self.traffic_light == True and self.stopline and self.traffic_light_status==1:
+                        self.target_velocity = 0.0
+                    else:
+                        self.target_velocity = self.velocity_list[self.current_waypoint] * 3.6  
 
                 steering = self.calc_pure_pursuit()
                 if self.is_look_forward_point :
