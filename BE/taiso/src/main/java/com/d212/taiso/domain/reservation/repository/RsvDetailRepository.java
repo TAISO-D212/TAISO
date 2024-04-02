@@ -16,6 +16,10 @@ public interface RsvDetailRepository extends JpaRepository<RsvDetail, RsvDetailI
 
     List<RsvDetail> findRsvDetailByMember(Member member);
 
-    @Query("SELECT rd FROM RsvDetail rd WHERE rd.rsvDetailId.reservation.id = :rsvId order by rd.orders")
-    List<RsvDetail> findByRsvId(Long rsvId);
+    // 순서대로 가져오되 rd의 순서가 아직 정해지지 않았다면(새로 추가된 경유지라면) 맨 마지막에 가져오기
+    @Query(value = "SELECT * FROM rsv_detail  WHERE rsv_id = :rsvId "
+        + "ORDER BY CASE WHEN orders = 0 THEN 999999 ELSE orders END", nativeQuery = true)
+    List<RsvDetail> findRdByRsvId(Long rsvId);
+
+
 }
