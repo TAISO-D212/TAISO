@@ -9,9 +9,9 @@ import { FavoriteListElement } from '../../favorite/components/FavoriteListEleme
 export const SetDeparture = () => {
 	const navigate = useNavigate();
 	const [bookmarkList, setBookmarkList] = useState<BookmarkType[]>([]);
-	const [editMode, setEditMode] = useState(false);
+	const [editMode] = useState(false);
 	const [isPlaceStartSetting, setIsPlaceStartSetting] = useState(false);
-	const [isPlaceEndSetting, setIsPlaceEndSetting] = useState(false);
+	const [isPlaceEndSetting] = useState(false);
 	// bookmark 정보를 가져오는 함수
 	const handleGetBookmarkList = () => {
 		getBookmarkList().then((res) => {
@@ -50,6 +50,7 @@ export const SetDeparture = () => {
 						editMode={editMode}
 						isPlaceStartSetting={isPlaceStartSetting}
 						isPlaceEndSetting={isPlaceEndSetting}
+						onClickDelete={null}
 					/>
 				))}
 			</div>

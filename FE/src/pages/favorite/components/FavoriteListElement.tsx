@@ -2,14 +2,16 @@ import { deleteBookmark } from '../../../apis/bookmarkApi';
 import favoriteStar from '../../../assets/icon/favorite_star.png';
 import { BookmarkType } from '../../../interfaces/Bookmark';
 import NewReservationStore from '../../../store/NewReservationStore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import TogetherRsvStore from '../../../store/TogetherRsvStore';
 
 interface FavoriteListElementProps extends BookmarkType {
-	editMode: boolean;
-	isPlaceStartSetting: boolean;
-	isPlaceEndSetting: boolean;
-	onClickDelete: (bookmarkId: number) => void;
+	editMode?: boolean;
+	isPlaceStartSetting?: boolean;
+	isPlaceEndSetting?: boolean;
+	isTogetherSetting?: boolean;
+	onClickDelete?: (bookmarkId: number) => void;
 }
 
 export const FavoriteListElement = ({
@@ -19,6 +21,7 @@ export const FavoriteListElement = ({
 	editMode,
 	isPlaceStartSetting,
 	isPlaceEndSetting,
+	isTogetherSetting,
 	onClickDelete,
 }: FavoriteListElementProps) => {
 	const handleDeleteBookmark = (bookmarkId: number) => {
@@ -28,24 +31,21 @@ export const FavoriteListElement = ({
 
 	const navigate = useNavigate();
 
+	const { rsvId } = useParams(); // 문자열로 받아짐.
+	const rsvIdInt = parseInt(rsvId, 10);
+
 	const {
-		startBookmarkId,
 		setStartBookmarkId,
-		startLatitude,
 		setStartLatitude,
-		startLongitude,
 		setStartLongitude,
-		startAddress,
 		setStartAddress,
-		endBookmarkId,
 		setEndBookmarkId,
-		endLatitude,
 		setEndLatitude,
-		endLongitude,
 		setEndLongitude,
-		endAddress,
 		setEndAddress,
 	} = NewReservationStore();
+
+	const { setBookmarkId, setLatitude, setLongitude, setAddress } = TogetherRsvStore();
 
 	const handleStartPlaceSetting = () => {
 		// 장소 설정 기능
@@ -65,6 +65,16 @@ export const FavoriteListElement = ({
 		navigate('/reservation/new');
 	};
 
+	// 합승 출발 장소 설정 기능
+	const handleTogeterStartPlaceSetting = (rsvId: number) => {
+		// 장소 설정 기능
+		setBookmarkId(bookmarkId);
+		setLatitude(place.latitude);
+		setLongitude(place.longitude);
+		setAddress(place.address);
+		navigate(`/reservation/${rsvId}`);
+	};
+
 	return (
 		<ul>
 			<li className='ml-8 border-t border-violet-200'>
@@ -72,11 +82,9 @@ export const FavoriteListElement = ({
 					<div
 						className='flex items-center'
 						onClick={
-							isPlaceStartSetting
-								? handleStartPlaceSetting
-								: isPlaceEndSetting
-									? handleEndPlaceSetting
-									: null
+							(isPlaceStartSetting && handleStartPlaceSetting) ||
+							(isPlaceEndSetting && handleEndPlaceSetting) ||
+							undefined
 						}>
 						<div className='mr-2'>
 							<img className='w-6 h-6 opacity-50' src={favoriteStar} alt='star' />
@@ -98,6 +106,13 @@ export const FavoriteListElement = ({
 					)}
 					{isPlaceEndSetting && (
 						<button className='mr-8 text-blue-500' onClick={handleEndPlaceSetting}>
+							<ArrowForwardIosIcon sx={{ color: '#C4B5FC' }} />
+						</button>
+					)}
+					{isTogetherSetting && (
+						<button
+							className='mr-8 text-pink-500'
+							onClick={() => handleTogeterStartPlaceSetting(rsvIdInt)}>
 							<ArrowForwardIosIcon sx={{ color: '#C4B5FC' }} />
 						</button>
 					)}

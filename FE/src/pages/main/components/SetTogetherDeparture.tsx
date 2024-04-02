@@ -5,12 +5,11 @@ import MapIcon from '@mui/icons-material/Map';
 import { getBookmarkList } from '../../../apis/bookmarkApi';
 import { BookmarkType } from '../../../interfaces/Bookmark';
 import { FavoriteListElement } from '../../favorite/components/FavoriteListElement';
-export const SetArrival = () => {
+
+export const SetTogetherDeparture = () => {
 	const navigate = useNavigate();
 	const [bookmarkList, setBookmarkList] = useState<BookmarkType[]>([]);
-	const [editMode, setEditMode] = useState(false);
-	const [isPlaceStartSetting, setIsPlaceStartSetting] = useState(false);
-	const [isPlaceEndSetting, setIsPlaceEndSetting] = useState(false);
+
 	// bookmark 정보를 가져오는 함수
 	const handleGetBookmarkList = () => {
 		getBookmarkList().then((res) => {
@@ -22,14 +21,22 @@ export const SetArrival = () => {
 
 	useEffect(() => {
 		handleGetBookmarkList();
-		setIsPlaceEndSetting(true);
+	}, []);
+
+	const [isTogetherSetting, setIsTogetherSetting] = useState(false)
+	
+
+	useEffect(() => {
+		handleGetBookmarkList();
+		setIsTogetherSetting(true);
 		return () => {
-			setIsPlaceEndSetting(false);
+			setIsTogetherSetting(false);
 		};
 	}, []);
 
-	const handleSetArrivalByMap = () => {
-		navigate('/setArrivalByMap');
+
+	const handleSetDepartureByMap = () => {
+		navigate('/setDepartureByMap');
 	};
 	return (
 		<>
@@ -37,7 +44,7 @@ export const SetArrival = () => {
 				<div className='flex'>
 					<BackButton />
 					<div className='fixed flex justify-center w-[100%] top-[3%] mx-[5px] font-["Pretendard-Bold"] text-[25px]'>
-						<div>도착 장소 찾기</div>
+						<div>출발 장소 찾기</div>
 					</div>
 				</div>
 			</div>
@@ -46,23 +53,20 @@ export const SetArrival = () => {
 					<FavoriteListElement
 						key={bookmark.bookmarkId}
 						{...bookmark}
-						editMode={editMode}
-						isPlaceStartSetting={isPlaceStartSetting}
-						isPlaceEndSetting={isPlaceEndSetting}
-						onClickDelete={null}
+						isTogetherSetting={isTogetherSetting}
 					/>
 				))}
 			</div>
 			<div className='fixed z-10 bottom-0 w-[100%] h-[15%] flex flex-col justify-center items-center bg-white'>
 				<div
 					className='w-[70%] font-["Pretendard-Bold"] flex justify-evenly items-center text-[26px] my-3 hover:cursor-pointer'
-					onClick={handleSetArrivalByMap}>
-					<MapIcon sx={{ color: '#C4B5FC' }} />
+					onClick={handleSetDepartureByMap}>
+					<MapIcon sx={{ color: '#d9d9d9' }} />
 					지도에서 설정하기
 				</div>
 				{/* <div className=' w-[70%] h-[40%] flex justify-center items-center bg-[#3422F2] rounded-full'>
 					<span className='flex justify-center w-[100%] font-["Pretendard-Bold"] text-[25px] text-white'>
-						도착지 설정
+						출발지 설정
 					</span>
 				</div> */}
 			</div>
