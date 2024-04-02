@@ -49,6 +49,7 @@ export const SetArrival = () => {
 						editMode={editMode}
 						isPlaceStartSetting={isPlaceStartSetting}
 						isPlaceEndSetting={isPlaceEndSetting}
+						onClickDelete={null}
 					/>
 				))}
 			</div>
