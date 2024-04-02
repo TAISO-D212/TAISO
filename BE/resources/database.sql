@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS `member` (
 	`face_img`	varchar(2000)	NULL	COMMENT '사진 파일 경로',
 	`create_date`	datetime	NOT NULL	DEFAULT now(),
 	`delete_flag`	boolean	NOT NULL	DEFAULT false,
+	`fcm_token`	varchar(400)	NULL DEFAULT NULL,
    CONSTRAINT `PK_Member` PRIMARY KEY (`email`)
 )default character set utf8mb4;
 
@@ -37,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `rsv_detail` (
 	`place_id`	bigint	NOT NULL,
 	`email`	varchar(20)	NOT NULL,
 	`cnt`	int	NOT NULL	DEFAULT 1,
-	`orders`	int	NULL,
+	`orders`	int	NULL DEFAULT 0,
 	`depart_flag`	boolean	NOT NULL	DEFAULT false,
 	`board_flag`	boolean	NOT NULL	DEFAULT false,
 	`stop_flag`	boolean	NOT NULL	DEFAULT FALSE,
