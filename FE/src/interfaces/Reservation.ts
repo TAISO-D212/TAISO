@@ -20,7 +20,7 @@ export interface TogetherRsvInputType {
 	cnt: number;
 }
 
-export interface RsvListType {
+export interface RsvType {
 	rsvId: number;
 	placeId: number;
 	latitude: number;
@@ -32,7 +32,7 @@ export interface RsvListType {
 	cnt: number;
 }
 
-export interface MyRsvListType {
+export interface MyRsvType {
 	rsvId: number;
 	startPlaceId: number;
 	startLatitude: number;

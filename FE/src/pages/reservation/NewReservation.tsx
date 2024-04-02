@@ -11,7 +11,7 @@ import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import { BackButton } from '../../components/BackButton';
+import { HomeBackButton } from '../../components/HomeBackButton';
 import { useNavigate } from 'react-router-dom';
 import { FaBusSimple } from 'react-icons/fa6';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -61,16 +61,16 @@ export const NewReservation = () => {
 	const [userCnt, setUserCnt] = useState<number>(1);
 	const navigate = useNavigate();
 
-	const startBookmarkId = JSON.parse(localStorage.getItem('NewReservation')).state?.startBookmarkId;
-	const startLatitude = JSON.parse(localStorage.getItem('NewReservation')).state?.startLatitude;
-	const startLongitude = JSON.parse(localStorage.getItem('NewReservation')).state?.startLongitude;
-	const startAddress = JSON.parse(localStorage.getItem('NewReservation')).state?.startAddress;
-	const endBookmarkId = JSON.parse(localStorage.getItem('NewReservation')).state?.endBookmarkId;
-	const endLatitude = JSON.parse(localStorage.getItem('NewReservation')).state?.endLatitude;
-	const endLongitude = JSON.parse(localStorage.getItem('NewReservation')).state?.endLongitude;
-	const endAddress = JSON.parse(localStorage.getItem('NewReservation')).state?.endAddress;
-	const time = JSON.parse(localStorage.getItem('NewReservation')).state?.time;
-	const cnt = JSON.parse(localStorage.getItem('NewReservation')).state?.cnt;
+	const startBookmarkId = JSON.parse(localStorage?.getItem('NewReservation')).state?.startBookmarkId;
+	const startLatitude = JSON.parse(localStorage?.getItem('NewReservation')).state?.startLatitude;
+	const startLongitude = JSON.parse(localStorage?.getItem('NewReservation')).state?.startLongitude;
+	const startAddress = JSON.parse(localStorage?.getItem('NewReservation')).state?.startAddress;
+	const endBookmarkId = JSON.parse(localStorage?.getItem('NewReservation')).state?.endBookmarkId;
+	const endLatitude = JSON.parse(localStorage?.getItem('NewReservation')).state?.endLatitude;
+	const endLongitude = JSON.parse(localStorage?.getItem('NewReservation')).state?.endLongitude;
+	const endAddress = JSON.parse(localStorage?.getItem('NewReservation')).state?.endAddress;
+	const time = JSON.parse(localStorage?.getItem('NewReservation')).state?.time;
+	const cnt = JSON.parse(localStorage?.getItem('NewReservation')).state?.cnt;
 
 	useEffect(() => {
 		setRsvObj({
@@ -124,8 +124,8 @@ export const NewReservation = () => {
 			setEndLongitude(null);
 			setEndAddress(null);
 			setTime(null);
-			setCnt(null);
-			// navigate('/reservation');
+			setCnt(1);
+			navigate('/history', { replace: true });
 		});
 	};
 
@@ -133,7 +133,7 @@ export const NewReservation = () => {
 		<>
 			<div className='fixed z-10 top-0 w-[100%] h-[15%] flex-col justify-evenly items-end bg-white'>
 				<div className='flex'>
-					<BackButton />
+					<HomeBackButton />
 					<div className='fixed flex justify-center w-[100%] top-[3%] mx-[5px] font-["Pretendard-Bold"] text-[25px]'>
 						<div>장소 찾기</div>
 					</div>
@@ -165,8 +165,8 @@ export const NewReservation = () => {
 						</AccordionSummary>
 						<AccordionDetails>
 							<Stack spacing={1.5}>
-								<FormControl orientation='horizontal' sx={{ gap: 1 }}>
-									<div className='w-[100%] h-[100%] bg-white border-2 border-[#C4B5FC] rounded-lg divide-y divide-dashed divide-[#C4B5FC]'>
+								<FormControl orientation='horizontal' sx={{ gap: 3 }}>
+									<div className='w-[100%] h-[100%] py-2 bg-white border-2 border-[#C4B5FC] rounded-md divide-y divide-dashed divide-[#C4B5FC]'>
 										<div className='h-[100%] flex items-center' onClick={goSetDeparture}>
 											<span className='mx-[5px]'>
 												<FaBusSimple color='navy' className='mx-[5px]' />
@@ -177,7 +177,7 @@ export const NewReservation = () => {
 								</FormControl>
 
 								<FormControl orientation='horizontal' sx={{ gap: 1 }}>
-									<div className='w-[100%] h-[100%] bg-white border-2 border-[#C4B5FC] rounded-lg divide-y divide-dashed divide-[#C4B5FC]'>
+									<div className='w-[100%] h-[100%] py-2 bg-white border-2 border-[#C4B5FC] rounded-md divide-y divide-dashed divide-[#C4B5FC]'>
 										<div className='h-[100%] flex items-center' onClick={goSetArrival}>
 											<span className='mx-[5px]'>
 												<FaBusSimple color='skyblue' className='mx-[5px]' />

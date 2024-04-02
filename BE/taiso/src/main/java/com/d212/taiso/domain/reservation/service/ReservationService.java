@@ -27,7 +27,7 @@ public interface ReservationService {
     String addRsv(RsvAddReq rsvAddReq);
 
     // 예약 추가하기 (합승)
-    void addTogetherRsv(Long rsvId, RsvTogetherAddReq rsvTogetherAddReq);
+    String addTogetherRsv(Long rsvId, RsvTogetherAddReq rsvTogetherAddReq);
 
     // 예약 삭제하기
     // 만약에 예약을 생성한 사람이 해당 예약을 취소한다면??

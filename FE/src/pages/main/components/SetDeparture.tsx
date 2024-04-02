@@ -9,9 +9,9 @@ import { FavoriteListElement } from '../../favorite/components/FavoriteListEleme
 export const SetDeparture = () => {
 	const navigate = useNavigate();
 	const [bookmarkList, setBookmarkList] = useState<BookmarkType[]>([]);
-	const [editMode, setEditMode] = useState(false);
+	const [editMode] = useState(false);
 	const [isPlaceStartSetting, setIsPlaceStartSetting] = useState(false);
-	const [isPlaceEndSetting, setIsPlaceEndSetting] = useState(false);
+	const [isPlaceEndSetting] = useState(false);
 	// bookmark 정보를 가져오는 함수
 	const handleGetBookmarkList = () => {
 		getBookmarkList().then((res) => {
@@ -38,7 +38,7 @@ export const SetDeparture = () => {
 				<div className='flex'>
 					<BackButton />
 					<div className='fixed flex justify-center w-[100%] top-[3%] mx-[5px] font-["Pretendard-Bold"] text-[25px]'>
-						<div>장소 찾기</div>
+						<div>출발 장소 찾기</div>
 					</div>
 				</div>
 			</div>
@@ -50,6 +50,7 @@ export const SetDeparture = () => {
 						editMode={editMode}
 						isPlaceStartSetting={isPlaceStartSetting}
 						isPlaceEndSetting={isPlaceEndSetting}
+						onClickDelete={null}
 					/>
 				))}
 			</div>

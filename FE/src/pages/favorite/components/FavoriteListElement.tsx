@@ -1,14 +1,17 @@
 import { deleteBookmark } from '../../../apis/bookmarkApi';
 import favoriteStar from '../../../assets/icon/favorite_star.png';
-import { useState } from 'react';
 import { BookmarkType } from '../../../interfaces/Bookmark';
 import NewReservationStore from '../../../store/NewReservationStore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import TogetherRsvStore from '../../../store/TogetherRsvStore';
 
 interface FavoriteListElementProps extends BookmarkType {
-	editMode: boolean;
-	isPlaceStartSetting: boolean;
-	isPlaceEndSetting: boolean;
+	editMode?: boolean;
+	isPlaceStartSetting?: boolean;
+	isPlaceEndSetting?: boolean;
+	isTogetherSetting?: boolean;
+	onClickDelete?: (bookmarkId: number) => void;
 }
 
 export const FavoriteListElement = ({
@@ -18,33 +21,31 @@ export const FavoriteListElement = ({
 	editMode,
 	isPlaceStartSetting,
 	isPlaceEndSetting,
+	isTogetherSetting,
+	onClickDelete,
 }: FavoriteListElementProps) => {
 	const handleDeleteBookmark = (bookmarkId: number) => {
 		deleteBookmark(bookmarkId);
-		// 새로고침해야 사라지는 문제가 있음..
-		// 모달창 띄우고 거기서 확인 누를때마다 새로고침 되도록 구현하기.
+		onClickDelete(bookmarkId);
 	};
 
 	const navigate = useNavigate();
 
+	const { rsvId } = useParams(); // 문자열로 받아짐.
+	const rsvIdInt = parseInt(rsvId, 10);
+
 	const {
-		startBookmarkId,
 		setStartBookmarkId,
-		startLatitude,
 		setStartLatitude,
-		startLongitude,
 		setStartLongitude,
-		startAddress,
 		setStartAddress,
-		endBookmarkId,
 		setEndBookmarkId,
-		endLatitude,
 		setEndLatitude,
-		endLongitude,
 		setEndLongitude,
-		endAddress,
 		setEndAddress,
 	} = NewReservationStore();
+
+	const { setBookmarkId, setLatitude, setLongitude, setAddress } = TogetherRsvStore();
 
 	const handleStartPlaceSetting = () => {
 		// 장소 설정 기능
@@ -64,11 +65,27 @@ export const FavoriteListElement = ({
 		navigate('/reservation/new');
 	};
 
+	// 합승 출발 장소 설정 기능
+	const handleTogeterStartPlaceSetting = (rsvId: number) => {
+		// 장소 설정 기능
+		setBookmarkId(bookmarkId);
+		setLatitude(place.latitude);
+		setLongitude(place.longitude);
+		setAddress(place.address);
+		navigate(`/reservation/${rsvId}`);
+	};
+
 	return (
 		<ul>
 			<li className='ml-8 border-t border-violet-200'>
 				<div className='flex items-center justify-between'>
-					<div className='flex items-center'>
+					<div
+						className='flex items-center'
+						onClick={
+							(isPlaceStartSetting && handleStartPlaceSetting) ||
+							(isPlaceEndSetting && handleEndPlaceSetting) ||
+							undefined
+						}>
 						<div className='mr-2'>
 							<img className='w-6 h-6 opacity-50' src={favoriteStar} alt='star' />
 						</div>
@@ -84,12 +101,19 @@ export const FavoriteListElement = ({
 					)}
 					{isPlaceStartSetting && (
 						<button className='mr-8 text-green-500' onClick={handleStartPlaceSetting}>
-							장소 선택
+							<ArrowForwardIosIcon sx={{ color: '#C4B5FC' }} />
 						</button>
 					)}
 					{isPlaceEndSetting && (
 						<button className='mr-8 text-blue-500' onClick={handleEndPlaceSetting}>
-							장소 선택
+							<ArrowForwardIosIcon sx={{ color: '#C4B5FC' }} />
+						</button>
+					)}
+					{isTogetherSetting && (
+						<button
+							className='mr-8 text-pink-500'
+							onClick={() => handleTogeterStartPlaceSetting(rsvIdInt)}>
+							<ArrowForwardIosIcon sx={{ color: '#C4B5FC' }} />
 						</button>
 					)}
 				</div>

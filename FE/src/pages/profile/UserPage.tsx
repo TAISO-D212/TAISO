@@ -4,11 +4,14 @@ import { BackButton } from '../../components/BackButton';
 import { BottomNav } from '../../components/BottomNav';
 import useCustomLogin from '../../hooks/useCustomLogin';
 import { MemberInfo } from '../../interfaces/Member';
+// 위치추적 테스트 useNavigate
+import { useNavigate } from 'react-router-dom';
 
 export const UserPage = () => {
 	const { doLogout, moveToLogin } = useCustomLogin();
 	const handleClickLogout = () => {
 		doLogout();
+		localStorage.removeItem('NewReservation');
 		alert('로그아웃되었습니다.');
 		moveToLogin();
 	};
@@ -41,6 +44,7 @@ export const UserPage = () => {
 		});
 	};
 
+	const navigate = useNavigate();
 	return (
 		<>
 			<div className='animate-fadeIn flex flex-col'>
@@ -57,6 +61,16 @@ export const UserPage = () => {
 					<hr className='my-4 border-t border-violet-200' />
 				</div>
 				{/* <button onClick={handleClickGetMemberInfo}>test</button> */}
+				{/* 위치추적기능 TEST */}
+				<div className='flex justify-center w-[100%]'>
+					<button
+						className='mt-8 w-[70%] btn btn-accent'
+						onClick={() => {
+							navigate('/move');
+						}}>
+						위치추적기능 페이지 이동 버튼
+					</button>
+				</div>
 			</div>
 			<BottomNav />
 		</>

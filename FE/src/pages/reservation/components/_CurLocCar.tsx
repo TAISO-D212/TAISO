@@ -9,7 +9,7 @@ declare global {
 	}
 }
 
-export const CurLocCar = () => {
+export const _CurLocCar = () => {
 	const { currentLat, currentLng } = LatLngAddStore((state) => state);
 	const latitude = currentLat;
 	const longitude = currentLng;

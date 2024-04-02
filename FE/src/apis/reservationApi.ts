@@ -1,9 +1,9 @@
 import { viteConfig } from './viteConfig';
 import jwtAxios from '../utils/jwtUtil';
 import {
-	MyRsvListType,
+	MyRsvType,
 	RsvInputType,
-	RsvListType,
+	RsvType,
 	TogetherRsvInputType,
 } from '../interfaces/Reservation';
 import { APIResponse } from '../interfaces/Index';
@@ -11,13 +11,13 @@ import { APIResponse } from '../interfaces/Index';
 const host = `${viteConfig.VITE_BASE_URL}/api/reservations`;
 
 // 전체 예약 목록 가져오기
-export const getRsvList = async (): Promise<APIResponse<RsvListType>> => {
+export const getRsvList = async (): Promise<APIResponse<RsvType[]>> => {
 	const res = await jwtAxios.get(`${host}/`);
 	return res.data;
 };
 
 // 내 예약 목록 가져오기
-export const getMyRsvList = async (): Promise<APIResponse<MyRsvListType>> => {
+export const getMyRsvList = async (): Promise<APIResponse<MyRsvType[]>> => {
 	const res = await jwtAxios.get(`${host}/my`);
 	return res.data;
 };
@@ -32,7 +32,7 @@ export const addRsv = async (rsvObj: RsvInputType): Promise<APIResponse<string>>
 export const addTogetherRsv = async (
 	rsvId: number,
 	togetherRsvObj: TogetherRsvInputType,
-): Promise<APIResponse<boolean>> => {
+): Promise<APIResponse<string>> => {
 	const res = await jwtAxios.post(`${host}/${rsvId}`, togetherRsvObj);
 	return res.data;
 };

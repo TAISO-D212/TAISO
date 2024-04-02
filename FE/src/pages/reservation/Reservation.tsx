@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { BackButton2 } from '../../components/BackButton2.tsx';
 import { getRsvList } from '../../apis/reservationApi.ts';
-import { RsvListType } from '../../interfaces/Reservation.ts';
+import { RsvType } from '../../interfaces/Reservation.ts';
 
 export const Reservation = () => {
-	const [rsvList, setRsvList] = useState<RsvListType[]>([]);
+	const [rsvList, setRsvList] = useState<RsvType[]>([]);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -31,7 +31,7 @@ export const Reservation = () => {
 					<div></div>
 				</div>
 				<div className='flex justify-between border border-violet-200 rounded-3xl px-4 py-3 mx-6 text-lg font-medium shadow-md mb-3'>
-					<p> 원하는 목적지가 없으신가요?</p>
+					<button> 원하는 목적지가 없으신가요?</button>
 					<button className='btn btn-sm' onClick={goNewReservation}>
 						NEW
 					</button>
@@ -39,7 +39,7 @@ export const Reservation = () => {
 				{rsvList.length !== 0 ? (
 					<div className='flex flex-col justify-center items-center'>
 						{rsvList.map((e) => {
-							return <ReservationListElement reservationContent={e} />;
+							return <ReservationListElement key={e.rsvId} reservationContent={e} />;
 						})}
 					</div>
 				) : (

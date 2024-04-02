@@ -2,6 +2,7 @@ import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PersonIcon from '@mui/icons-material/Person';
+import { useNavigate } from 'react-router';
 
 interface IReservationListElementProps {
 	reservationContent: {
@@ -18,12 +19,17 @@ interface IReservationListElementProps {
 }
 
 export const ReservationListElement = (props: IReservationListElementProps) => {
-	const onClick = () => {};
+
+	const navigate = useNavigate();
+
+	const goTogetherRsv = (rsvId:number) => {
+		navigate(`/reservation/${rsvId}`)
+	};
+
 	return (
 		<>
 			<div
-				className='w-[90%] px-3 py-2 my-3 border border-violet-200 rounded-md shadow-lg'
-				onClick={onClick}>
+				className='w-[90%] px-3 py-2 my-3 border border-violet-200 rounded-md shadow-lg'>
 				<div className='flex flex-col'>
 					<div className='flex'>
 						<FmdGoodIcon sx={{ color: '#C4B5FC' }} />
@@ -41,9 +47,15 @@ export const ReservationListElement = (props: IReservationListElementProps) => {
 							{`${props.reservationContent.time.substring(11, 13)}:${props.reservationContent.time.substring(14, 16)}`}
 						</div>
 					</div>
-					<div className='flex my-1'>
-						<PersonIcon sx={{ color: '#C4B5FC' }} />
-						<div className='px-2'>{`${props.reservationContent.cnt}명 / 4명`}</div>
+					<div className='flex my-1 justify-between'>
+						<div className='flex'>
+							<PersonIcon sx={{ color: '#C4B5FC' }} />
+							<div className='px-2'>{`${props.reservationContent.cnt}명 / 4명`}</div>
+						</div>
+						<button className='btn btn-sm'
+						onClick={() => goTogetherRsv(props.reservationContent.rsvId)}>
+						합승예약
+					</button>
 					</div>
 				</div>
 			</div>

@@ -1,95 +1,32 @@
-import { BackButton } from '../../components/BackButton';
+import { BackButton2 } from '../../components/BackButton2';
 import { BottomNav } from '../../components/BottomNav';
 import { useState, useEffect } from 'react';
 import { HistoryListElement } from './components/HistoryListElement';
-
-interface IRsvHistoryType {
-	startPlaceId?: number;
-	startLatitude?: number;
-	startLongitude?: number;
-	startAddress?: string;
-	endPlaceId?: number;
-	endLatitude?: number;
-	endLongitude?: number;
-	endAddress?: string;
-	departureTime: string;
-	ArrivalTime: string;
-	cnt: number;
-}
+import { getMyRsvList } from '../../apis/reservationApi';
+import { MyRsvType } from '../../interfaces/Reservation';
 
 export const History = () => {
-	const [historyArr, setHistoryArr] = useState<IRsvHistoryType[]>([]);
+	const [myRsv, setMyRsv] = useState<MyRsvType[]>([]);
+	const [editMode, setEditMode] = useState<boolean>(false);
+
 	useEffect(() => {
-		// TODO : 더미데이터 만들어서 내역 보여주기!
-		setHistoryArr([
-			{
-				startPlaceId: 1,
-				startLatitude: 37.5665,
-				startLongitude: 126.978,
-				startAddress: '경상북도 구미시 진평동',
-				endPlaceId: 2,
-				endLatitude: 37.5665,
-				endLongitude: 126.978,
-				endAddress: '경상북도 구미시 인의동',
-				departureTime: '2022-01-01T00:00:00.000Z',
-				ArrivalTime: '2022-01-01T00:12:30.000Z',
-				cnt: 1,
-			},
-			{
-				startPlaceId: 3,
-				startLatitude: 37.5665,
-				startLongitude: 126.978,
-				startAddress: '대구광역시 수성구 두산동',
-				endPlaceId: 4,
-				endLatitude: 37.5665,
-				endLongitude: 126.978,
-				endAddress: '대구광역시 수성구 만촌동',
-				departureTime: '2022-01-01T00:00:00.000Z',
-				ArrivalTime: '2022-01-01T00:03:44.000Z',
-				cnt: 1,
-			},
-			{
-				startPlaceId: 5,
-				startLatitude: 37.5665,
-				startLongitude: 126.978,
-				startAddress: '서울특별시 관악구 신림동',
-				endPlaceId: 6,
-				endLatitude: 37.5665,
-				endLongitude: 126.978,
-				endAddress: '서울특별시 관악구 대학동',
-				departureTime: '2022-01-01T00:00:00.000Z',
-				ArrivalTime: '2022-01-01T00:23:10.000Z',
-				cnt: 1,
-			},
-			{
-				startPlaceId: 5,
-				startLatitude: 37.5665,
-				startLongitude: 126.978,
-				startAddress: '서울특별시 강남구 역삼동',
-				endPlaceId: 6,
-				endLatitude: 37.5665,
-				endLongitude: 126.978,
-				endAddress: '서울특별시 강남구 신사동',
-				departureTime: '2022-01-01T00:00:00.000Z',
-				ArrivalTime: '2022-01-01T00:47:10.000Z',
-				cnt: 1,
-			},
-		]);
+		getMyRsvList().then((res) => {
+			console.log(res.data);
+			setMyRsv(res.data);
+		});
 	}, []);
 
-	return (
+	const onClickDelete = (rsvId: number) => {
+		setMyRsv(myRsv.filter((myRv) => myRv.rsvId !== rsvId));
+	};
+
+	const content = (
 		<>
-			<BackButton />
-			<div className='w-[100%] h-[12%] z-10 animate-fadeIn'>
-				<div className='w-[100%] h-[100%] flex flex-col font-[#a9a9a9] justify-center items-center text-center'>
-					<div className="font-['Pretendard-Bold'] text-[26px] my-[2%]">이용내역</div>
-				</div>
-			</div>
-			<div className='fixed w-[100%] flex-col justify-center animate-fadeIn'>
-				{historyArr.length !== 0 ? (
-					<div className='fixed bottom-[90px] pt-[100px] w-[100%] h-[75%] flex flex-col justify-center items-center divide-y divide-dashed divide-slate-300 overflow-y-scroll'>
-						{historyArr.map((e) => {
-							return <HistoryListElement historyContent={e} />;
+			<div className='w-[100%] h-[70%] flex-col justify-center animate-fadeIn'>
+				{myRsv.length !== 0 ? (
+					<div className=' w-[100%] h-[75%] flex flex-col justify-center items-center overflow-y-scroll'>
+						{myRsv.map((e) => {
+							return <HistoryListElement key={e.rsvId} rsvContent={e} editMode={editMode} onClickDelete={onClickDelete}/>;
 						})}
 					</div>
 				) : (
@@ -97,6 +34,41 @@ export const History = () => {
 						이용 내역이 없습니다.
 					</div>
 				)}
+			</div>
+		</>
+	);
+
+	// 편집 모드 토글 함수
+	const toggleEditMode = () => {
+		setEditMode(!editMode);
+	};
+
+	return (
+		<>
+			<div className='flex ml-3 my-6 justify-between'>
+				<BackButton2 />
+				<div className="flex font-['Pretendard-Bold'] text-[26px] pl-2">이용내역</div>
+				<div className='mt-2 mr-8 opacity-70' onClick={toggleEditMode}>
+					{editMode ? '취소' : '삭제'}
+				</div>
+			</div>
+			<div role='tablist' className='tabs tabs-bordered w-[100%]'>
+				<input
+					type='radio'
+					name='my_tabs_1'
+					role='tab'
+					className='tab'
+					aria-label='예약 현황'
+					checked
+				/>
+				<div role='tabpanel' className='w-[100%] tab-content p-5'>
+					{content}
+				</div>
+
+				<input type='radio' name='my_tabs_1' role='tab' className='tab' aria-label='지난 예약' />
+				<div role='tabpanel' className='w-[100%] tab-content p-5 animated-fadeIn'>
+					{'지난 예약이 없습니다.'}
+				</div>
 			</div>
 			<BottomNav />
 		</>
