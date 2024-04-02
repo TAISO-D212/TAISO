@@ -5,7 +5,6 @@ import { MainPage } from './pages/main/MainPage.tsx';
 import { Reservation } from './pages/reservation/Reservation.tsx';
 import { NewReservation } from './pages/reservation/NewReservation.tsx';
 import { TogetherRsv } from './pages/reservation/TogetherRsv.tsx';
-
 import { History } from './pages/history/History.tsx';
 import { NotFound } from './pages/NotFound.tsx';
 import { UserPage } from './pages/profile/UserPage.tsx';
@@ -14,6 +13,7 @@ import { SetTogetherDeparture } from './pages/main/components/SetTogetherDepartu
 import { SetArrival } from './pages/main/components/SetArrival.tsx';
 import { SetDepartureByMap } from './pages/main/components/SetDepartureByMap.tsx';
 import { SetArrivalByMap } from './pages/main/components/SetArrivalByMap.tsx';
+import { SetTogetherDepartureByMap } from './pages/main/components/SetTogetherDepartureByMap.tsx';
 import { Favorite } from './pages/favorite/Favorite.tsx';
 import PageWithLogin from './pages/PageWithLogin.tsx';
 import PageWithoutLogin from './pages/PageWithoutLogin.tsx';
@@ -37,6 +37,7 @@ export const rounterItems: IRouterItem[] = [
 	{ path: '/setArrival', element: <SetArrival />, withAuth: true },
 	{ path: '/setDepartureByMap', element: <SetDepartureByMap />, withAuth: true },
 	{ path: '/setArrivalByMap', element: <SetArrivalByMap />, withAuth: true },
+	{ path: '/setTogetherDepartureByMap/:rsvId', element: <SetTogetherDepartureByMap />, withAuth: true },
 	{ path: '/history', element: <History />, withAuth: true },
 	{ path: '/move', element: <MovingTAISO />, withAuth: true },
 	{ path: '/favorite', element: <Favorite />, withAuth: true },
