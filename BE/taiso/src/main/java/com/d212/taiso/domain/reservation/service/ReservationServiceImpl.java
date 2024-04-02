@@ -204,6 +204,7 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation reservation = reservationRepository.findById(rsvId)
             .orElseThrow(() -> new BusinessException(ErrorCode.RESERVATION_NOT_EXIST));
 
+
         // 예약 인원 수가 초과되었을 시 저장 실패
         // 기존 예약 인원 수 + 경유지 예약 인원 수
         int totalCnt = reservation.getCnt() + rsvTogetherAddReq.getCnt();
@@ -256,13 +257,14 @@ public class ReservationServiceImpl implements ReservationService {
         rsvDetailRepository.save(rsvDetail);
 
         return "합승 예약이 성공적으로 추가되었습니다.";
+
     }
 
     @Override
     public void deleteRsv(Long rsvId, Long placeId) {
 
-        // 요청한 멤버의 정보 가져오기
-        Member member = commonUtil.getMember();
+//        // 요청한 멤버의 정보 가져오기
+//        Member member = commonUtil.getMember();
 
         Reservation reservation = reservationRepository.findById(rsvId)
             .orElseThrow(() -> new BusinessException(ErrorCode.RESERVATION_NOT_EXIST));
@@ -277,9 +279,8 @@ public class ReservationServiceImpl implements ReservationService {
             .place(place)
             .build();
 
-        // 먼저 detail 조회하기 (멤버 정보도 같이 이용해서, 예약 안한 다른 사람이 지우면 안됨)
-        RsvDetail rsvDetail = rsvDetailRepository.findRsvDetailByMemberAndRsvDetailId(member,
-                rsvDetailId)
+        // 먼저 detail 조회하기 (placeId 정보도 같이 이용)
+        RsvDetail rsvDetail = rsvDetailRepository.findById(rsvDetailId)
             .orElseThrow(() -> new BusinessException(ErrorCode.RSV_DETAIL_NOT_EXIST));
 
         // detail 정보를 통해서 예약 리스트 내용 수정하기
