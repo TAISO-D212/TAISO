@@ -3,9 +3,10 @@
 
 import rospy
 import rospkg
-from math import cos,sin,pi,sqrt,pow
+from math import cos,sin,pi,sqrt,pow, asin
 from geometry_msgs.msg import Point32,PoseStamped
 from nav_msgs.msg import Odometry,Path
+from std_msgs.msg import String
 
 class local_path_pub :
     def __init__(self):
@@ -15,11 +16,14 @@ class local_path_pub :
         self.global_path_sub = rospy.Subscriber( 'global_path', Path, self.global_path_callback)
 
         self.local_path_pub = rospy.Publisher('/local_path',Path, queue_size=1)
+        self.intersection_pub = rospy.Publisher('/intersection', String, queue_size=1)
 
         self.is_odom = False
         self.is_path = False
 
-        self.local_path_size = 70
+        self.local_path_size = 100
+
+        self.intersection_msg = String()
 
         rate = rospy.Rate(20)
         while not rospy.is_shutdown():
@@ -55,6 +59,21 @@ class local_path_pub :
                             read_pose.pose.orientation.w = 1
                             local_path_msg.poses.append(read_pose)
 
+                self.intersection_msg.data = 'forward'
+                if len(local_path_msg.poses) > 2:
+                    now_vec = [local_path_msg.poses[1].pose.position.x - local_path_msg.poses[0].pose.position.x, local_path_msg.poses[1].pose.position.y - local_path_msg.poses[0].pose.position.y]
+                    now_vec_r = (now_vec[0]**2 + now_vec[1]**2)**0.5
+                    next_vec = [local_path_msg.poses[len(local_path_msg.poses)-1].pose.position.x - local_path_msg.poses[len(local_path_msg.poses)-2].pose.position.x, local_path_msg.poses[len(local_path_msg.poses)-1].pose.position.y - local_path_msg.poses[len(local_path_msg.poses)-2].pose.position.y]
+                    next_vec_r = (next_vec[0]**2 + next_vec[1]**2)**0.5
+                    cross_product = now_vec[0]*next_vec[1] - now_vec[1]*next_vec[0]
+                    sinTheta = cross_product/max(0.001,now_vec_r*next_vec_r)
+                    theta = asin(sinTheta)*180/pi
+                    if theta > 75:
+                        self.intersection_msg.data = 'left'
+                    elif theta < -75:
+                        self.intersection_msg.data = 'right'
+                self.intersection_pub.publish(self.intersection_msg)
+
                 print(x,y)
                 self.local_path_pub.publish(local_path_msg)
 
@@ -73,9 +92,8 @@ class local_path_pub :
         self.global_path_msg = msg      
 
 
-if __name__ == '__main__':
+if __name__ == '__main__': 
     try:
         test_track=local_path_pub()
     except rospy.ROSInterruptException:
         pass
-
