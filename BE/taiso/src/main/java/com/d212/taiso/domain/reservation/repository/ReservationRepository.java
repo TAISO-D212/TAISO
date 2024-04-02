@@ -30,5 +30,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query("select new com.d212.taiso.domain.reservation.dto.OriginRouteInfoDto(r.routeDist, r.stopCnt) from Reservation r where r.id = :rsvId")
     Optional<OriginRouteInfoDto> findRouteDistAndStopCntByRsvId(Long rsvId);
 
+    @Query("select r.place.id from Reservation r where r.id = :rsvId")
+    Long findPlaceIdByReservationId(Long rsvId);
+
 }
 
