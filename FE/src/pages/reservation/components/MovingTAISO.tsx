@@ -7,6 +7,7 @@ import StopTrackingMove from '../../../components/StopTrackingMove';
 import FootInfoItem from '../../../components/FootInfoItem';
 import { formatTime } from '../../../utils/timeUtil';
 // import { toPng } from 'html-to-image';
+import { useMQTT } from '../../../utils/mqttProvider';
 import { MoveStore } from '../../../store/MoveStore';
 import { CarStore } from '../../../store/CarStore';
 import { getCookie, setCookie } from '../../../utils/cookieUtil';
@@ -16,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const MovingTAISO = () => {
 	const navigate = useNavigate();
+	const { locationData } = useMQTT();
 	// 시간 상태를 관리합니다. 초기값은 0입니다.
 	// const [time, setTime] = useState(0);
 	// 스톱워치가 실행 중인지 여부를 관리합니다.
@@ -202,6 +204,8 @@ export const MovingTAISO = () => {
 		// 차량의 위치 추적을 시작하는 함수
 		const startCarTracking = () => {
 			// MQTT로 데이터 받아오는 부분
+			// const lat = locationData[-1].lat
+			// const lng = locationData[-1].lon
 			const lat = 36.1287694;
 			const lng = 128.3296222;
 			setCarLocation((prev) => ({
@@ -241,7 +245,7 @@ export const MovingTAISO = () => {
 				polyline.setMap(copyMap);
 				polylineRef.current = polyline;
 			} else {
-				polylineRef.current.setPath(locationList);
+				polylineRef.current.setPath(locationData);
 			}
 		}
 		// return () => {
