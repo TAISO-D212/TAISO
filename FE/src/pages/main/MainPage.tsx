@@ -3,7 +3,7 @@ import LoadingBus from '../../assets/loading/loading.gif';
 import { KakaoMap } from './components/KakaoMap';
 import { BottomNav } from '../../components/BottomNav';
 import { MainBottom } from './components/MainBottom';
-import { CurLocCar } from '../reservation/components/CurLocCar';
+// import { MovingTAISO } from '../reservation/components/MovingTAISO';
 // import { SetCurrentLoc } from './components/SetCurrentLoc';
 import NewReservationStore from '../../store/NewReservationStore';
 
