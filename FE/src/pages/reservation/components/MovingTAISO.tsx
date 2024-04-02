@@ -202,8 +202,8 @@ export const MovingTAISO = () => {
 		// 차량의 위치 추적을 시작하는 함수
 		const startCarTracking = () => {
 			// MQTT로 데이터 받아오는 부분
-			const lat = 37.566826;
-			const lng = 126.9786567;
+			const lat = 36.1287694;
+			const lng = 128.3296222;
 			setCarLocation((prev) => ({
 				...prev,
 				center: { lat, lng },
