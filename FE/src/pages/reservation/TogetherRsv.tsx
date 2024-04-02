@@ -42,6 +42,7 @@ export const TogetherRsv = () => {
 
 	const navigate = useNavigate();
 
+	
   // 로컬스토리지로 부터 데이터 가져오기
 	const bookmarkId = JSON.parse(localStorage?.getItem('TogetherRsv')).state?.bookmarkId;
 	const latitude = JSON.parse(localStorage?.getItem('TogetherRsv')).state?.latitude;
@@ -57,7 +58,7 @@ export const TogetherRsv = () => {
 			address,
 			cnt,
 		});
-	}, [address, bookmarkId, cnt, latitude, longitude]);
+	}, [address, bookmarkId, cnt, latitude, longitude, userCnt]);
 
 	const goSetTogetherDeparture = (rsvId:number) => {
 		navigate(`/setTogetherDeparture/${rsvId}`);
@@ -76,7 +77,7 @@ export const TogetherRsv = () => {
 			setLatitude(null);
 			setLongitude(null);
 			setAddress(null);
-			setCnt(null);
+			setCnt(1);
 			navigate('/history', { replace: true });
 		});
 	};
