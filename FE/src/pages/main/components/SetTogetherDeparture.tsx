@@ -1,17 +1,18 @@
 import { BackButton } from '../../../components/BackButton';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import MapIcon from '@mui/icons-material/Map';
 import { getBookmarkList } from '../../../apis/bookmarkApi';
 import { BookmarkType } from '../../../interfaces/Bookmark';
 import { FavoriteListElement } from '../../favorite/components/FavoriteListElement';
 
-export const SetDeparture = () => {
+export const SetTogetherDeparture = () => {
 	const navigate = useNavigate();
 	const [bookmarkList, setBookmarkList] = useState<BookmarkType[]>([]);
-	const [editMode] = useState(false);
-	const [isPlaceStartSetting, setIsPlaceStartSetting] = useState(false);
-	const [isPlaceEndSetting] = useState(false);
+
+	const { rsvId } = useParams();
+	const rsvIdInt = parseInt(rsvId, 10);
+
 	// bookmark 정보를 가져오는 함수
 	const handleGetBookmarkList = () => {
 		getBookmarkList().then((res) => {
@@ -23,14 +24,20 @@ export const SetDeparture = () => {
 
 	useEffect(() => {
 		handleGetBookmarkList();
-		setIsPlaceStartSetting(true);
+	}, []);
+
+	const [isTogetherSetting, setIsTogetherSetting] = useState(false);
+
+	useEffect(() => {
+		handleGetBookmarkList();
+		setIsTogetherSetting(true);
 		return () => {
-			setIsPlaceStartSetting(false);
+			setIsTogetherSetting(false);
 		};
 	}, []);
 
-	const handleSetDepartureByMap = () => {
-		navigate('/setDepartureByMap');
+	const handleSetTogetherDepartureByMap = (rsvId: number) => {
+		navigate(`/setTogetherDepartureByMap/${rsvId}`);
 	};
 	return (
 		<>
@@ -47,17 +54,14 @@ export const SetDeparture = () => {
 					<FavoriteListElement
 						key={bookmark.bookmarkId}
 						{...bookmark}
-						editMode={editMode}
-						isPlaceStartSetting={isPlaceStartSetting}
-						isPlaceEndSetting={isPlaceEndSetting}
-						onClickDelete={null}
+						isTogetherSetting={isTogetherSetting}
 					/>
 				))}
 			</div>
 			<div className='fixed z-10 bottom-0 w-[100%] h-[15%] flex flex-col justify-center items-center bg-white'>
 				<div
 					className='w-[70%] font-["Pretendard-Bold"] flex justify-evenly items-center text-[26px] my-3 hover:cursor-pointer'
-					onClick={handleSetDepartureByMap}>
+					onClick={ () => handleSetTogetherDepartureByMap(rsvIdInt)}>
 					<MapIcon sx={{ color: '#d9d9d9' }} />
 					지도에서 설정하기
 				</div>

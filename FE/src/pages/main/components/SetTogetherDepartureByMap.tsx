@@ -2,10 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 import LatLngAddStore from '../../../store/LatLngAddStore';
 import { HomeBackButton } from '../../../components/HomeBackButton';
 import { BookmarkInputType } from '../../../interfaces/Bookmark';
-import { useNavigate } from 'react-router-dom';
-import NewReservationStore from '../../../store/NewReservationStore';
+import { useNavigate, useParams } from 'react-router-dom';
 import StarIcon from '@mui/icons-material/Star';
 import { addBookmark } from '../../../apis/bookmarkApi';
+import TogetherRsvStore from '../../../store/TogetherRsvStore';
 
 // kakao 변수를 전역으로 선언
 declare global {
@@ -14,17 +14,21 @@ declare global {
 	}
 }
 
-export const SetArrivalByMap = () => {
+export const SetTogetherDepartureByMap = () => {
 	const navigate = useNavigate();
+
+	const { rsvId } = useParams();
+	const rsvIdInt = parseInt(rsvId, 10);
+
 	const [map, setMap] = useState<any>();
 	const [ps, setPs] = useState<any>();
 	const [geocoder, setGeocoder] = useState<any>();
 	const [keyword, setKeyword] = useState<string>('');
-	const [arriveMarker, setArriveMarker] = useState<any>();
+	const [startMarker, setStartMarker] = useState<any>();
 	const [name, setName] = useState<string>('');
-	const [address, setAddress] = useState<string>('');
-	const [endLat, setEndLat] = useState<number | null>();
-	const [endLng, setEndLng] = useState<number | null>();
+	const [address, setAddr] = useState<string>('');
+	const [startLat, setStartLat] = useState<number | null>();
+	const [startLng, setStartLng] = useState<number | null>();
 	const modalRef = useRef<HTMLDialogElement>(null);
 
 	const openModal = () => {
@@ -39,7 +43,7 @@ export const SetArrivalByMap = () => {
 		}
 	};
 
-	const { setEndAddress, setEndLatitude, setEndLongitude, setEndBookmarkId } = NewReservationStore();
+	const { setAddress, setLatitude, setLongitude, setBookmarkId } = TogetherRsvStore();
 
 	const { currentLat, currentLng } = LatLngAddStore((state) => state);
 	const lat = currentLat;
@@ -72,9 +76,9 @@ export const SetArrivalByMap = () => {
 						? result[0].road_address.address_name
 						: result[0].address.address_name;
 
-					setAddress(newAddress);
-					setEndLat(newMap.getCenter().getLat());
-					setEndLng(newMap.getCenter().getLng());
+					setAddr(newAddress);
+					setStartLat(newMap.getCenter().getLat());
+					setStartLng(newMap.getCenter().getLng());
 				}
 			},
 		);
@@ -85,66 +89,62 @@ export const SetArrivalByMap = () => {
 		initMarker(newMap, newGeocoder, newAddress);
 	}, []);
 
-	const handleSetEndLoc = () => {
-		setEndBookmarkId(null);
-		setEndAddress(address);
-		setEndLatitude(endLat);
-		setEndLongitude(endLng);
-		navigate('/reservation/new');
+	const handleSetStartLoc = () => {
+		setBookmarkId(null);
+		setAddress(address);
+		setLatitude(startLat);
+		setLongitude(startLng);
+		navigate(`/reservation/${rsvIdInt}`);
 	};
 
 	const initMarker = (map: any, geocoder: any, address: string) => {
-		if (!!arriveMarker === false) {
-			const arriveSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/blue_b.png'; // 출발 마커이미지의 주소입니다
-			const arriveSize = new kakao.maps.Size(50, 45); // 출발 마커이미지의 크기입니다
-			const arriveOption = {
+		if (!!startMarker === false) {
+			const startSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png'; // 출발 마커이미지의 주소입니다
+			const startSize = new kakao.maps.Size(50, 45); // 출발 마커이미지의 크기입니다
+			const startOption = {
 				offset: new kakao.maps.Point(15, 43), // 출발 마커이미지에서 마커의 좌표에 일치시킬 좌표를 설정합니다 (기본값은 이미지의 가운데 아래입니다)
 			};
 
-			// 도착 마커 이미지를 생성합니다
-			const arriveImage = new kakao.maps.MarkerImage(arriveSrc, arriveSize, arriveOption);
+			// 출발 마커 이미지를 생성합니다
+			const startImage = new kakao.maps.MarkerImage(startSrc, startSize, startOption);
 
-			const arriveDragSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/blue_drag.png'; // 출발 마커의 드래그 이미지 주소입니다
-			const arriveDragSize = new kakao.maps.Size(50, 64); // 출발 마커의 드래그 이미지 크기입니다
-			const arriveDragOption = {
+			const startDragSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_drag.png'; // 출발 마커의 드래그 이미지 주소입니다
+			const startDragSize = new kakao.maps.Size(50, 64); // 출발 마커의 드래그 이미지 크기입니다
+			const startDragOption = {
 				offset: new kakao.maps.Point(15, 54), // 출발 마커의 드래그 이미지에서 마커의 좌표에 일치시킬 좌표를 설정합니다 (기본값은 이미지의 가운데 아래입니다)
 			};
 
 			// 출발 마커의 드래그 이미지를 생성합니다
-			const arriveDragImage = new kakao.maps.MarkerImage(
-				arriveDragSrc,
-				arriveDragSize,
-				arriveDragOption,
-			);
+			const startDragImage = new kakao.maps.MarkerImage(startDragSrc, startDragSize, startDragOption);
 
 			// 출발 마커가 표시될 위치입니다
-			const arrivePosition = new kakao.maps.LatLng(lat, long);
+			const startPosition = new kakao.maps.LatLng(lat, long);
 
 			// 출발 마커를 생성합니다
-			const newArriveMarker = new kakao.maps.Marker({
+			const newStartMarker = new kakao.maps.Marker({
 				map: map, // 출발 마커가 지도 위에 표시되도록 설정합니다
-				position: arrivePosition,
+				position: startPosition,
 				zIndex: 1,
 				draggable: true, // 출발 마커가 드래그 가능하도록 설정합니다
-				image: arriveImage, // 출발 마커이미지를 설정합니다
+				image: startImage, // 출발 마커이미지를 설정합니다
 			});
 
 			// 출발 마커에 dragstart 이벤트를 등록합니다
-			(function (arriveMarker) {
-				kakao.maps.event.addListener(arriveMarker, 'dragstart', function () {
+			(function (startMarker) {
+				kakao.maps.event.addListener(startMarker, 'dragstart', function () {
 					// 출발 마커의 드래그가 시작될 때 마커 이미지를 변경합니다
-					arriveMarker.setImage(arriveDragImage);
+					startMarker.setImage(startDragImage);
 				});
-			})(newArriveMarker);
+			})(newStartMarker);
 
 			// 출발 마커에 dragend 이벤트를 등록합니다
-			(function (arriveMarker, geocoder, address) {
-				kakao.maps.event.addListener(arriveMarker, 'dragend', function () {
+			(function (startMarker, geocoder, address) {
+				kakao.maps.event.addListener(startMarker, 'dragend', function () {
 					// 출발 마커의 드래그가 종료될 때 마커 이미지를 원래 이미지로 변경합니다
-					arriveMarker.setImage(arriveImage);
+					startMarker.setImage(startImage);
 					geocoder.coord2Address(
-						arriveMarker.getPosition().getLng(),
-						arriveMarker.getPosition().getLat(),
+						startMarker.getPosition().getLng(),
+						startMarker.getPosition().getLat(),
 						function (result: any, status: any) {
 							if (status === kakao.maps.services.Status.OK) {
 								console.log(result);
@@ -153,16 +153,16 @@ export const SetArrivalByMap = () => {
 									? result[0].road_address.address_name
 									: result[0].address.address_name;
 
-								setAddress(address);
-								setEndLat(arriveMarker.getPosition().getLat());
-								setEndLng(arriveMarker.getPosition().getLng());
+								setAddr(address);
+								setStartLat(startMarker.getPosition().getLat());
+								setStartLng(startMarker.getPosition().getLng());
 							}
 						},
 					);
 				});
-			})(newArriveMarker, geocoder, address);
+			})(newStartMarker, geocoder, address);
 
-			setArriveMarker(newArriveMarker);
+			setStartMarker(newStartMarker);
 		}
 	};
 
@@ -246,8 +246,8 @@ export const SetArrivalByMap = () => {
 	const fetchFavorite = () => {
 		const favoriteObj: BookmarkInputType = {
 			name,
-			latitude: endLat,
-			longitude: endLng,
+			latitude: startLat,
+			longitude: startLng,
 			address: address,
 		};
 
@@ -297,7 +297,8 @@ export const SetArrivalByMap = () => {
 		지도에서 찾기 버튼 클릭
 		즐겨찾기 목록 안보이고, 지도 활성화
 		즐겨찾기 목록에서 즐겨찾기 삭제 만들기 (즐겨찾기 DELETE 방식으로 BE에 전달하기)
-		현위치 즐겨찾기 추가 만들기 (즐겨찾기 POST 방식으로 BE에 전달하기)
+		현위치 즐겨찾기 추
+		가 만들기 (즐겨찾기 POST 방식으로 BE에 전달하기)
 		*/}
 			{modal}
 			<div className='fixed z-10 top-0 w-[100%] h-[15%] flex-col justify-evenly items-end bg-white'>
@@ -313,7 +314,7 @@ export const SetArrivalByMap = () => {
 							<input
 								className='w-[100%] pl-[10%] py-1 font-["Pretendard-Bold"] rounded-md border-2 border-slate-300 placeholder:text-slate-400 focus:outline-sky-500 focus:border-sky-500'
 								type='text'
-								placeholder='도착지를 입력해 주세요.'
+								placeholder='출발지를 입력해 주세요.'
 								value={keyword}
 								onChange={handleKeywordChange}
 							/>
@@ -335,10 +336,10 @@ export const SetArrivalByMap = () => {
 					<span>현 위치 즐겨찾기 추가 {'>'}</span>
 				</div>
 				<div
-					className='w-[70%] h-[40%] mb-2 flex justify-center items-center bg-[#3422F2] rounded-full'
-					onClick={handleSetEndLoc}>
+					className=' w-[70%] h-[40%] mb-2 flex justify-center items-center bg-[#3422F2] rounded-full'
+					onClick={handleSetStartLoc}>
 					<span className='flex justify-center w-[100%] font-["Pretendard-Bold"] text-[25px] text-white'>
-						도착지 설정
+						출발지 설정
 					</span>
 				</div>
 			</div>

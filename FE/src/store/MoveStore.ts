@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 
 interface ILocation {
 	La: number;
-	Ln: number;
+	Ma: number;
 }
 
 interface MoveStoreState {
@@ -38,7 +38,7 @@ export const MoveStore = create(
 			resetTime: () => set({ time: 0 }),
 		}),
 		{
-			name: 'Move',
+			name: 'User',
 			getStorage: () => localStorage,
 		},
 	),

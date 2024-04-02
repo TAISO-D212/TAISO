@@ -124,7 +124,7 @@ export const NewReservation = () => {
 			setEndLongitude(null);
 			setEndAddress(null);
 			setTime(null);
-			setCnt(null);
+			setCnt(1);
 			navigate('/history', { replace: true });
 		});
 	};
