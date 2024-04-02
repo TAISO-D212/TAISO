@@ -50,6 +50,7 @@ export const SetDeparture = () => {
 						editMode={editMode}
 						isPlaceStartSetting={isPlaceStartSetting}
 						isPlaceEndSetting={isPlaceEndSetting}
+						onClickDelete={null}
 					/>
 				))}
 			</div>
