@@ -4,10 +4,13 @@ import { SignUpPage } from './pages/signup/SignUpPage.tsx';
 import { MainPage } from './pages/main/MainPage.tsx';
 import { Reservation } from './pages/reservation/Reservation.tsx';
 import { NewReservation } from './pages/reservation/NewReservation.tsx';
+import { TogetherRsv } from './pages/reservation/TogetherRsv.tsx';
+
 import { History } from './pages/history/History.tsx';
 import { NotFound } from './pages/NotFound.tsx';
 import { UserPage } from './pages/profile/UserPage.tsx';
 import { SetDeparture } from './pages/main/components/SetDeparture.tsx';
+import { SetTogetherDeparture } from './pages/main/components/SetTogetherDeparture.tsx';
 import { SetArrival } from './pages/main/components/SetArrival.tsx';
 import { SetDepartureByMap } from './pages/main/components/SetDepartureByMap.tsx';
 import { SetArrivalByMap } from './pages/main/components/SetArrivalByMap.tsx';
@@ -28,7 +31,9 @@ export const rounterItems: IRouterItem[] = [
 	{ path: '/main', element: <MainPage />, withAuth: true },
 	{ path: '/reservation', element: <Reservation />, withAuth: true },
 	{ path: '/reservation/new', element: <NewReservation />, withAuth: true },
+	{ path: '/reservation/:rsvId', element: <TogetherRsv />, withAuth: true },
 	{ path: '/setDeparture', element: <SetDeparture />, withAuth: true },
+	{ path: '/setTogetherDeparture/:rsvId', element: <SetTogetherDeparture />, withAuth: true },
 	{ path: '/setArrival', element: <SetArrival />, withAuth: true },
 	{ path: '/setDepartureByMap', element: <SetDepartureByMap />, withAuth: true },
 	{ path: '/setArrivalByMap', element: <SetArrivalByMap />, withAuth: true },

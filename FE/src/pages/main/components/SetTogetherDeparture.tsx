@@ -6,12 +6,10 @@ import { getBookmarkList } from '../../../apis/bookmarkApi';
 import { BookmarkType } from '../../../interfaces/Bookmark';
 import { FavoriteListElement } from '../../favorite/components/FavoriteListElement';
 
-export const SetDeparture = () => {
+export const SetTogetherDeparture = () => {
 	const navigate = useNavigate();
 	const [bookmarkList, setBookmarkList] = useState<BookmarkType[]>([]);
-	const [editMode] = useState(false);
-	const [isPlaceStartSetting, setIsPlaceStartSetting] = useState(false);
-	const [isPlaceEndSetting] = useState(false);
+
 	// bookmark 정보를 가져오는 함수
 	const handleGetBookmarkList = () => {
 		getBookmarkList().then((res) => {
@@ -23,11 +21,19 @@ export const SetDeparture = () => {
 
 	useEffect(() => {
 		handleGetBookmarkList();
-		setIsPlaceStartSetting(true);
+	}, []);
+
+	const [isTogetherSetting, setIsTogetherSetting] = useState(false)
+	
+
+	useEffect(() => {
+		handleGetBookmarkList();
+		setIsTogetherSetting(true);
 		return () => {
-			setIsPlaceStartSetting(false);
+			setIsTogetherSetting(false);
 		};
 	}, []);
+
 
 	const handleSetDepartureByMap = () => {
 		navigate('/setDepartureByMap');
@@ -47,10 +53,7 @@ export const SetDeparture = () => {
 					<FavoriteListElement
 						key={bookmark.bookmarkId}
 						{...bookmark}
-						editMode={editMode}
-						isPlaceStartSetting={isPlaceStartSetting}
-						isPlaceEndSetting={isPlaceEndSetting}
-						onClickDelete={null}
+						isTogetherSetting={isTogetherSetting}
 					/>
 				))}
 			</div>

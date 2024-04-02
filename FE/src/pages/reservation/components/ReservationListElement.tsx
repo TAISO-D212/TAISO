@@ -2,6 +2,7 @@ import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PersonIcon from '@mui/icons-material/Person';
+import { useNavigate } from 'react-router';
 
 interface IReservationListElementProps {
 	reservationContent: {
@@ -18,7 +19,13 @@ interface IReservationListElementProps {
 }
 
 export const ReservationListElement = (props: IReservationListElementProps) => {
-	const onClick = () => {};
+
+	const navigate = useNavigate();
+
+	const goTogetherRsv = (rsvId:number) => {
+		navigate(`/reservation/${rsvId}`)
+	};
+
 	return (
 		<>
 			<div
@@ -46,7 +53,7 @@ export const ReservationListElement = (props: IReservationListElementProps) => {
 							<div className='px-2'>{`${props.reservationContent.cnt}명 / 4명`}</div>
 						</div>
 						<button className='btn btn-sm'
-						onClick={onClick}>
+						onClick={() => goTogetherRsv(props.reservationContent.rsvId)}>
 						합승예약
 					</button>
 					</div>
