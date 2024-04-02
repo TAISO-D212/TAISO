@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Map } from '../../../components/Map';
 import LoadingBus from '../../../assets/loading/loading.gif';
+import UserMarker from '../../../assets/icon/CurLoc_Img.png';
 import StopTrackingMove from '../../../components/StopTrackingMove';
 import FootInfoItem from '../../../components/FootInfoItem';
 import { formatTime } from '../../../utils/timeUtil';
@@ -11,7 +12,7 @@ import { postEndMove } from '../../../apis/MoveApi';
 // import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
-export const CurLocCar = () => {
+export const MovingTAISO = () => {
 	const navigate = useNavigate();
 	// 시간 상태를 관리합니다. 초기값은 0입니다.
 	// const [time, setTime] = useState(0);
@@ -95,12 +96,34 @@ export const CurLocCar = () => {
 		navigate('/', { replace: true });
 	};
 
+	const [iMarker, setIMarker] = useState<any>(null);
+
 	useEffect(() => {
 		const MoveObj = localStorage.getItem('Move');
 		if (!MoveObj) {
 			alert('실행 중 오류가 발생했습니다. 다시 시도해주세요');
 			navigate('/');
 		}
+	}, []);
+
+	useEffect(() => {
+		const UserMarkerImageSrc = UserMarker;
+		const UserMarkerImageSize = new window.kakao.maps.Size(40, 40);
+
+		const UserMarkerImgOptions = {
+			offset: new window.kakao.maps.Point(20, 20),
+		};
+
+		const UserMarkerImage = new window.kakao.maps.MarkerImage(
+			UserMarkerImageSrc,
+			UserMarkerImageSize,
+			UserMarkerImgOptions,
+		);
+		const CurLocMarker = new window.kakao.maps.Marker({
+			image: UserMarkerImage,
+		});
+
+		setIMarker(CurLocMarker);
 	}, []);
 
 	useEffect(() => {
@@ -111,6 +134,7 @@ export const CurLocCar = () => {
 	}, []);
 
 	// 위치를 실시간으로 받아오고 로케이션으로 넣어줌
+	// Geolocation 아니고 MQTT 데이터 받아서 polyline 성능문제는 없을듯!
 	useEffect(() => {
 		let watchId: number | null = null;
 		const startLocationTracking = () => {
@@ -185,11 +209,9 @@ export const CurLocCar = () => {
 				markerRef.current.setPosition(markerPosition);
 				copyMap.setCenter(markerPosition);
 			} else {
-				const marker = new window.kakao.maps.Marker({
-					position: markerPosition,
-				});
-				marker.setMap(copyMap);
-				markerRef.current = marker;
+				iMarker.setPosition(markerPosition);
+				iMarker.setMap(copyMap);
+				markerRef.current = iMarker;
 			}
 		}
 		// return () => {
