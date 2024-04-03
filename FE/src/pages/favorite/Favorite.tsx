@@ -37,7 +37,7 @@ export const Favorite = () => {
 
 	return (
 		<>
-			<div className='animate-fadeIn flex flex-col'>
+			<div className='animate-fadeIn flex flex-col h-[100%]'>
 				<div className='flex ml-3 my-6 justify-between'>
 					<BackButton2 />
 					<div className="flex font-['Pretendard-Bold'] text-[26px] pl-2">즐겨찾기</div>
@@ -45,16 +45,18 @@ export const Favorite = () => {
 						{editMode ? '취소' : '편집'}
 					</div>
 				</div>
-				{bookmarkList.map((bookmark) => (
-					<FavoriteListElement
-						key={bookmark.bookmarkId}
-						{...bookmark}
-						editMode={editMode}
-						isPlaceStartSetting={isPlaceStartSetting}
-						isPlaceEndSetting={isPlaceEndSetting}
-						onClickDelete = {onClickDelete}
-					/>
-				))}
+				<div className='h-[80%] overflow-hidden overflow-y-scroll'>
+					{bookmarkList.map((bookmark) => (
+						<FavoriteListElement
+							key={bookmark.bookmarkId}
+							{...bookmark}
+							editMode={editMode}
+							isPlaceStartSetting={isPlaceStartSetting}
+							isPlaceEndSetting={isPlaceEndSetting}
+							onClickDelete={onClickDelete}
+						/>
+					))}
+				</div>
 			</div>
 			<BottomNav />
 		</>
