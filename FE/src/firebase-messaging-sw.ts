@@ -78,8 +78,7 @@ const requestPermission = async () => {
 			//Notification을 이미 허용한 사람들에게 보여주는 알람창
 			new Notification(payload.notification.title, {
 				body: payload.notification.body,
-				icon: '/icon.png',
-				image: payload.notification.image,
+				icon: '/assets/icon/icon_48.png',
 			});
 		} else if (notificationPermission !== 'denied') {
 			//Notification을 거부했을 경우 재 허용 창 띄우기
