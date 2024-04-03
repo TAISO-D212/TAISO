@@ -1,9 +1,8 @@
-```html
 <html>
 <head>
   <title>TAISO Porting 매뉴얼</title>
-  <style>
-    
+  
+  <style>  
 :root {
   --default-font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft YaHei Light", sans-serif;
   --font-monospace: 'Source Code Pro', monospace;
@@ -820,4 +819,3 @@ server {
 
 </body>
 </html>
-```
