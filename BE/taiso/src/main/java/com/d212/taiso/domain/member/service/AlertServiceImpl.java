@@ -23,7 +23,8 @@ public class AlertServiceImpl implements AlertService {
     private final MemberService memberService;
     private final CommonUtil commonUtil;
 
-    public void departAlertSend(Long rsvId) throws ExecutionException, InterruptedException, FirebaseMessagingException {
+    public void departAlertSend(Long rsvId)
+        throws ExecutionException, InterruptedException, FirebaseMessagingException {
 
         log.info("departAlertSend===");
         // fcm토큰 리스트를 다 가져오고
@@ -44,7 +45,8 @@ public class AlertServiceImpl implements AlertService {
         }
     }
 
-    public void soonAlertSend(Long rsvId) throws ExecutionException, InterruptedException, FirebaseMessagingException {
+    public void soonAlertSend(Long rsvId)
+        throws ExecutionException, InterruptedException, FirebaseMessagingException {
 
         // fcm토큰 리스트를 다 가져오고
         // fcm 토큰 for문으로 돌리면서 fcm을 통해 멤버를 조회해서
@@ -62,7 +64,8 @@ public class AlertServiceImpl implements AlertService {
         }
     }
 
-    public void arrivalAlertSend(Long rsvId) throws ExecutionException, InterruptedException, FirebaseMessagingException {
+    public void arrivalAlertSend(Long rsvId)
+        throws ExecutionException, InterruptedException, FirebaseMessagingException {
 
         // fcm토큰 리스트를 다 가져오고
         // fcm 토큰 for문으로 돌리면서 fcm을 통해 멤버를 조회해서
@@ -80,6 +83,44 @@ public class AlertServiceImpl implements AlertService {
         }
     }
 
+    public void rsvSucAlertSend(Long rsvId)
+        throws ExecutionException, InterruptedException, FirebaseMessagingException {
+
+        // fcm토큰 리스트를 다 가져오고
+        // fcm 토큰 for문으로 돌리면서 fcm을 통해 멤버를 조회해서
+        List<String> tokens = memberService.getFcmToken(rsvId);
+
+        // 각 토큰에 대해 Alert를 보냅니다.
+        for (String token : tokens) {
+            AlertDto alertDto = AlertDto.builder()
+                .title("rsvSuccess")
+                .token(token)
+                .message("예약에 성공했습니다!")
+                .build();
+            sendAlert(alertDto);
+            log.info("예약 성공 알림 전송 완료");
+        }
+    }
+
+    public void rsvFailAlertSend(Long rsvId)
+        throws ExecutionException, InterruptedException, FirebaseMessagingException {
+
+        // fcm토큰 리스트를 다 가져오고
+        // fcm 토큰 for문으로 돌리면서 fcm을 통해 멤버를 조회해서
+        List<String> tokens = memberService.getFcmToken(rsvId);
+
+        // 각 토큰에 대해 Alert를 보냅니다.
+        for (String token : tokens) {
+            AlertDto alertDto = AlertDto.builder()
+                .title("rsvFail")
+                .token(token)
+                .message("예약에 실패했습니다!")
+                .build();
+            sendAlert(alertDto);
+            log.info("예약 실패 알림 전송 완료");
+        }
+    }
+
 //    public String getNotificationToken() {
 ////        Member member = commonUtil.getMember();
 ////        return member.getFcmToken();
@@ -87,7 +128,8 @@ public class AlertServiceImpl implements AlertService {
 //    }
 
 
-    public void sendAlert(AlertDto alert) throws ExecutionException, InterruptedException, FirebaseMessagingException {
+    public void sendAlert(AlertDto alert)
+        throws ExecutionException, InterruptedException, FirebaseMessagingException {
         log.info("send message 호출!");
         Message message = Message.builder()
             .setWebpushConfig(WebpushConfig.builder()
