@@ -17,7 +17,7 @@ public enum ResultCode {
     EMAIL_DO_NOT_EXIST(200, "사용 가능한 이메일 입니다."),
     GET_MEMBER_SUCCESS(200, "회원 조회에 성공하였습니다."),
     MEMBER_DELETE_SUCCESS(200, "회원 탈퇴에 성공하였습니다."),
-    FCM_TOKEN_SUCCESS(200, "FCM 토큰 등록에 성곻하였습니다."),
+    FCM_TOKEN_SUCCESS(200, "FCM 토큰 등록에 성공하였습니다."),
 
     //Bookmark
     GET_BOOKMARK_SUCCESS(200, "즐겨찾기 조회에 성공하였습니다."),

@@ -53,6 +53,6 @@ export const deleteMember = async (): Promise<APIResponse<boolean>> => {
 export const fetchFCMToken = async (email: string): Promise<APIResponse<boolean>> => {
 	const header = { headers: { 'Content-Type': 'application/json' } };
 	const token = localStorage.getItem('FCMtoken');
-	const res = await axios.post(`${host}/new`, { mail: email, token: token }, header);
+	const res = await axios.post(`${host}/new`, { email: email, token: token }, header);
 	return res.data;
 };
