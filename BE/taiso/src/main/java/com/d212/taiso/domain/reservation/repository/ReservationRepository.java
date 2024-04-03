@@ -5,10 +5,12 @@ import com.d212.taiso.domain.reservation.dto.MyRsvListRes;
 import com.d212.taiso.domain.reservation.dto.OriginRouteInfoDto;
 import com.d212.taiso.domain.reservation.entity.Reservation;
 
+import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 /**
@@ -33,5 +35,16 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query("select r.place.id from Reservation r where r.id = :rsvId")
     Long findPlaceIdByReservationId(Long rsvId);
 
+    // 경로 계산값 집어넣기
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE reservation SET route_dist = :routeDist WHERE rsv_id = :rsvId", nativeQuery = true)
+    int updateRouteDistByRsvId(String routeDist, Long rsvId);
+
+    // 현재 시각에 일치하는 예약이 있다면 그 rsv_id 가져오기
+    @Query(value = "SELECT r.rsv_id FROM reservation r "
+        + "WHERE DATE_FORMAT(r.time, '%Y-%m-%d %H') = DATE_FORMAT(NOW(), '%Y-%m-%d %H')"
+        + " LIMIT 1 ", nativeQuery = true)
+    Long findReservationIdByHour();
 }
 
