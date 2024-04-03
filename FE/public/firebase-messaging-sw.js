@@ -79,7 +79,6 @@ self.addEventListener("push", function (event) {
   const notificationOptions = {
     body: resultData.body,
     icon: resultData.image,
-    tag: resultData.tag,
     ...resultData,
   };
   console.log("push: ", { resultData, notificationTitle, notificationOptions });
