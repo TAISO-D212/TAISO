@@ -51,6 +51,10 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             return true;
         }
 
+        if (path.startsWith("/api/members/new")) {
+            return true;
+        }
+
         // SWAGGER쪽
         if (path.startsWith("/api/taiso-ui.html")) {
             return true;
@@ -106,7 +110,8 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             Boolean deleteFlag = (Boolean) claims.get("deleteFlag");
             String fcmToken = (String) claims.get("fcmToken");
 
-            MemberDTO memberDTO = new MemberDTO(email, pw, nickname, deleteFlag.booleanValue(), fcmToken);
+            MemberDTO memberDTO = new MemberDTO(email, pw, nickname, deleteFlag.booleanValue(),
+                fcmToken);
             log.info("-----------------------------------");
             log.info(memberDTO);
             log.info(memberDTO.getAuthorities());
