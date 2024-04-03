@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Log4j2
 @Service
@@ -79,8 +81,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void saveFcmToken(Long rsvId, String fcmToken) {
-        Member member = memberRepository.findMemberByRsvId(rsvId);
+    public void saveFcmToken(String fcmToken) {
+        Member member = commonUtil.getMember();
 
         // Member member = memberRepository.findMemberByEmail();
         //
@@ -110,10 +112,16 @@ public class MemberServiceImpl implements MemberService {
 
 
     //
-    public String getfcmToken(Long rsvId){
+    public List<String> getFcmToken(Long rsvId){
 
-        Member member = memberRepository.findMemberByRsvId(rsvId);
-        return member.getFcmToken();
+        List<Member> members = memberRepository.findMemberByRsvId(rsvId);
+        List<String> fcmTokens = new ArrayList<>();
+
+        for (Member member : members) {
+            fcmTokens.add(member.getFcmToken());
+        }
+
+        return fcmTokens;
     }
 
 

@@ -8,6 +8,8 @@ import com.d212.taiso.domain.member.dto.MemberRes;
 import com.d212.taiso.domain.member.entity.Member;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface MemberService {
 
     boolean checkEmail(String email);
@@ -19,9 +21,9 @@ public interface MemberService {
     void memberDelete();
 
     @Transactional
-    void saveFcmToken(Long rsvId, String fcmToken);
+    void saveFcmToken(String fcmToken);
 
-    String getfcmToken(Long rsvId);
+    List<String> getFcmToken(Long rsvId);
 
 
     // 비밀번호 암호화로 인해 지움.
