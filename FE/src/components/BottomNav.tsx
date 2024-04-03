@@ -46,7 +46,6 @@ export const BottomNav = () => {
 			<div className='w-[42px] flex flex-col justify-center items-center' onClick={goProfile}>
 				<img src={Profile} alt='PROFILE_TAB' />
 				<div className='text-[12px] mt-[5px]'>내 정보</div>
-				
 			</div>
 		</div>
 	);
