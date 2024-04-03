@@ -36,7 +36,7 @@ export const MainBottom = () => {
 					</div> */}
 					<div className='flex justify-center w-[100%]'>
 						<button
-							className='w-[70%] btn bg-[#917FFB] font-["Pretendard-Bold"] text-[25px] text-white'
+							className='w-[70%] btn bg-white font-["Pretendard-Bold"] text-[25px] text-[#917FFB] shadow-lg'
 							onClick={() => {
 								navigate('/move');
 							}}>
