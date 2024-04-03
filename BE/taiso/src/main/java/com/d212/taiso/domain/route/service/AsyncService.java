@@ -16,6 +16,7 @@ import com.d212.taiso.domain.route.mqtt.Publisher;
 import com.d212.taiso.domain.route.repository.RsvRouteRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
@@ -230,7 +231,7 @@ public class AsyncService {
             log.info("거리 200m 이하, 도착 예정 push 알림 전송");
             try {
                 alertService.soonAlertSend(rsvId);
-            } catch (InterruptedException e) {
+            } catch (InterruptedException | FirebaseMessagingException e) {
                 log.error("push 알림 에러 : {}", e);
             }
         }
@@ -242,6 +243,8 @@ public class AsyncService {
                 alertService.arrivalAlertSend(rsvId);
             } catch (InterruptedException e) {
                 log.error("push 알림 에러 : {}", e);
+            } catch (FirebaseMessagingException e) {
+                throw new RuntimeException(e);
             }
             if (next == null) {
                 // 마지막이면 ROS 연결 해제 신호
