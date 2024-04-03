@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +31,7 @@ public class RsvRouteServiceImpl implements RsvRouteService {
     private final PlaceRepository placeRepository;
     private final RsvDetailRepository rsvDetailRepository;
     private final ReservationRepository reservationRepository;
-
-    //    controller 만들어서 붙이기 or 현재 시각에 남아있는 rsvId 찾아와서 parameter 없이 바로 보내기
-//    @Scheduled(cron = "0 0 0/1 * * *", zone = "Asia/Seoul")
+    
     @Override
     public void startConnection(long rsvId) {
         // 경유지 gps 리스트 ROS 넘겨주기 -> ROS단에서는 ros토픽으로 저장
@@ -107,8 +104,8 @@ public class RsvRouteServiceImpl implements RsvRouteService {
         locations.add(
             new LocationDto(destPlace.getId(), destPlace.getLatitude(), destPlace.getLongitude()));
 
-        // 새로운 경유지도 우선 rsvDetail에 추가되므로 경유 순서대로 가져오기
-        List<RsvDetail> rsvDetails = rsvDetailRepository.findRdByRsvId(rsvId);
+        // 새로운 경유지도 우선 rsvDetail에 추가되므로 추가 순서대로 가져오기
+        List<RsvDetail> rsvDetails = rsvDetailRepository.findRdByRsvIdOrderByArrivalTime(rsvId);
         for (RsvDetail detail : rsvDetails) {
             Place place = placeRepository.findById(detail.getRsvDetailId().getPlace().getId())
                 .orElseThrow(() -> new RuntimeException("경유지 장소가 존재하지 않습니다."));
