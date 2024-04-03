@@ -34,7 +34,15 @@ export const MainBottom = () => {
 						<span className='mx-[5px]'>목적지 : {}</span>
 						<span></span>
 					</div> */}
-					진행중인 내 예약이 없습니다.
+					<div className='flex justify-center w-[100%]'>
+						<button
+							className='w-[70%] btn bg-[#917FFB] font-["Pretendard-Bold"] text-[25px] text-white'
+							onClick={() => {
+								navigate('/move');
+							}}>
+							차량 탑승 확인
+						</button>
+					</div>
 				</div>
 			</div>
 		</>
