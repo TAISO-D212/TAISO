@@ -6,13 +6,23 @@ import org.hibernate.sql.exec.ExecutionException;
 
 public interface AlertService {
 
-    public void sendAlert(AlertDto alert) throws ExecutionException, InterruptedException, FirebaseMessagingException;
+    public void sendAlert(AlertDto alert)
+        throws ExecutionException, InterruptedException, FirebaseMessagingException;
 
-    public void departAlertSend(Long rsvId) throws ExecutionException, InterruptedException, FirebaseMessagingException;
+    public void departAlertSend(Long rsvId)
+        throws ExecutionException, InterruptedException, FirebaseMessagingException;
 
-    public void soonAlertSend(Long rsvId) throws ExecutionException, InterruptedException, FirebaseMessagingException;
+    public void soonAlertSend(Long rsvId)
+        throws ExecutionException, InterruptedException, FirebaseMessagingException;
 
-    public void arrivalAlertSend(Long rsvId) throws ExecutionException, InterruptedException, FirebaseMessagingException;
+    public void arrivalAlertSend(Long rsvId)
+        throws ExecutionException, InterruptedException, FirebaseMessagingException;
+
+    public void rsvSucAlertSend(Long rsvId)
+        throws ExecutionException, InterruptedException, FirebaseMessagingException;
+
+    public void rsvFailAlertSend(Long rsvId)
+        throws ExecutionException, InterruptedException, FirebaseMessagingException;
 
 //    public String getNotificationToken();
 }
