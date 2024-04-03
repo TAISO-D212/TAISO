@@ -93,29 +93,3 @@ self.addEventListener("notificationclick", function (event) {
   event.notification.close();
   event.waitUntil(clients.openWindow(url));
 });
-
-let notificationPermission = Notification.permission;
-
-if (permission === "granted") {
-  console.log("Notification permission granted.");
-} else if (permission === "denied") {
-  console.log("Notification permission denied.");
-}
-
-if (notificationPermission === "granted") {
-  new Notification(payload.notification.title, {
-    body: payload.notification.body,
-    icon: "/assets/icon/icon_48.png",
-  });
-} else if (notificationPermission !== "denied") {
-  //Notification을 거부했을 경우 재 허용 창 띄우기
-  Notification.requestPermission(function (permission) {
-    if (permission === "granted") {
-      new Notification(payload.notification.title, {
-        body: payload.notification.body,
-      });
-    } else {
-      alert("알람 허용이 거부되었습니다.");
-    }
-  });
-}
