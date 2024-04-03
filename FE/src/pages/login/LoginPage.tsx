@@ -119,7 +119,7 @@ export const LoginPage = () => {
 						처음 이용하시는 유저신가요?
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
 						{/* <span className='text-blue hover:underline' onClick={handleSignUpModal}> */}
-						<span className='text-blue hover:underline'>회원가입</span>
+						<span className='text-[#3422F2] hover:underline'>회원가입</span>
 					</div>
 				</div>
 			</div>
