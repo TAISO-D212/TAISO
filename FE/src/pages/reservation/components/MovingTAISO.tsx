@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Map } from '../../../components/Map';
 import LoadingBus from '../../../assets/loading/loading.gif';
-import UserMarkerSrc from '../../../assets/icon/CurLoc_Img.png';
+// import UserMarkerSrc from '../../../assets/icon/CurLoc_Img.png';
 import CarMarkerSrc from '../../../assets/icon/CarMarker.png';
 import StopTrackingMove from '../../../components/StopTrackingMove';
 import FootInfoItem from '../../../components/FootInfoItem';
@@ -9,9 +9,9 @@ import { formatTime } from '../../../utils/timeUtil';
 // import { toPng } from 'html-to-image';
 import { useMQTT } from '../../../utils/mqttProvider';
 import { MoveStore } from '../../../store/MoveStore';
-import { CarStore } from '../../../store/CarStore';
-import { getCookie, setCookie } from '../../../utils/cookieUtil';
-import { postEndMove } from '../../../apis/MoveApi';
+// import { CarStore } from '../../../store/CarStore';
+// import { getCookie, setCookie } from '../../../utils/cookieUtil';
+// import { postEndMove } from '../../../apis/MoveApi';
 // import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,7 +26,7 @@ export const MovingTAISO = () => {
 	// const [totalDistance, setTotalDistance] = useState(0);
 	const polylineRef = useRef<any>(null); // polyline 객체를 저장할 ref
 	const userMarkerRef = useRef<any>(null);
-	const carMarkerRef = useRef<any>(null);
+	// const carMarkerRef = useRef<any>(null);
 
 	const {
 		location: area,
@@ -53,21 +53,21 @@ export const MovingTAISO = () => {
 	const [locationList, setLocationList] = useState<any>([]);
 	const [copyMap, setCopyMap] = useState<any>(null);
 
-	const {
-		carLocation: carArea,
-		setCarLocationList: setCarAreaList,
-		resetCarLocationList,
-	} = CarStore();
+	// const {
+	// 	carLocation: carArea,
+	// 	setCarLocationList: setCarAreaList,
+	// 	resetCarLocationList,
+	// } = CarStore();
 
-	const [carLocation, setCarLocation] = useState({
-		center: {
-			lat: carArea[0],
-			lng: carArea[1],
-		},
-		isLoading: true,
-	});
+	// const [carLocation, setCarLocation] = useState({
+	// 	center: {
+	// 		lat: carArea[0],
+	// 		lng: carArea[1],
+	// 	},
+	// 	isLoading: true,
+	// });
 
-	const [carLocationList, setCarLocationList] = useState<any>([]);
+	// const [carLocationList, setCarLocationList] = useState<any>([]);
 
 	// const memberInfo = getCookie('member');
 	// const { accessToken } = memberInfo;
@@ -114,25 +114,26 @@ export const MovingTAISO = () => {
 			setTotalTime('00:00:00'),
 			resetLocationList(),
 			localStorage.removeItem('User');
-		localStorage.removeItem('Car');
-		resetCarLocationList();
+		// localStorage.removeItem('Car');
+		// resetCarLocationList();
 		navigate('/', { replace: true });
 	};
 
 	const [iMarker, setIMarker] = useState<any>(null);
-	const [carMarker, setCarMarker] = useState<any>(null);
+	// const [carMarker, setCarMarker] = useState<any>(null);
 
 	useEffect(() => {
 		const MoveObj = localStorage.getItem('User');
-		const CarObj = localStorage.getItem('Car');
-		if (!MoveObj && !CarObj) {
+		// const CarObj = localStorage.getItem('Car');
+		if (!MoveObj) {
 			alert('실행 중 오류가 발생했습니다. 다시 시도해주세요');
 			navigate('/');
 		}
 	}, []);
 
 	useEffect(() => {
-		const UserMarkerImageSrc = UserMarkerSrc;
+		// const UserMarkerImageSrc = UserMarkerSrc;
+		const UserMarkerImageSrc = CarMarkerSrc;
 		const UserMarkerImageSize = new window.kakao.maps.Size(40, 40);
 		const UserMarkerImgOptions = {
 			offset: new window.kakao.maps.Point(20, 20),
@@ -147,17 +148,17 @@ export const MovingTAISO = () => {
 		});
 		setIMarker(CurLocMarker);
 
-		const CarImageMarkerSrc = CarMarkerSrc;
-		const CarMarkerImage = new window.kakao.maps.MarkerImage(
-			CarImageMarkerSrc,
-			UserMarkerImageSize,
-			UserMarkerImgOptions,
-		);
+		// const CarImageMarkerSrc = CarMarkerSrc;
+		// const CarMarkerImage = new window.kakao.maps.MarkerImage(
+		// 	CarImageMarkerSrc,
+		// 	UserMarkerImageSize,
+		// 	UserMarkerImgOptions,
+		// );
 
-		const CarMarker = new window.kakao.maps.Marker({
-			image: CarMarkerImage,
-		});
-		setCarMarker(CarMarker);
+		// const CarMarker = new window.kakao.maps.Marker({
+		// 	image: CarMarkerImage,
+		// });
+		// setCarMarker(CarMarker);
 	}, []);
 
 	useEffect(() => {
@@ -173,54 +174,69 @@ export const MovingTAISO = () => {
 		let watchId: number | null = null;
 		// 사용자 위치 추적을 시작하는 함수
 		const startLocationTracking = () => {
-			if ('geolocation' in navigator) {
-				watchId = navigator.geolocation.watchPosition(
-					(position) => {
-						const lat = position.coords.latitude;
-						const lng = position.coords.longitude;
-						console.log(new window.kakao.maps.LatLng(lat, lng));
-						setLocation((prev) => ({
-							...prev,
-							center: { lat, lng },
-							isLoading: false,
-						}));
-						setLocationList((prev: any) => [...prev, new window.kakao.maps.LatLng(lat, lng)]);
-						setAreaList(new window.kakao.maps.LatLng(lat, lng));
-					},
-					(error) => {
-						console.log(error);
-					},
-					{
-						enableHighAccuracy: true,
-						maximumAge: 1000,
-						timeout: 2000,
-					},
-				);
+			// if ('geolocation' in navigator) {
+			// 	watchId = navigator.geolocation.watchPosition(
+			// 		(position) => {
+			// 			const lat = position.coords.latitude;
+			// 			const lng = position.coords.longitude;
+			// 			console.log(new window.kakao.maps.LatLng(lat, lng));
+			// 			setLocation((prev) => ({
+			// 				...prev,
+			// 				center: { lat, lng },
+			// 				isLoading: false,
+			// 			}));
+			// 			setLocationList((prev: any) => [...prev, new window.kakao.maps.LatLng(lat, lng)]);
+			// 			setAreaList(new window.kakao.maps.LatLng(lat, lng));
+			// 		},
+			// 		(error) => {
+			// 			console.log(error);
+			// 		},
+			// 		{
+			// 			enableHighAccuracy: true,
+			// 			maximumAge: 1000,
+			// 			timeout: 2000,
+			// 		},
+			// 	);
+			if (!!locationData) {
+				const lat = locationData.latitude;
+				const lng = locationData.longitude;
+				console.log(new window.kakao.maps.LatLng(lat, lng));
+				setLocation((prev) => ({
+					...prev,
+					center: { lat, lng },
+					isLoading: false,
+				}));
+				setLocationList((prev: any) => [...prev, new window.kakao.maps.LatLng(lat, lng)]);
+				setAreaList(new window.kakao.maps.LatLng(lat, lng));
 			} else {
 				console.log('Geolocation is not available.');
 			}
 		};
 
-		// 차량의 위치 추적을 시작하는 함수
-		const startCarTracking = () => {
-			// MQTT로 데이터 받아오는 부분
-			// const lat = locationData[-1].lat
-			// const lng = locationData[-1].lon
-			const lat = 36.1287694;
-			const lng = 128.3296222;
-			setCarLocation((prev) => ({
-				...prev,
-				center: { lat, lng },
-				isLoading: false,
-			}));
-			setCarLocationList((prev: any) => [...prev, new window.kakao.maps.LatLng(lat, lng)]);
-			setCarAreaList(new window.kakao.maps.LatLng(lat, lng));
-		};
+		// // 차량의 위치 추적을 시작하는 함수
+		// const startCarTracking = () => {
+		// 	// MQTT로 데이터 받아오는 부분
+		// 	const lat = locationData?.latitude;
+		// 	const lng = locationData?.longitude;
+		// 	// const lat = 36.1287694;
+		// 	// const lng = 128.3296222;
+		// 	// setCarLocation((prev) => ({
+		// 	// 	...prev,
+		// 	// 	center: { lat, lng },
+		// 	// 	isLoading: false,
+		// 	// }));
+		// 	setCarLocation({
+		// 		center: { lat, lng },
+		// 		isLoading: false,
+		// 	});
+		// 	setCarLocationList((prev: any) => [...prev, new window.kakao.maps.LatLng(lat, lng)]);
+		// 	setCarAreaList(new window.kakao.maps.LatLng(lat, lng));
+		// };
 
 		// `isMoving` 상태가 true일 때만 위치 추적을 시작합니다.
 		if (isMoving) {
 			startLocationTracking();
-			startCarTracking();
+			// startCarTracking();
 		}
 
 		// 클린업 함수에서는 위치 추적을 중단합니다.
@@ -245,7 +261,7 @@ export const MovingTAISO = () => {
 				polyline.setMap(copyMap);
 				polylineRef.current = polyline;
 			} else {
-				polylineRef.current.setPath(locationData);
+				polylineRef.current.setPath(locationList);
 			}
 		}
 		// return () => {
@@ -256,30 +272,32 @@ export const MovingTAISO = () => {
 	// 마커
 	useEffect(() => {
 		const userMarkerPosition = new window.kakao.maps.LatLng(location.center.lat, location.center.lng);
-		const carMarkerPosition = new window.kakao.maps.LatLng(
-			carLocation.center.lat,
-			carLocation.center.lng,
-		);
-		const bounds = new window.kakao.maps.LatLngBounds(userMarkerPosition, carMarkerPosition);
+		// const carMarkerPosition = new window.kakao.maps.LatLng(
+		// 	carLocation.center.lat,
+		// 	carLocation.center.lng,
+		// );
+		// const bounds = new window.kakao.maps.LatLngBounds(userMarkerPosition, carMarkerPosition);
 		if (copyMap && window.kakao.maps) {
-			if (userMarkerRef.current && carMarkerRef.current) {
+			// if (userMarkerRef.current && carMarkerRef.current) {
+			if (userMarkerRef.current) {
 				userMarkerRef.current.setPosition(userMarkerPosition);
-				carMarkerRef.current.setPosition(carMarkerPosition);
+				// carMarkerRef.current.setPosition(carMarkerPosition);
 				// copyMap.setCenter(userMarkerPosition);
-				copyMap.setBounds(bounds);
+				// copyMap.setBounds(bounds);
+				copyMap.setCenter(userMarkerPosition);
 			} else {
 				iMarker.setPosition(userMarkerPosition);
-				carMarker.setPosition(carMarkerPosition);
+				// carMarker.setPosition(carMarkerPosition);
 				iMarker.setMap(copyMap);
-				carMarker.setMap(copyMap);
+				// carMarker.setMap(copyMap);
 				userMarkerRef.current = iMarker;
-				carMarkerRef.current = carMarker;
+				// carMarkerRef.current = carMarker;
 			}
 		}
 		// return () => {
 		//   userMarkerRef.current.setMap(null);
 		// };
-	}, [location.center, carLocation.center, copyMap]);
+	}, [location.center, copyMap]);
 
 	// 스톱 워치
 	useEffect(() => {

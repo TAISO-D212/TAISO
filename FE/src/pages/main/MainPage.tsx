@@ -6,6 +6,8 @@ import { MainBottom } from './components/MainBottom';
 // import { MovingTAISO } from '../reservation/components/MovingTAISO';
 // import { SetCurrentLoc } from './components/SetCurrentLoc';
 import NewReservationStore from '../../store/NewReservationStore';
+import { fetchFCMToken } from '../../apis/memberApi';
+import useCustomLogin from '../../hooks/useCustomLogin';
 
 export const MainPage = () => {
 	const {
@@ -20,9 +22,19 @@ export const MainPage = () => {
 		setTime,
 		setCnt,
 	} = NewReservationStore();
+
 	const [loading, setLoading] = useState(true);
+	const { loginState } = useCustomLogin();
 
 	useEffect(() => {
+		fetchFCMToken(loginState?.email)
+			.then((res) => {
+				console.log(res);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+
 		setStartBookmarkId(null);
 		setStartLatitude(null);
 		setStartLongitude(null);

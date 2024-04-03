@@ -2,50 +2,50 @@ import React, { createContext, useContext, ReactNode, useState, useEffect } from
 import mqtt, { MqttClient } from 'mqtt';
 
 interface LocationData {
-  lat: number;
-  lon: number;
+	latitude: number;
+	longitude: number;
 }
 
 interface MQTTContextType {
-  locationData: LocationData[];
+	locationData: LocationData;
 }
 
-const MQTTContext = createContext<MQTTContextType>({ locationData: [] });
+const MQTTContext = createContext<MQTTContextType>({ locationData: { latitude: 0, longitude: 0 } });
 
 interface MQTTProviderProps {
-  children: ReactNode; // 자식 컴포넌트 타입을 ReactNode로 정의
+	children: ReactNode; // 자식 컴포넌트 타입을 ReactNode로 정의
 }
 
 export const useMQTT = () => useContext(MQTTContext);
 
 export const MQTTProvider: React.FC<MQTTProviderProps> = ({ children }) => {
-  const [locationData, setLocationData] = useState<LocationData[]>([]);
+	const [locationData, setLocationData] = useState<LocationData>();
 
-  useEffect(() => {
-    const client: MqttClient = mqtt.connect('wss://j10d212.p.ssafy.io:9001', {
-      path: '/mqtt',
-    });
+	useEffect(() => {
+		const client: MqttClient = mqtt.connect('wss://j10d212.p.ssafy.io:9001', {
+			path: '/mqtt',
+		});
 
-    client.on('connect', () => {
-      console.log("Connected to MQTT Broker");
-      client.subscribe("location/FE");
-    });
+		client.on('connect', () => {
+			console.log('Connected to MQTT Broker');
+			client.subscribe('location/FE');
+		});
 
-    client.on('message', (topic, message) => {
-      const msg = message.toString();
-      const [lat, lon] = msg.split(' ').map(Number);
-      const data: LocationData = {lat, lon};
-      setLocationData(prevData => [...prevData, data]);
-    });
+		client.on('message', (topic, message) => {
+			const msg = message.toString();
+			const [latitude, longitude] = msg.split(' ').map(Number);
+			const data: LocationData = { latitude, longitude };
+			// console.log(data, locationData);
+			// setLocationData((prevData) => [...prevData, data]);
+			setLocationData(data);
+		});
 
-    // MQTT 클라이언트 연결 종료
-    return () => {
-      client.end();
-    };
-  }, []);
+		// MQTT 클라이언트 연결 종료
+		return () => {
+			client.end();
+		};
+	}, []);
 
-  // children을 반환하여 자식 컴포넌트를 래핑
-  return <MQTTContext.Provider value={{ locationData }}>
-    {children}
-  </MQTTContext.Provider>;
+	// children을 반환하여 자식 컴포넌트를 래핑
+	return <MQTTContext.Provider value={{ locationData }}>{children}</MQTTContext.Provider>;
 };
