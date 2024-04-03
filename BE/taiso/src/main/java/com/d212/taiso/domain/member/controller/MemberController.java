@@ -5,6 +5,7 @@ package com.d212.taiso.domain.member.controller;
 
 import com.d212.taiso.domain.member.dto.MemberJoinReq;
 import com.d212.taiso.domain.member.dto.MemberRes;
+import com.d212.taiso.domain.member.dto.MemberTokenReq;
 import com.d212.taiso.domain.member.service.MemberService;
 import com.d212.taiso.global.result.ResultCode;
 import com.d212.taiso.global.result.ResultResponse;
@@ -63,8 +64,10 @@ public class MemberController {
     //@RequestBody 어노테이션 -> 요청 본문을 해당 메서드의 매개변수에 매핑하는 데 사용
     // 여기서는 요청 본문이 문자열 형태의 토큰으로 전달되며,
     // 이 토큰을 alarmService.saveAlarm() 메서드로 전달하여 처리
-    public void saveFcmToken(@RequestBody String token) {//알림을 허용하시겠습니까? 에서 저장
-        memberService.saveFcmToken(token);
+    public ResponseEntity<ResultResponse> saveFcmToken(
+        @RequestBody MemberTokenReq memberTokenReq) {//알림을 허용하시겠습니까? 에서 저장
+        memberService.saveFcmToken(memberTokenReq);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.FCM_TOKEN_SUCCESS, true));
     }
 
 }
