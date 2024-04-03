@@ -49,17 +49,19 @@ export const LoginPage = () => {
 		// dispatch(login(loginParam))
 
 		// 차후 수정 예정
-		doLogin(loginParams).then((data) => {
-			console.log(data);
+		doLogin(loginParams)
+			.then((data) => {
+				console.log(data);
 
-			if (data.error) {
-				alert('이메일과 패스워드를 다시 확인하세요');
-			} else {
-				alert('로그인 성공');
-				// 뒤로가기 막기
-				navigate('/main', { replace: true });
-			}
-		});
+				if (data.error) {
+					alert('이메일과 패스워드를 다시 확인하세요');
+				} else {
+					alert('로그인 성공');
+					// 뒤로가기 막기
+					navigate('/main', { replace: true });
+				}
+			})
+			.then(() => {});
 	};
 
 	const onClickSignUpHandler = () => {
