@@ -12,6 +12,7 @@ export const UserPage = () => {
 	const handleClickLogout = () => {
 		doLogout();
 		localStorage.removeItem('NewReservation');
+		localStorage.removeItem('FCMtoken');
 		alert('로그아웃되었습니다.');
 		moveToLogin();
 	};
