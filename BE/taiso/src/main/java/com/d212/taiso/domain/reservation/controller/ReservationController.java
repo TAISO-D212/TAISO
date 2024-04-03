@@ -11,6 +11,7 @@ import com.d212.taiso.global.result.ResultResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,14 +27,23 @@ import java.util.List;
 public class ReservationController {
 
     private final RsvRouteService rsvRouteService;
-
     private final ReservationService reservationService;
 
-    @GetMapping("/connectionTest")
+    // 매 시간마다 자동으로 예약 확인 후 있다면 실행
+    @Scheduled(cron = "0 0 0/1 * * *", zone = "Asia/Seoul")
+    @GetMapping("/connection")
     public ResponseEntity<ResultResponse> mqttConnectionTest() {
         try {
-            rsvRouteService.startConnection(8);
-            return ResponseEntity.ok().build();
+            rsvRouteService.endConnection();
+            Long rsvId = reservationService.getCurrentReservationId();
+            if (rsvId != null) {
+                log.info("예약 존재. 연결을 시작합니다.");
+                rsvRouteService.startConnection(rsvId);
+                return ResponseEntity.ok().build();
+            } else {
+                log.info("예약 부재. 연결하지 않습니다.");
+                return ResponseEntity.ok().build();
+            }
         } catch (Exception e) {
             return null;
         }
@@ -66,13 +76,16 @@ public class ReservationController {
 
     @PostMapping("/")
     public ResponseEntity<ResultResponse> addRsv(@RequestBody RsvAddReq rsvAddReq) {
-        String message = reservationService.addRsv(rsvAddReq);
-
-        if (!"예약이 성공적으로 추가되었습니다.".equals(message)) {
-            return ResponseEntity.ok(ResultResponse.of(ResultCode.ADD_RESERVATION_FAIL, message));
-        } else {
+        long[] addResult = reservationService.addRsv(rsvAddReq);
+        long rsvId = addResult[0];
+        long placeId = addResult[1];
+        if (placeId == 0) {
             return ResponseEntity.ok(
-                ResultResponse.of(ResultCode.ADD_RESERVATION_SUCCESS, message));
+                ResultResponse.of(ResultCode.ADD_RESERVATION_FAIL, "이미 해당 시간에 예약이 있습니다."));
+        } else {
+            rsvRouteService.locationToRoute(rsvId, placeId);
+            return ResponseEntity.ok(
+                ResultResponse.of(ResultCode.ADD_RESERVATION_SUCCESS, "예약이 성공적으로 신청되었습니다."));
         }
 
     }
@@ -81,15 +94,17 @@ public class ReservationController {
     public ResponseEntity<ResultResponse> addTogetherRsv(@PathVariable("rsvId") Long rsvId,
         @RequestBody
         RsvTogetherAddReq rsvTogetherAddReq) {
-        String message = reservationService.addTogetherRsv(rsvId, rsvTogetherAddReq);
+        long placeId = reservationService.addTogetherRsv(rsvId, rsvTogetherAddReq);
 
-        if (!"합승 예약이 성공적으로 추가되었습니다.".equals(message)) {
+        if (placeId == 0) {
             return ResponseEntity.ok(
-                ResultResponse.of(ResultCode.ADD_RESERVATION_FAIL, message)
+                ResultResponse.of(ResultCode.ADD_RESERVATION_FAIL, "합승 예약에 실패했습니다.")
             );
         } else {
+            rsvRouteService.locationToRoute(rsvId, placeId);
             return ResponseEntity.ok(
-                ResultResponse.of(ResultCode.ADD_TOGETHER_RESERVATION_SUCCESS, message));
+                ResultResponse.of(ResultCode.ADD_TOGETHER_RESERVATION_SUCCESS,
+                    "합승 예약이 성공적으로 신청되었습니다."));
         }
     }
 

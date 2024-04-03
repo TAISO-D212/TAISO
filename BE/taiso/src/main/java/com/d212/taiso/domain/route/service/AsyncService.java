@@ -1,24 +1,29 @@
 package com.d212.taiso.domain.route.service;
 
 import com.d212.taiso.domain.reservation.dto.OriginRouteInfoDto;
+import com.d212.taiso.domain.reservation.entity.RsvDetail;
 import com.d212.taiso.domain.reservation.repository.ReservationRepository;
+import com.d212.taiso.domain.reservation.repository.RsvDetailRepository;
+import com.d212.taiso.domain.reservation.service.ReservationService;
 import com.d212.taiso.domain.route.dto.LocationDto;
 import com.d212.taiso.domain.route.dto.LocationPayload;
 import com.d212.taiso.domain.route.mqtt.Publisher;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.concurrent.CompletableFuture;
-import lombok.extern.log4j.Log4j2;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 /**
  * Created by 배성연 on 2024-03-21
@@ -31,8 +36,11 @@ public class AsyncService {
 
     private final Publisher publisher;
     private final ObjectMapper objectMapper;
+    private final ReservationService reservationService;
+    private final RsvDetailRepository rsvDetailRepository;
     private final ReservationRepository reservationRepository;
 
+    @Transactional
     @Async("taskExecutor")
     public CompletableFuture<Void> locationToRoute(List<LocationDto> locations, long rsvId,
         long placeId) {
@@ -122,12 +130,17 @@ public class AsyncService {
 
             // distance로 경로 계산 : 외판원 순회 알고리즘 활용
             PathResult result = findPath(distTable, 0, 1);
+            log.info("경로 계산 완료 : {}", Arrays.toString(result.path.toArray()));
+            log.info("총 거리 : {}", result.totalDistance);
 
             if (result.totalDistance > 30000) {
-                // 최소 거리 총합이 30km 넘으면 예약 삭제 DB 업데이트, 예약 불가 push 알림
-
+                // 최소 거리 총합이 30km 넘으면 예약 삭제 DB 업데이트, 예약 실패 push 알림
+                log.info("30km 초과! 예약 실패");
+                reservationService.deleteRsv(rsvId, placeId);
+                // TODO : 예약 실패 push 알림 호출 추가
             } else {
                 // 최소 거리 총합이 30km 이내면 예약 성공 DB 업데이트, 예약 성공 push 알림
+                log.info("30km 이하! 예약 성공");
                 // 예약 성공 DB 업데이트 - route_dist update
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < stopCnt; i++) {
@@ -135,9 +148,23 @@ public class AsyncService {
                         sb.append(distTable[i][j] + " ");
                     }
                 }
-
+                int temp = reservationRepository.updateRouteDistByRsvId(sb.toString(), rsvId);
+                if (temp > 0) {
+                    log.info("route dist updated.");
+                } else {
+                    log.error("route dist update 실패!");
+                }
                 // 경로 순서대로 orders 업데이트
-
+                List<RsvDetail> rsvDetailList = rsvDetailRepository.findRdByRsvIdOrderByArrivalTime(
+                    rsvId);
+                for (int i = 1; i < stopCnt - 1; i++) {
+                    int order = result.path.get(i) - 1;
+                    rsvDetailList.get(i - 1).setOrders(order);
+                    rsvDetailRepository.save(rsvDetailList.get(i - 1));
+                    log.info((i - 1) + " 번째 저장한 rsvDetail order update to " + order);
+                }
+                log.info("rsvDetail order updated!");
+                // TODO : 예약 성공 push 알림 호출 추가
             }
 
         } catch (JsonProcessingException e) {
@@ -162,43 +189,72 @@ public class AsyncService {
         // 현재 위치와 리스트의 각 지점 위치 계산
 
         // 거리 10m 이하면
-        //  마지막이면 ROS 도착신호 전송, 3분 후 연결 해제 신호, 대기장소 데이터 전송
-        //           FE 하차 버튼 활성화 신호, 도착 push알림 전송
-        //  마지막 아니면 도착신호 전송
+        //  마지막이면 ROS 연결 해제 신호, 대기장소 데이터 전송
         //           FE 하차 버튼 활성화 신호, 도착 push알림 전송
         // 거리 500m 이하면 push 알림 전송
     }
 
-    public static PathResult findPath(int[][] distTable, int start, int end) {
-        int N = distTable.length;
-        boolean[] visited = new boolean[N];
-        List<Integer> path = new ArrayList<>();
+    private static int calculateDistance(List<Integer> path, int[][] distTable) {
         int totalDistance = 0;
+        for (int i = 0; i < path.size() - 1; i++) {
+            totalDistance += distTable[path.get(i)][path.get(i + 1)];
+        }
+        return totalDistance;
+    }
 
-        visited[start] = true; // 출발지 방문 표시
-        visited[end] = true; // 도착지는 처음부터 방문 표시하여 제외
-
-        int current = start;
-        path.add(current);
-
-        while (path.size() < N - 1) { // 도착지를 제외한 모든 지점을 방문
-            int nearest = -1;
-            for (int i = 0; i < N; i++) {
-                if (!visited[i]) {
-                    if (nearest == -1 || distTable[current][i] < distTable[current][nearest]) {
-                        nearest = i;
-                    }
-                }
+    private static PathResult findPath(int[][] distTable, int start, int end) {
+        int N = distTable.length;
+        List<Integer> nodes = new ArrayList<>();
+        for (int i = 0; i < N; i++) {
+            if (i != start && i != end) {
+                nodes.add(i);
             }
-            visited[nearest] = true;
-            path.add(nearest);
-            totalDistance += distTable[current][nearest]; // 총 거리 업데이트
-            current = nearest;
         }
 
-        totalDistance += distTable[current][end]; // 도착지까지의 거리 추가
-        path.add(end); // 마지막으로 도착지 추가
-        return new PathResult(path, totalDistance);
+        int minDistance = Integer.MAX_VALUE;
+        List<Integer> minPath = new ArrayList<>();
+
+        // 방문할 모든 순열 구한 후 탐색
+        do {
+            List<Integer> path = new ArrayList<>();
+            path.add(start);
+            path.addAll(nodes);
+            path.add(end);
+            int distance = calculateDistance(path, distTable);
+
+            if (distance < minDistance) {
+                minDistance = distance;
+                minPath = new ArrayList<>(path);
+            }
+        } while (nextPermutation(nodes));
+
+        return new PathResult(minPath, minDistance);
+    }
+
+    // 리스트의 순열 중 사전적으로 다음에 오는 순열을 구하는 메서드
+    public static <T extends Comparable<? super T>> boolean nextPermutation(List<T> list) {
+        // 리스트의 끝에서부터 시작하여 현재 요소가 이전 요소보다 크기 시작하는 첫 번째 지점 찾기
+        int i = list.size() - 2;
+        while (i >= 0 && list.get(i).compareTo(list.get(i + 1)) >= 0) {
+            i--;
+        }
+
+        if (i == -1) {
+            return false; // 이미 최대 순열에 도달했음
+        }
+
+        // 리스트의 끝에서부터 시작하여 앞에서 찾은 요소보다 큰 첫 번째 요소를 찾습니다.
+        int j = list.size() - 1;
+        while (list.get(i).compareTo(list.get(j)) >= 0) {
+            j--;
+        }
+
+        // 이 두 요소의 위치를 바꿉니다.
+        Collections.swap(list, i, j);
+
+        // 앞에서 찾은 요소의 오른쪽에 있는 모든 요소들을 뒤집습니다.
+        Collections.reverse(list.subList(i + 1, list.size()));
+        return true;
     }
 }
 
@@ -211,5 +267,12 @@ class PathResult {  // 경로 알고리즘 결과 저장용 클래스
         this.path = path;
         this.totalDistance = totalDistance;
     }
+
+    @Override
+    public String toString() {
+        return "path : " + Arrays.toString(path.toArray()) + ", totalDistance : " + totalDistance;
+    }
 }
+
+
 

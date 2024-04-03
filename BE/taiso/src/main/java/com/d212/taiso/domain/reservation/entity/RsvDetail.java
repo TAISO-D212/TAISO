@@ -60,6 +60,11 @@ public class RsvDetail {
     @Builder.Default
     private boolean stop_flag = false; // 하차 확인 여부
 
-    private LocalDateTime arrivalTime;
+    @Builder.Default
+    private LocalDateTime arrivalTime = LocalDateTime.now();  // 도착 예정 시간 -> 예약 추가한 시간으로 용도 변경
 
+    // orders 필드 값 설정하는 메서드
+    public void setOrders(int orders) {
+        this.orders = orders;
+    }
 }

@@ -111,14 +111,14 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public String addRsv(RsvAddReq rsvAddReq) {
+    public long[] addRsv(RsvAddReq rsvAddReq) {
 
         // 현재 시간대에 이미 예약이 있으면 리턴
         Optional<Reservation> existingReservation = reservationRepository.findCurrentTime(
             rsvAddReq.getTime());
 
         if (existingReservation.isPresent()) {
-            return "해당 시간대에 이미 예약이 있습니다.";
+            return new long[]{0, 0};
         }
 
         // 요청한 멤버의 정보 가져오기
@@ -187,15 +187,15 @@ public class ReservationServiceImpl implements ReservationService {
 
         placeRepository.save(startPlace);
         placeRepository.save(endPlace);
-        reservationRepository.save(reservation);
+        Reservation savedReservation = reservationRepository.save(reservation);
         rsvDetailRepository.save(rsvDetail);
 
-        return "예약이 성공적으로 추가되었습니다.";
+        return new long[]{savedReservation.getId(), startPlace.getId()};
     }
 
     @Override
     @Transactional
-    public String addTogetherRsv(Long rsvId, RsvTogetherAddReq rsvTogetherAddReq) {
+    public long addTogetherRsv(Long rsvId, RsvTogetherAddReq rsvTogetherAddReq) {
 
         // 요청한 멤버의 정보 가져오기
         Member member = commonUtil.getMember();
@@ -204,22 +204,22 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation reservation = reservationRepository.findById(rsvId)
             .orElseThrow(() -> new BusinessException(ErrorCode.RESERVATION_NOT_EXIST));
 
-
         // 예약 인원 수가 초과되었을 시 저장 실패
         // 기존 예약 인원 수 + 경유지 예약 인원 수
         int totalCnt = reservation.getCnt() + rsvTogetherAddReq.getCnt();
 
         if (totalCnt > 4) {
-            return "예약 인원 수가 초과되었습니다.";
+            return 0;
         }
 
         // 이미 유저가 해당 시간대에 예약을 했는 경우.
         // 시간으로 할까 아니면 예약 id로 할까??
-        RsvDetail existingRsvDetail = rsvDetailRepository.findRsvDetailByMemberAndTime(member, reservation.getTime())
-                .orElse(null); // 예약이 없을 경우 null을 반환
+        RsvDetail existingRsvDetail = rsvDetailRepository.findRsvDetailByMemberAndTime(member,
+                reservation.getTime())
+            .orElse(null); // 예약이 없을 경우 null을 반환
 
         if (existingRsvDetail != null) {
-            return "이미 해당 시간대에 예약을 했습니다.";
+            return 0;
         }
 
         Place place = null;
@@ -263,7 +263,7 @@ public class ReservationServiceImpl implements ReservationService {
         placeRepository.save(place);
         rsvDetailRepository.save(rsvDetail);
 
-        return "합승 예약이 성공적으로 추가되었습니다.";
+        return place.getId();
 
     }
 
@@ -310,5 +310,10 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
 
+    }
+
+    @Override
+    public Long getCurrentReservationId() {
+        return reservationRepository.findReservationIdByHour();
     }
 }
