@@ -43,7 +43,6 @@ public class ReservationController {
             if (rsvId != null) {
                 log.info("예약 있음. 연결을 시작합니다.");
                 rsvRouteService.startConnection(rsvId);
-                memberService.getFcmToken(rsvId);
                 alertService.departAlertSend(rsvId);
                 return ResponseEntity.ok().build();
             } else {
@@ -55,6 +54,7 @@ public class ReservationController {
         }
     }
 
+    // 연결 강제 중단
     @GetMapping("/connectionEnd")
     public ResponseEntity<ResultResponse> mqttEndTest() {
         try {

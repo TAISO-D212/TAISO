@@ -65,5 +65,9 @@ public class Reservation {
         this.cnt = cnt;
     }
 
+    public void changeRouteDist(String routeDist) {
+        this.routeDist = routeDist;
+    }
+
 
 }
