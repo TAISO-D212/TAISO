@@ -23,7 +23,7 @@ public class AlertServiceImpl implements AlertService {
     private final MemberService memberService;
     private final CommonUtil commonUtil;
 
-    public void departAlertSend(Long rsvId) throws ExecutionException, InterruptedException {
+    public void departAlertSend(Long rsvId) throws ExecutionException, InterruptedException, FirebaseMessagingException {
 
         log.info("departAlertSend===");
         // fcm토큰 리스트를 다 가져오고
@@ -44,7 +44,7 @@ public class AlertServiceImpl implements AlertService {
         }
     }
 
-    public void soonAlertSend(Long rsvId) throws ExecutionException, InterruptedException {
+    public void soonAlertSend(Long rsvId) throws ExecutionException, InterruptedException, FirebaseMessagingException {
 
         // fcm토큰 리스트를 다 가져오고
         // fcm 토큰 for문으로 돌리면서 fcm을 통해 멤버를 조회해서
@@ -62,7 +62,7 @@ public class AlertServiceImpl implements AlertService {
         }
     }
 
-    public void arrivalAlertSend(Long rsvId) throws ExecutionException, InterruptedException {
+    public void arrivalAlertSend(Long rsvId) throws ExecutionException, InterruptedException, FirebaseMessagingException {
 
         // fcm토큰 리스트를 다 가져오고
         // fcm 토큰 for문으로 돌리면서 fcm을 통해 멤버를 조회해서
@@ -87,7 +87,7 @@ public class AlertServiceImpl implements AlertService {
 //    }
 
 
-    public void sendAlert(AlertDto alert) throws ExecutionException, InterruptedException {
+    public void sendAlert(AlertDto alert) throws ExecutionException, InterruptedException, FirebaseMessagingException {
         log.info("send message 호출!");
         Message message = Message.builder()
             .setWebpushConfig(WebpushConfig.builder()
@@ -99,12 +99,12 @@ public class AlertServiceImpl implements AlertService {
             .setToken(alert.getToken())
             .build();
         log.info("message 생성 완료");
-        String response = null;
-        try {
-            response = FirebaseMessaging.getInstance().send(message);
-        } catch (FirebaseMessagingException e) {
-            throw new RuntimeException(e);
-        }
+        String response = FirebaseMessaging.getInstance().send(message);
+//        try {
+//            response = FirebaseMessaging.getInstance().send(message);
+//        } catch (FirebaseMessagingException e) {
+//            throw new RuntimeException(e);
+//        }
         log.info(">>>>Send message : " + response);
     }
 
