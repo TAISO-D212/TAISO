@@ -21,8 +21,8 @@ import java.time.LocalDateTime;
 @Builder
 public class RsvRoute {
 
-    // 외래키이자 pk가 되도록 설정
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "route_id", nullable = false)
     private Long id;
 
@@ -33,4 +33,9 @@ public class RsvRoute {
     private double latitude;
     private double longitude;
     private LocalDateTime time;
+    
+    @PrePersist
+    protected void onCreate() {
+        time = LocalDateTime.now();
+    }
 }

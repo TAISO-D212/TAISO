@@ -3,9 +3,11 @@ package com.d212.taiso.domain.member.service;
 import com.d212.taiso.domain.member.dto.AlertDto;
 import com.d212.taiso.global.util.CommonUtil;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.WebpushConfig;
 import com.google.firebase.messaging.WebpushNotification;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.sql.exec.ExecutionException;
@@ -23,12 +25,15 @@ public class AlertServiceImpl implements AlertService {
 
     public void departAlertSend(Long rsvId) throws ExecutionException, InterruptedException {
 
+        log.info("departAlertSend===");
         // fcm토큰 리스트를 다 가져오고
         // fcm 토큰 for문으로 돌리면서 fcm을 통해 멤버를 조회해서
         List<String> tokens = memberService.getFcmToken(rsvId);
+        log.info("fcm tokens : {}", Arrays.toString(tokens.toArray()));
 
         // 각 토큰에 대해 Alert를 보냅니다.
         for (String token : tokens) {
+            log.info("token : {}", token);
             AlertDto alertDto = AlertDto.builder()
                 .title("depart")
                 .token(token)
@@ -83,6 +88,7 @@ public class AlertServiceImpl implements AlertService {
 
 
     public void sendAlert(AlertDto alert) throws ExecutionException, InterruptedException {
+        log.info("send message 호출!");
         Message message = Message.builder()
             .setWebpushConfig(WebpushConfig.builder()
                 .setNotification(WebpushNotification.builder()
@@ -92,11 +98,11 @@ public class AlertServiceImpl implements AlertService {
                 .build())
             .setToken(alert.getToken())
             .build();
-
+        log.info("message 생성 완료");
         String response = null;
         try {
-            response = FirebaseMessaging.getInstance().sendAsync(message).get();
-        } catch (java.util.concurrent.ExecutionException e) {
+            response = FirebaseMessaging.getInstance().send(message);
+        } catch (FirebaseMessagingException e) {
             throw new RuntimeException(e);
         }
         log.info(">>>>Send message : " + response);
