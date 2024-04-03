@@ -23,7 +23,6 @@ import TogetherRsvStore from '../../store/TogetherRsvStore';
 import { TogetherRsvInputType } from '../../interfaces/Reservation';
 
 export const TogetherRsv = () => {
-
 	const { rsvId } = useParams(); // 문자열로 받아짐.
 	const rsvIdInt = parseInt(rsvId, 10);
 
@@ -37,13 +36,11 @@ export const TogetherRsv = () => {
 		cnt: 1,
 	});
 
-
 	const [userCnt, setUserCnt] = useState<number>(1);
 
 	const navigate = useNavigate();
 
-	
-  // 로컬스토리지로 부터 데이터 가져오기
+	// 로컬스토리지로 부터 데이터 가져오기
 	const bookmarkId = JSON.parse(localStorage?.getItem('TogetherRsv')).state?.bookmarkId;
 	const latitude = JSON.parse(localStorage?.getItem('TogetherRsv')).state?.latitude;
 	const longitude = JSON.parse(localStorage?.getItem('TogetherRsv')).state?.longitude;
@@ -60,7 +57,7 @@ export const TogetherRsv = () => {
 		});
 	}, [address, bookmarkId, cnt, latitude, longitude, userCnt]);
 
-	const goSetTogetherDeparture = (rsvId:number) => {
+	const goSetTogetherDeparture = (rsvId: number) => {
 		navigate(`/setTogetherDeparture/${rsvId}`);
 	};
 
@@ -71,15 +68,20 @@ export const TogetherRsv = () => {
 
 	const submitTogetherRsv = () => {
 		console.log(rsvObj);
-		addTogetherRsv(rsvIdInt, rsvObj).then((res) => {
-			console.log(res);
-			setBookmarkId(null);
-			setLatitude(null);
-			setLongitude(null);
-			setAddress(null);
-			setCnt(1);
-			navigate('/history', { replace: true });
-		});
+		addTogetherRsv(rsvIdInt, rsvObj)
+			.then((res) => {
+				console.log(res);
+				setBookmarkId(null);
+				setLatitude(null);
+				setLongitude(null);
+				setAddress(null);
+				setCnt(1);
+				alert(res.data);
+				navigate('/history', { replace: true });
+			})
+			.catch((err) => {
+				alert('예약에 실패했습니다. 다시 시도해주세요.');
+			});
 	};
 
 	return (
@@ -120,7 +122,9 @@ export const TogetherRsv = () => {
 							<Stack spacing={1.5}>
 								<FormControl orientation='horizontal' sx={{ gap: 3 }}>
 									<div className='w-[100%] h-[100%] py-2 bg-white border-2 border-[#C4B5FC] rounded-md divide-y divide-dashed divide-[#C4B5FC]'>
-										<div className='h-[100%] flex items-center' onClick={()=> goSetTogetherDeparture(rsvIdInt)}>
+										<div
+											className='h-[100%] flex items-center'
+											onClick={() => goSetTogetherDeparture(rsvIdInt)}>
 											<span className='mx-[5px]'>
 												<FaBusSimple color='navy' className='mx-[5px]' />
 											</span>
@@ -129,7 +133,7 @@ export const TogetherRsv = () => {
 									</div>
 								</FormControl>
 
-                {/* 나중에 도착지 정보를 담을 수 있다면. */}
+								{/* 나중에 도착지 정보를 담을 수 있다면. */}
 
 								{/* <FormControl orientation='horizontal' sx={{ gap: 1 }}>
 									<div className='w-[100%] h-[100%] py-2 bg-white border-2 border-[#C4B5FC] rounded-md divide-y divide-dashed divide-[#C4B5FC]'>

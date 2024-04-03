@@ -113,20 +113,25 @@ export const NewReservation = () => {
 
 	const submitNewRsv = () => {
 		console.log(rsvObj);
-		addRsv(rsvObj).then((res) => {
-			console.log(res);
-			setStartBookmarkId(null);
-			setStartLatitude(null);
-			setStartLongitude(null);
-			setStartAddress(null);
-			setEndBookmarkId(null);
-			setEndLatitude(null);
-			setEndLongitude(null);
-			setEndAddress(null);
-			setTime(null);
-			setCnt(1);
-			navigate('/history', { replace: true });
-		});
+		addRsv(rsvObj)
+			.then((res) => {
+				console.log(res);
+				setStartBookmarkId(null);
+				setStartLatitude(null);
+				setStartLongitude(null);
+				setStartAddress(null);
+				setEndBookmarkId(null);
+				setEndLatitude(null);
+				setEndLongitude(null);
+				setEndAddress(null);
+				setTime(null);
+				setCnt(1);
+				alert(res.data);
+				navigate('/history', { replace: true });
+			})
+			.catch((err) => {
+				alert('예약에 실패했습니다. 다시 시도해주세요.');
+			});
 	};
 
 	return (

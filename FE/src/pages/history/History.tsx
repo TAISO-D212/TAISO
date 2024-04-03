@@ -26,7 +26,14 @@ export const History = () => {
 				{myRsv.length !== 0 ? (
 					<div className=' w-[100%] h-[75%] flex flex-col justify-center items-center overflow-y-scroll'>
 						{myRsv.map((e) => {
-							return <HistoryListElement key={e.rsvId} rsvContent={e} editMode={editMode} onClickDelete={onClickDelete}/>;
+							return (
+								<HistoryListElement
+									key={e.rsvId}
+									rsvContent={e}
+									editMode={editMode}
+									onClickDelete={onClickDelete}
+								/>
+							);
 						})}
 					</div>
 				) : (
