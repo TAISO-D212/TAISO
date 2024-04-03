@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, String> {
@@ -19,6 +20,6 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     boolean existsByEmail(String email);
 
     @Query("SELECT r.member FROM Reservation r WHERE r.id = :rsvId")
-    Member findMemberByRsvId(Long rsvId);
+    List<Member> findMemberByRsvId(Long rsvId);
 
 }
