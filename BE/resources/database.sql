@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `rsv_detail` (
 	`depart_flag`	boolean	NOT NULL	DEFAULT false,
 	`board_flag`	boolean	NOT NULL	DEFAULT false,
 	`stop_flag`	boolean	NOT NULL	DEFAULT FALSE,
-	`arrival_time`	DATETIME NOT NULL DEFAULT NOW(),
+	`arrival_time`	DATETIME NULL DEFAULT NOW(),
 	CONSTRAINT `PK_RSV_DETAIL` PRIMARY KEY (`rsv_id`,	`place_id`)
 )default character set utf8mb4;
 

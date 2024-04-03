@@ -67,4 +67,9 @@ public class RsvDetail {
     public void setOrders(int orders) {
         this.orders = orders;
     }
+
+    // board_flag 값 갱신하는 메서드
+    public void setBoard_flag(boolean TF) {
+        this.board_flag = TF;
+    }
 }

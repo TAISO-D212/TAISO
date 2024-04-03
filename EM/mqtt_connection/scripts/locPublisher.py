@@ -62,6 +62,7 @@ def main():
     route_pub = rospy.Publisher("/route", Float32MultiArray, queue_size=10)
     rsvId_pub = rospy.Publisher("/rsvId", Int64, queue_size=1)
     rospy.init_node('gps_mqtt_publisher', anonymous=True)
+
     rate = rospy.Rate(1)  # 1초에 한 번
     be_counter = 0  # BE용 카운터
 

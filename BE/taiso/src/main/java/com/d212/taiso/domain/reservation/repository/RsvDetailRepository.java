@@ -4,12 +4,10 @@ import com.d212.taiso.domain.member.entity.Member;
 import com.d212.taiso.domain.reservation.entity.RsvDetail;
 import com.d212.taiso.domain.reservation.entity.RsvDetailId;
 
-import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface RsvDetailRepository extends JpaRepository<RsvDetail, RsvDetailId> {
@@ -36,5 +34,9 @@ public interface RsvDetailRepository extends JpaRepository<RsvDetail, RsvDetailI
     @Query(value = "SELECT * FROM rsv_detail  WHERE rsv_id = :rsvId "
         + "ORDER BY arrival_time", nativeQuery = true)
     List<RsvDetail> findRdByRsvIdOrderByArrivalTime(Long rsvId);
-    
+
+    // rsvId로 DB rsv_detail에서 경유순서 순으로 아직 탑승 안 한 다음 지점 받아오기
+    @Query(value = "SELECT * FROM rsv_detail WHERE rsv_id = :rsvId AND board_flag = FALSE"
+        + " ORDER BY orders LIMIT 1;", nativeQuery = true)
+    RsvDetail findNextRsvDetail(Long rsvId);
 }

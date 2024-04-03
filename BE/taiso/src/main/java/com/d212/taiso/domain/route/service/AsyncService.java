@@ -1,13 +1,19 @@
 package com.d212.taiso.domain.route.service;
 
+import com.d212.taiso.domain.member.service.AlertService;
+import com.d212.taiso.domain.place.entity.Place;
+import com.d212.taiso.domain.place.repository.PlaceRepository;
 import com.d212.taiso.domain.reservation.dto.OriginRouteInfoDto;
+import com.d212.taiso.domain.reservation.entity.Reservation;
 import com.d212.taiso.domain.reservation.entity.RsvDetail;
 import com.d212.taiso.domain.reservation.repository.ReservationRepository;
 import com.d212.taiso.domain.reservation.repository.RsvDetailRepository;
 import com.d212.taiso.domain.reservation.service.ReservationService;
 import com.d212.taiso.domain.route.dto.LocationDto;
 import com.d212.taiso.domain.route.dto.LocationPayload;
+import com.d212.taiso.domain.route.entity.RsvRoute;
 import com.d212.taiso.domain.route.mqtt.Publisher;
+import com.d212.taiso.domain.route.repository.RsvRouteRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +43,10 @@ public class AsyncService {
 
     private final Publisher publisher;
     private final ObjectMapper objectMapper;
+    private final AlertService alertService;
     private final ReservationService reservationService;
+    private final PlaceRepository placeRepository;
+    private final RsvRouteRepository rsvRouteRepository;
     private final RsvDetailRepository rsvDetailRepository;
     private final ReservationRepository reservationRepository;
 
@@ -181,17 +191,65 @@ public class AsyncService {
         log.info("saveLocation 호출 : longitude {}, distanceList {}", longitude, latitude);
 
         // DB에서 현재 진행중인 rsvId 가져오기
+        Long rsvId = reservationRepository.findReservationIdByHour();
 
         // DB rsv_route에 지금 위치 저장
-
-        // rsvId로 DB rsv_detail에서 아직 탑승 안 한 지점 리스트 경유순서 순으로 받아오기
-
+        Optional<Reservation> reservationOptional = reservationRepository.findById(rsvId);
+        if (reservationOptional.isPresent()) {
+            RsvRoute rsvRoute = RsvRoute.builder()
+                .reservation(reservationOptional.get())
+                .latitude(latitude)
+                .longitude(longitude)
+                .build();
+            rsvRouteRepository.save(rsvRoute);
+            log.info("현재 위치 저장 성공!");
+        } else {
+            log.error("현재 위치 저장 실패!");
+        }
+        // rsvId로 DB rsv_detail에서 경유순서 순으로 아직 탑승 안 한 다음 지점이나 목적지 받아오기
+        double nextLatitude = 0;
+        double nextLongitude = 0;
+        RsvDetail next = rsvDetailRepository.findNextRsvDetail(rsvId);
+        if (next != null) {
+            nextLatitude = next.getRsvDetailId().getPlace().getLatitude();
+            nextLongitude = next.getRsvDetailId().getPlace().getLongitude();
+        } else {
+            Long placeId = reservationRepository.findPlaceIdByReservationId(rsvId);
+            Optional<Place> nextPlace = placeRepository.findPlaceById(placeId);
+            nextLatitude = nextPlace.get().getLatitude();
+            nextLongitude = nextPlace.get().getLongitude();
+        }
         // 현재 위치와 리스트의 각 지점 위치 계산
+        int distance = calculateDistanceInMeters(latitude, longitude, nextLatitude, nextLongitude);
 
-        // 거리 10m 이하면
-        //  마지막이면 ROS 연결 해제 신호, 대기장소 데이터 전송
-        //           FE 하차 버튼 활성화 신호, 도착 push알림 전송
-        // 거리 500m 이하면 push 알림 전송
+        // 거리 200m 이하면
+        if (distance < 200 && distance > 150) {
+            log.info("거리 200m 이하, 도착 예정 push 알림 전송");
+            try {
+                alertService.soonAlertSend(rsvId);
+            } catch (InterruptedException e) {
+                log.error("push 알림 에러 : {}", e);
+            }
+        }
+
+        // 거리 10m 이하면 push 알림 전송
+        if (distance < 50 && distance > 0) {
+            log.info("거리 50m 이하, 도착 push 알림 전송");
+            try {
+                alertService.arrivalAlertSend(rsvId);
+            } catch (InterruptedException e) {
+                log.error("push 알림 에러 : {}", e);
+            }
+            if (next == null) {
+                // 마지막이면 ROS 연결 해제 신호
+                // 도착 push알림 전송
+                log.info("endConnection");
+                publisher.publishLocations("connect/BE/end", "connection Ended.");
+            } else {
+                next.setBoard_flag(true);
+                rsvDetailRepository.save(next);
+            }
+        }
     }
 
     private static int calculateDistance(List<Integer> path, int[][] distTable) {
@@ -256,6 +314,31 @@ public class AsyncService {
         Collections.reverse(list.subList(i + 1, list.size()));
         return true;
     }
+
+    public static int calculateDistanceInMeters(double lat1, double lon1, double lat2,
+        double lon2) {
+        int EARTH_RADIUS = 6371000; // 지구 반지름
+
+        // 위도, 경도를 라디안으로 변환
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+
+        // 변환된 라디안 값을 사용
+        lat1 = Math.toRadians(lat1);
+        lat2 = Math.toRadians(lat2);
+
+        // Haversine 공식
+        double a = Math.pow(Math.sin(dLat / 2), 2)
+            + Math.pow(Math.sin(dLon / 2), 2)
+            * Math.cos(lat1) * Math.cos(lat2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        int distance = (int) (EARTH_RADIUS * c);
+
+        // 미터 단위로 결과 변환
+        return distance;
+    }
+
 }
 
 class PathResult {  // 경로 알고리즘 결과 저장용 클래스
