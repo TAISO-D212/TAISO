@@ -88,7 +88,7 @@ public class MemberServiceImpl implements MemberService {
             .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_EMAIL_NOT_EXIST));
 
         member.changeFcmToken(memberTokenReq.getToken());
-//        memberRepository.save(member);
+        memberRepository.save(member);
     }
 
 //    @Autowired
