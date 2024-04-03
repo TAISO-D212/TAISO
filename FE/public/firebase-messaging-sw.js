@@ -72,7 +72,7 @@ self.addEventListener("fetch", (event) => {
 // 웹 푸시 알림 수신
 self.addEventListener("push", function (event) {
   console.log("push: ", event.data.json());
-  if (!e.data.json()) return;
+  if (!event.data.json()) return;
 
   const resultData = event.data.json().notification;
   const notificationTitle = resultData.title;
