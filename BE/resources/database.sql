@@ -55,11 +55,12 @@ CREATE TABLE IF NOT EXISTS `bookmark` (
 )default character set utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `rsv_route` (
+	`route_id`	bigint	NOT NULL AUTO_INCREMENT,
 	`rsv_id`	bigint	NOT NULL,
 	`latitude`	double	NOT NULL,
 	`longitude`	double	NOT NULL,
 	`time`	datetime	NOT NULL	DEFAULT NOW(),
-	CONSTRAINT `PK_RSV_ROUTE` PRIMARY KEY (`rsv_id`)
+	CONSTRAINT `PK_RSV_ROUTE` PRIMARY KEY (`route_id`)
 )default character set utf8mb4;
 
 

@@ -8,6 +8,8 @@ import com.d212.taiso.domain.route.mqtt.Publisher;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -66,7 +68,7 @@ public class AsyncService {
             long rsvId = locationPayload.getRsvId();
             long placeId = locationPayload.getPlaceId();
             int re = locationPayload.getDistanceList().size();
-            long[] distanceList = new long[re];
+            int[] distanceList = new int[re];
 
             for (int i = 0; i < re; i++) {
                 distanceList[i] = locationPayload.getDistanceList().get(i);
@@ -82,42 +84,62 @@ public class AsyncService {
             String originDistStr = originRouteInfo.getRouteDist();
 
             int[][] distTable;
-            int lastNum = stopCnt + 1;
             if (originDistStr == null) {
                 // 신규 예약 시 -> [새 경유지-주차장, 새 경유지-목적지, 주차장-목적지 거리]
                 //          주차장     목적지     새 경유지
                 // 주차장               2번          0번
                 // 목적지      2번                   1번
                 // 새 경유지   0번       1번
-                lastNum = 3;
-                distTable = new int[lastNum][lastNum];
-                StringTokenizer stk = new StringTokenizer((originDistStr));
-                int dist0 = Integer.parseInt(stk.nextToken());
-
+                distTable = new int[stopCnt][stopCnt];
+                distTable[0][2] = distanceList[0];
+                distTable[2][0] = distanceList[0];
+                distTable[1][2] = distanceList[1];
+                distTable[2][1] = distanceList[1];
+                distTable[0][1] = distanceList[2];
+                distTable[1][0] = distanceList[2];
 
             } else {
                 // 경유지 추가 시 -> [새 경유지와 주차장, 목적지, 경유지1까지 각각 거리]
                 // 받아온 경유지 간 거리를 테이블로 만들기
                 //          주차장     목적지     경유지 1   새 경유지
-                // 주차장       0       500        400
-                // 목적지      500       0         300
-                // 경유지 1    400      300         0
-                // 새 경유지                                 0
-                lastNum++;
-                distTable = new int[lastNum][lastNum];
+                // 주차장       0       500        400       0번
+                // 목적지      500       0         300       1번
+                // 경유지 1    400      300         0        2번
+                // 새 경유지    0번      1번        2번        0
+                int lastNum = stopCnt - 1;
+                distTable = new int[stopCnt][stopCnt];
                 StringTokenizer stk = new StringTokenizer(originDistStr);
-                for (int i = 0; i < stopCnt; i++) {
-                    for (int j = 0; j < stopCnt; j++) {
+                for (int i = 0; i < lastNum; i++) {
+                    for (int j = 0; j < lastNum; j++) {
                         distTable[i][j] = Integer.parseInt(stk.nextToken());
                     }
                 }
+                for (int i = 0; i < lastNum; i++) {
+                    distTable[lastNum][i] = distanceList[i];
+                    distTable[i][lastNum] = distanceList[i];
+                }
             }
 
-            // distance로 다익스트라 경로 계산
+            // distance로 경로 계산 : 외판원 순회 알고리즘 활용
+            PathResult result = findPath(distTable, 0, 1);
 
-            // 최소 거리 총합이 30km 넘으면 예약 삭제 DB 업데이트, 예약 불가 push 알림
+            if (result.totalDistance > 30000) {
+                // 최소 거리 총합이 30km 넘으면 예약 삭제 DB 업데이트, 예약 불가 push 알림
 
-            // 최소 거리 총합이 30km 이내면 예약 성공 DB 업데이트, 예약 성공 push 알림
+            } else {
+                // 최소 거리 총합이 30km 이내면 예약 성공 DB 업데이트, 예약 성공 push 알림
+                // 예약 성공 DB 업데이트 - route_dist update
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < stopCnt; i++) {
+                    for (int j = 0; j < stopCnt; j++) {
+                        sb.append(distTable[i][j] + " ");
+                    }
+                }
+
+                // 경로 순서대로 orders 업데이트
+
+            }
+
         } catch (JsonProcessingException e) {
             log.error("json 처리 에러 : {}", e);
         }
@@ -146,4 +168,48 @@ public class AsyncService {
         //           FE 하차 버튼 활성화 신호, 도착 push알림 전송
         // 거리 500m 이하면 push 알림 전송
     }
+
+    public static PathResult findPath(int[][] distTable, int start, int end) {
+        int N = distTable.length;
+        boolean[] visited = new boolean[N];
+        List<Integer> path = new ArrayList<>();
+        int totalDistance = 0;
+
+        visited[start] = true; // 출발지 방문 표시
+        visited[end] = true; // 도착지는 처음부터 방문 표시하여 제외
+
+        int current = start;
+        path.add(current);
+
+        while (path.size() < N - 1) { // 도착지를 제외한 모든 지점을 방문
+            int nearest = -1;
+            for (int i = 0; i < N; i++) {
+                if (!visited[i]) {
+                    if (nearest == -1 || distTable[current][i] < distTable[current][nearest]) {
+                        nearest = i;
+                    }
+                }
+            }
+            visited[nearest] = true;
+            path.add(nearest);
+            totalDistance += distTable[current][nearest]; // 총 거리 업데이트
+            current = nearest;
+        }
+
+        totalDistance += distTable[current][end]; // 도착지까지의 거리 추가
+        path.add(end); // 마지막으로 도착지 추가
+        return new PathResult(path, totalDistance);
+    }
 }
+
+class PathResult {  // 경로 알고리즘 결과 저장용 클래스
+
+    List<Integer> path;
+    int totalDistance;
+
+    public PathResult(List<Integer> path, int totalDistance) {
+        this.path = path;
+        this.totalDistance = totalDistance;
+    }
+}
+
