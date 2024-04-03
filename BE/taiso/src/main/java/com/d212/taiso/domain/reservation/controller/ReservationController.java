@@ -1,5 +1,7 @@
 package com.d212.taiso.domain.reservation.controller;
 
+import com.d212.taiso.domain.member.service.AlertService;
+import com.d212.taiso.domain.member.service.MemberService;
 import com.d212.taiso.domain.reservation.dto.MyRsvListRes;
 import com.d212.taiso.domain.reservation.dto.RsvAddReq;
 import com.d212.taiso.domain.reservation.dto.RsvListRes;
@@ -28,6 +30,8 @@ public class ReservationController {
 
     private final RsvRouteService rsvRouteService;
     private final ReservationService reservationService;
+    private final MemberService memberService;
+    private final AlertService alertService;
 
     // 매 시간마다 자동으로 예약 확인 후 있다면 실행
     @Scheduled(cron = "0 0 0/1 * * *", zone = "Asia/Seoul")
@@ -37,11 +41,13 @@ public class ReservationController {
             rsvRouteService.endConnection();
             Long rsvId = reservationService.getCurrentReservationId();
             if (rsvId != null) {
-                log.info("예약 존재. 연결을 시작합니다.");
+                log.info("예약 있음. 연결을 시작합니다.");
                 rsvRouteService.startConnection(rsvId);
+                memberService.getFcmToken(rsvId);
+                alertService.departAlertSend(rsvId);
                 return ResponseEntity.ok().build();
             } else {
-                log.info("예약 부재. 연결하지 않습니다.");
+                log.info("예약 없음. 연결하지 않습니다.");
                 return ResponseEntity.ok().build();
             }
         } catch (Exception e) {

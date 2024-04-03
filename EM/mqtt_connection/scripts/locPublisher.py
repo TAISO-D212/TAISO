@@ -31,7 +31,7 @@ def gps_callback(data):
     # GPS 데이터 저장
     last_gps_data = data
 
-def publish_gps_data_BE(event):
+def publish_gps_data_BE():
     global last_gps_data
     if last_gps_data is not None:
         # GPS 데이터를 문자열로 변환
@@ -39,7 +39,7 @@ def publish_gps_data_BE(event):
         # MQTT 브로커에 GPS 데이터 발행
         mqtt_client.publish("location/BE", gps_data)
 
-def publish_gps_data_FE(event):
+def publish_gps_data_FE():
     global last_gps_data
     if last_gps_data is not None:
         # GPS 데이터를 문자열로 변환
@@ -53,7 +53,6 @@ def convert_to_utm(latitude, longitude):
     utm_x, utm_y = transformer.transform(longitude, latitude)
     utm_x -= 302459.942
     utm_y -= 4122635.537
-
     return utm_x, utm_y
 
 def main():
@@ -63,7 +62,9 @@ def main():
     route_pub = rospy.Publisher("/route", Float32MultiArray, queue_size=10)
     rsvId_pub = rospy.Publisher("/rsvId", Int64, queue_size=1)
     rospy.init_node('gps_mqtt_publisher', anonymous=True)
-    rate = rospy.Rate(2)
+
+    rate = rospy.Rate(1)  # 1초에 한 번
+    be_counter = 0  # BE용 카운터
 
     if len(sys.argv) > 1:
         json_data = sys.argv[1]
@@ -81,15 +82,13 @@ def main():
         for location in data["locations"]:
             utm_x, utm_y = convert_to_utm(location["latitude"], location["longitude"])
             route_msg.data.extend([utm_x, utm_y])
-
         print(route_msg)
         route_pub.publish(route_msg)
         rate.sleep()
 
         print("ROS publish completed")
-
     else:
-        print("Error: No data provided!")
+        print("Error: data not provided!")
 
     # MQTT 브로커에 연결
     mqtt_client.connect("j10d212.p.ssafy.io", 1883, 60)
@@ -101,16 +100,21 @@ def main():
     # running state일 때만 publish 실행
     while not rospy.is_shutdown():
         if check_running_state():
-            # 10초마다 publish_gps_data_BE 함수 호출
-            rospy.Timer(rospy.Duration(10), publish_gps_data_BE)
+            # 2초마다 FE 발행
+            publish_gps_data_FE()
 
-            # 1초마다 publish_gps_data_FE 함수 호출
-            rospy.Timer(rospy.Duration(1), publish_gps_data_FE)
+            #10초마다 BE 발행
+            if be_counter % 10 == 0:
+                publish_gps_data_BE()
+            
+            be_counter += 1
+            if be_counter >= 10:
+                be_counter = 0
         else:
             # ROS 종료 후 MQTT 연결 종료
             mqtt_client.loop_stop()
             mqtt_client.disconnect()
-            rospy.signal_shutdown("Stopping locPublisher")
+            rospy.signal_shutdown("Stopping locPublisher.")
         rate.sleep()
 
 if __name__ == '__main__':

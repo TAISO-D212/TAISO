@@ -6,6 +6,7 @@ import com.d212.taiso.domain.member.entity.Member;
 import com.d212.taiso.domain.place.entity.Place;
 import com.d212.taiso.domain.place.repository.PlaceRepository;
 import com.d212.taiso.domain.reservation.dto.MyRsvListRes;
+import com.d212.taiso.domain.reservation.dto.OriginRouteInfoDto;
 import com.d212.taiso.domain.reservation.dto.RsvAddReq;
 import com.d212.taiso.domain.reservation.dto.RsvListRes;
 import com.d212.taiso.domain.reservation.dto.RsvTogetherAddReq;
@@ -18,7 +19,9 @@ import com.d212.taiso.domain.reservation.repository.RsvDetailRepository;
 import com.d212.taiso.global.result.error.ErrorCode;
 import com.d212.taiso.global.result.error.exception.BusinessException;
 import com.d212.taiso.global.util.CommonUtil;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
+import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -298,6 +301,26 @@ public class ReservationServiceImpl implements ReservationService {
         // 경유지 수 변경
         int stopCnt = reservation.getStopCnt() - 1;
 
+        // 거리 배열 저장값에서 해당 경유지 제거
+        int tempstopCnt = stopCnt + 2;
+        String originDistStr = reservation.getRouteDist();
+        // 받아온 경유지 간 거리를 테이블로 만들기
+        //          주차장     목적지     경유지 1   경유지 2
+        // 주차장       0       500        400       0번
+        // 목적지      500       0         300       1번
+        // 경유지 1    400      300         0        2번
+        // 새 경유지    0번      1번        2번        0
+        int lastNum = stopCnt - 1;
+        int[][] distTable = new int[stopCnt][stopCnt];
+        StringTokenizer stk = new StringTokenizer(originDistStr);
+        for (int i = 0; i < lastNum; i++) {
+            for (int j = 0; j < lastNum; j++) {
+                distTable[i][j] = Integer.parseInt(stk.nextToken());
+            }
+        }
+        // 지울 placeId가 해당 rsvId로 저장된 것 중 몇 번째 순서인지 찾아오는 로직
+        // TODO : 해당 로직으로 행, 열 지워서 하기
+
         // 총 인원 수와 경유지 수가 모두 0이 되면 예약 리스트 자체를 제거
         // Cascade 적용이 되어있나?? -> 되어있음.
         if (cnt == 0 && stopCnt == 0) {
@@ -308,8 +331,6 @@ public class ReservationServiceImpl implements ReservationService {
             reservation.changeCnt(cnt);
             reservation.changeStopCnt(stopCnt);
         }
-
-
     }
 
     @Override
