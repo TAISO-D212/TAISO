@@ -4,5 +4,6 @@ import com.d212.taiso.domain.member.dto.AlertDto;
 
 public interface AlertService {
     public void sendAlert(AlertDto alert);
-
+    public void arrivalAlertSend();
+    public String getNotificationToken();
 }
