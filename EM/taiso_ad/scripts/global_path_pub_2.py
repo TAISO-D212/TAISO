@@ -12,6 +12,7 @@ import json
 from math import cos,sin,sqrt,pow,atan2,pi
 from geometry_msgs.msg import Point32,PoseStamped, PoseWithCovarianceStamped
 from nav_msgs.msg import Odometry,Path
+from std_msgs.msg import Float32MultiArray
 
 current_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(current_path)
@@ -23,10 +24,12 @@ class dijkstra_path_pub :
         rospy.init_node('dijkstra_path_pub', anonymous=True)
 
         self.global_path_pub = rospy.Publisher('/global_path',Path, queue_size = 1)
-
-        rospy.Subscriber('/start_point', PoseWithCovarianceStamped, self.init_callback)
-        rospy.Subscriber('/goal_point', PoseStamped, self.goal_callback)
-        rospy.Subscriber('/waypoint', PoseStamped, self.waypoints_callback)
+        rospy.Subscriber('/route', Float32MultiArray, self.route_callback)
+        rospy.Subscriber("odom", Odometry, self.odom_callback)
+        # rospy.Subscriber('/start_point', PoseWithCovarianceStamped, self.init_callback)
+        # rospy.Subscriber('/goal_point', PoseStamped, self.goal_callback)
+        # rospy.Subscriber('/waypoint', Path, self.waypoints_callback)
+        
 
         load_path = os.path.normpath(os.path.join(current_path, 'lib/mgeo_data/R_KR_PG_K-City'))
         mgeo_planner_map = MGeo.create_instance_from_json(load_path)
@@ -38,11 +41,13 @@ class dijkstra_path_pub :
         self.links=link_set.lines
 
         self.global_planner=Dijkstra(self.nodes,self.links)
-
+        
         self.is_goal_pose = False
         self.is_init_pose = False
         self.is_way_pose = False
-        # self.waypoints = [] # 경유지 저장리스트
+        self.waypoints = [] # 경유지 저장리스트
+        self.route_msg = Float32MultiArray().data
+        
 
         while True:
             if self.is_goal_pose == True and self.is_init_pose == True and self.is_way_pose == True:
@@ -56,80 +61,123 @@ class dijkstra_path_pub :
         self.global_path_msg = self.calc_dijkstra_path_node(self.start_node, self.end_node, self.waypoints)
         # self.global_path_msg = self.calc_dijkstra_path_node(self.start_node, self.end_node)
 
-        rate = rospy.Rate(10) # 10hz
+        rate = rospy.Rate(20) # 10hz
         while not rospy.is_shutdown():
             self.global_path_pub.publish(self.global_path_msg)
             rate.sleep()
+    def odom_callback(self,msg):
+        self.odom_msg = msg
+        
 
-    
-    def init_callback(self,msg):
+    def route_callback(self,msg):
+        self.route_msg = msg.data
+        self.init_callback()
+        self.goal_callback()
+        self.waypoints_callback()
+        
+    def init_callback(self):
         min_dist = float('inf')
-        x = msg.pose.pose.position.x
-        y = msg.pose.pose.position.y
-        for node_idx in self.nodes:
-            node_x = self.nodes[node_idx].point[0]
-            node_y = self.nodes[node_idx].point[1]
-            dist = sqrt(((x-node_x)**2)+((y-node_y)**2))
-            if min_dist > dist:
-                min_dist = dist
-                self.start_node = node_idx
+        if len(self.route_msg) != 0:
+            x = self.odom_msg.pose.pose.position.x
+            y = self.odom_msg.pose.pose.position.y
+            for node_idx in self.nodes:
+                node_x = self.nodes[node_idx].point[0]
+                node_y = self.nodes[node_idx].point[1]
+                dist = sqrt(((x-node_x)**2)+((y-node_y)**2))
+                if min_dist > dist:
+                    min_dist = dist
+                    self.start_node = node_idx
 
-        self.is_init_pose = True
+            self.is_init_pose = True
 
 
-    def goal_callback(self,msg):
+    def goal_callback(self):
         min_dist = float('inf')
-        x = msg.pose.position.x
-        y = msg.pose.position.y
-        for node_idx in self.nodes:
-            node_x = self.nodes[node_idx].point[0]
-            node_y = self.nodes[node_idx].point[1]
-            dist = sqrt(((x-node_x)**2)+((y-node_y)**2))
-            if min_dist > dist:
-                min_dist = dist
-                self.end_node = node_idx
+        if len(self.route_msg) != 0:
+            x = self.route_msg[-2]#msg.pose.position.x
+            y = self.route_msg[-1]#msg.pose.position.y
+            for node_idx in self.nodes:
+                node_x = self.nodes[node_idx].point[0]
+                node_y = self.nodes[node_idx].point[1]
+                dist = sqrt(((x-node_x)**2)+((y-node_y)**2))
+                if min_dist > dist:
+                    min_dist = dist
+                    self.end_node = node_idx
 
-        # goal_callback에서 받은 경유지를 waypoints에 추가
-        # self.waypoints.append(self.end_node)
-        self.is_goal_pose = True
+            # goal_callback에서 받은 경유지를 waypoints에 추가
+            # self.waypoints.append(self.end_node)
+            self.is_goal_pose = True
 
-    def waypoints_callback(self,msg):
-        min_dist = float('inf')
-        x = msg.pose.position.x
-        y = msg.pose.position.y
-        for node_idx in self.nodes:
-            node_x = self.nodes[node_idx].point[0]
-            node_y = self.nodes[node_idx].point[1]
-            dist = sqrt(((x-node_x)**2)+((y-node_y)**2))
-            if min_dist > dist:
-                min_dist = dist
-                self.waypoints = node_idx
-        self.is_way_pose = True
+    # def waypoints_callback(self,msg):
+    #     min_dist = float('inf')
+    #     x = msg.pose.position.x
+    #     y = msg.pose.position.y
+    #     for node_idx in self.nodes:
+    #         node_x = self.nodes[node_idx].point[0]
+    #         node_y = self.nodes[node_idx].point[1]
+    #         dist = sqrt(((x-node_x)**2)+((y-node_y)**2))
+    #         if min_dist > dist:
+    #             min_dist = dist
+    #             self.waypoints = node_idx
+    #     self.is_way_pose = True
+
+    def waypoints_callback(self):
+        # 초기화
+        if len(self.route_msg) != 0:
+            if not hasattr(self, 'waypoints'):
+                self.waypoints = []
+
+            # 현재 waypoint의 가장 가까운 노드를 찾아 waypoints에 추가
+            for i in range(len(self.route_msg[:-2])//2):
+                x = self.route_msg[2*i]
+                y = self.route_msg[2*i+1]
+                min_dist = float('inf')
+                closest_node = None
+
+                # 현재 위치에서 노드까지의 거리 계산
+                for node_idx in self.nodes:
+                    node_x = self.nodes[node_idx].point[0]
+                    node_y = self.nodes[node_idx].point[1]
+                    dist = sqrt(((x - node_x) ** 2) + ((y - node_y) ** 2))
+                    if min_dist > dist:
+                        min_dist = dist
+                        closest_node = node_idx
+
+                # 최단 거리를 가진 노드를 waypoints에 추가
+                if closest_node is not None:
+                    self.waypoints.append(closest_node)
+
+            self.is_way_pose = True
+
 
     def calc_dijkstra_path_node(self, start_node, end_node, waypoints=None):
         # waypoints가 None이 아니면, 출발 위치와 각 경유지, 그리고 도착 위치 간의 경로를 순차적으로 연결하여 전체 경로를 구함
         if waypoints:
             total_point_path = []
-            for i in range(len(waypoints)+1):
+
+            # 출발 지점부터 각 경유지까지의 경로를 찾음
+            for i in range(len(waypoints)):
                 if i == 0:
                     start = start_node
-                    end = waypoints
-                    _, path_info = self.global_planner.find_shortest_path(start, end)
-                    total_point_path.extend(path_info['point_path'])
-                elif i == len(waypoints):
-                    start = waypoints
-                    end = end_node
-                
-                    _, path_info = self.global_planner.find_shortest_path(start, end)
-                    total_point_path.extend(path_info['point_path'])
+                else:
+                    start = waypoints[i - 1]
+                end = waypoints[i]
+                _, path_info = self.global_planner.find_shortest_path(start, end)
+                total_point_path.extend(path_info['point_path'])
+
+            # 마지막 경유지부터 도착 지점까지의 경로를 찾음
+            _, path_info = self.global_planner.find_shortest_path(waypoints[-1], end_node)
+            total_point_path.extend(path_info['point_path'])
+
         else:
+            # waypoints가 없으면 출발 지점부터 도착 지점까지의 경로를 찾음
             _, path_info = self.global_planner.find_shortest_path(start_node, end_node)
             total_point_path = path_info['point_path']
 
         # 경로 메시지 생성
         out_path = Path()
         out_path.header.frame_id = '/map'
-        
+
         for waypoint in total_point_path:
             read_pose = PoseStamped()
             read_pose.pose.position.x = waypoint[0]
@@ -137,6 +185,7 @@ class dijkstra_path_pub :
             read_pose.pose.orientation.w = 1
             out_path.poses.append(read_pose)
         return out_path
+
 
 class Dijkstra:
     def __init__(self, nodes, links):
