@@ -24,6 +24,7 @@
     "@types/styled-components": "^5.1.34",
     "axios": "^1.6.8",
     "dayjs": "^1.11.10",
+    "firebase": "^10.10.0",
     "framer-motion": "^11.0.18",
     "mqtt": "^5.5.0",
     "patch-package": "^8.0.0",

@@ -213,7 +213,14 @@ public class ReservationServiceImpl implements ReservationService {
             return "예약 인원 수가 초과되었습니다.";
         }
 
-        // 시간이 초과되었을 경우
+        // 이미 유저가 해당 시간대에 예약을 했는 경우.
+        // 시간으로 할까 아니면 예약 id로 할까??
+        RsvDetail existingRsvDetail = rsvDetailRepository.findRsvDetailByMemberAndTime(member, reservation.getTime())
+                .orElse(null); // 예약이 없을 경우 null을 반환
+
+        if (existingRsvDetail != null) {
+            return "이미 해당 시간대에 예약을 했습니다.";
+        }
 
         Place place = null;
 
