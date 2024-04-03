@@ -7,11 +7,13 @@ import com.d212.taiso.domain.member.dto.MemberJoinReq;
 import com.d212.taiso.domain.member.dto.MemberRes;
 import com.d212.taiso.domain.member.entity.Member;
 import com.d212.taiso.domain.member.repository.MemberRepository;
+import com.d212.taiso.domain.reservation.entity.Reservation;
 import com.d212.taiso.global.result.error.ErrorCode;
 import com.d212.taiso.global.result.error.exception.BusinessException;
 import com.d212.taiso.global.util.CommonUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,9 +79,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    @Transactional
-    public void saveFcmToken(String fcmToken) {
-        Member member = commonUtil.getMember();
+    public void saveFcmToken(Long rsvId, String fcmToken) {
+        Member member = memberRepository.findMemberByRsvId(rsvId);
+
+        // Member member = memberRepository.findMemberByEmail();
+        //
 //        Member member = memberRepository.findMemberByEmail()
 //                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_EMAIL_NOT_EXIST));//존재하지 않는 이메일이면..
 
@@ -87,10 +91,28 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
     }
 
-    //
-    public String getfcmToken(){
 
-        Member member = commonUtil.getMember();
+
+//    @Autowired
+//    private alertRepository reservationRepository;
+//
+//    public String findEmailByRsvId(String rsvId) {
+//        Reservation reservation = reservationRepository.findByRsvId(rsvId);
+//        if (reservation != null) {
+//            return reservation.getEmail();
+//        } else {
+//            return null; // 예약 번호에 해당하는 정보가 없을 경우 처리
+//        }
+//    }
+
+
+
+
+
+    //
+    public String getfcmToken(Long rsvId){
+
+        Member member = memberRepository.findMemberByRsvId(rsvId);
         return member.getFcmToken();
     }
 

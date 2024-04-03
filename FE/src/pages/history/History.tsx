@@ -67,6 +67,7 @@ export const History = () => {
 					className='tab'
 					aria-label='예약 현황'
 					checked
+					
 				/>
 				<div role='tabpanel' className='w-[100%] tab-content p-5'>
 					{content}
