@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import sys
@@ -6,11 +6,11 @@ import json
 import rospy
 from morai_msgs.msg import GPSMessage
 from std_msgs.msg import Float32MultiArray, Int64
-from pyproj import Proj, transform
+from pyproj import Transformer
 import paho.mqtt.client as mqtt
 
 state_file_path = "/tmp/loc_publisher_state.json"
-    
+
 # MQTT 클라이언트 인스턴스 생성
 mqtt_client = mqtt.Client()
 
@@ -35,30 +35,26 @@ def publish_gps_data_BE(event):
     global last_gps_data
     if last_gps_data is not None:
         # GPS 데이터를 문자열로 변환
-        gps_data = "%s %s" % (last_gps_data.latitude, last_gps_data.longitude)
+        gps_data = f"{last_gps_data.latitude} {last_gps_data.longitude}"
         # MQTT 브로커에 GPS 데이터 발행
         mqtt_client.publish("location/BE", gps_data)
-
 
 def publish_gps_data_FE(event):
     global last_gps_data
     if last_gps_data is not None:
         # GPS 데이터를 문자열로 변환
-        gps_data = "%s %s" % (last_gps_data.latitude, last_gps_data.longitude)
+        gps_data = f"{last_gps_data.latitude} {last_gps_data.longitude}"
         # MQTT 브로커에 GPS 데이터 발행
         mqtt_client.publish("location/FE", gps_data)
 
-
 def convert_to_utm(latitude, longitude):
     # gps -> utm 좌표 변환
-    wgs84 = Proj(init='epsg:4326')
-    utm_proj = Proj(proj='utm', zone=52, ellps='WGS84', preserve_units=False)
-    utm_x, utm_y = transform(wgs84, utm_proj, longitude, latitude)
+    transformer = Transformer.from_crs("epsg:4326", "epsg:32652", always_xy=True)
+    utm_x, utm_y = transformer.transform(longitude, latitude)
     utm_x -= 302459.942
     utm_y -= 4122635.537
 
     return utm_x, utm_y
-
 
 def main():
     print("locPublisher running=========")
@@ -69,10 +65,9 @@ def main():
     rospy.init_node('gps_mqtt_publisher', anonymous=True)
     rate = rospy.Rate(2)
 
-    if len(sys.argv) >1:
+    if len(sys.argv) > 1:
         json_data = sys.argv[1]
         data = json.loads(json_data)
-
 
         # rsvId 발행
         rsvId_msg = Int64()
@@ -82,29 +77,28 @@ def main():
         rate.sleep()
 
         # UTM 좌표로 변환 후 경로 리스트 발행
-        # 12개씩 - utm-x, utm-y 순으로 진행 / 출발지-경유지들-목적지 순서
         route_msg = Float32MultiArray()
         for location in data["locations"]:
             utm_x, utm_y = convert_to_utm(location["latitude"], location["longitude"])
             route_msg.data.extend([utm_x, utm_y])
-        
+
         print(route_msg)
         route_pub.publish(route_msg)
         rate.sleep()
-        
+
         print("ROS publish completed")
 
     else:
-        print("error : No data!")
-    
+        print("Error: No data provided!")
+
     # MQTT 브로커에 연결
     mqtt_client.connect("j10d212.p.ssafy.io", 1883, 60)
     mqtt_client.loop_start()
-    
+
     # GPS 데이터를 구독
     rospy.Subscriber("/gps", GPSMessage, gps_callback)
 
-    # running state일때만 publish 실행
+    # running state일 때만 publish 실행
     while not rospy.is_shutdown():
         if check_running_state():
             # 10초마다 publish_gps_data_BE 함수 호출
@@ -112,12 +106,11 @@ def main():
 
             # 1초마다 publish_gps_data_FE 함수 호출
             rospy.Timer(rospy.Duration(1), publish_gps_data_FE)
-            pass
         else:
             # ROS 종료 후 MQTT 연결 종료
             mqtt_client.loop_stop()
             mqtt_client.disconnect()
-            rospy.signal_shutdown("stopping locPublisher")
+            rospy.signal_shutdown("Stopping locPublisher")
         rate.sleep()
 
 if __name__ == '__main__':

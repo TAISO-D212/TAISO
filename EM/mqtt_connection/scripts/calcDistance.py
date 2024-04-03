@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import sys
@@ -53,7 +53,7 @@ def distance_between(loc1, loc2, calculator):
 def find_nearest_node_index(x, y, nodes):
     nearest_node_idx = None
     min_dist = float('inf')
-    for node_idx, node in nodes.iteritems():
+    for node_idx, node in nodes.items():
         node_x, node_y = node.point[0], node.point[1]
         dist = math.sqrt((x - node_x)**2 + (y - node_y)**2)
         if dist < min_dist:
