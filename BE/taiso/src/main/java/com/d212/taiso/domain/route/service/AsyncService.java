@@ -182,20 +182,23 @@ public class AsyncService {
         }
     }
 
+    @Transactional
     @Async("taskExecutor")
     public void saveLocation(String payload) {
         // 데이터 처리 로직
         StringTokenizer stk = new StringTokenizer(payload);
         double longitude = Double.parseDouble(stk.nextToken());
         double latitude = Double.parseDouble(stk.nextToken());
-        log.info("saveLocation 호출 : longitude {}, distanceList {}", longitude, latitude);
+        log.info("saveLocation 호출 : longitude {}, latitude {}", longitude, latitude);
 
         // DB에서 현재 진행중인 rsvId 가져오기
         Long rsvId = reservationRepository.findReservationIdByHour();
+        log.info("현재 진행중인 rsvId : {}", rsvId);
 
         // DB rsv_route에 지금 위치 저장
         Optional<Reservation> reservationOptional = reservationRepository.findById(rsvId);
         if (reservationOptional.isPresent()) {
+            log.info(reservationOptional.get());
             RsvRoute rsvRoute = RsvRoute.builder()
                 .reservation(reservationOptional.get())
                 .latitude(latitude)
@@ -339,22 +342,23 @@ public class AsyncService {
         return distance;
     }
 
-}
+    static class PathResult {  // 경로 알고리즘 결과 저장용 클래스
 
-class PathResult {  // 경로 알고리즘 결과 저장용 클래스
+        List<Integer> path;
+        int totalDistance;
 
-    List<Integer> path;
-    int totalDistance;
+        public PathResult(List<Integer> path, int totalDistance) {
+            this.path = path;
+            this.totalDistance = totalDistance;
+        }
 
-    public PathResult(List<Integer> path, int totalDistance) {
-        this.path = path;
-        this.totalDistance = totalDistance;
+        @Override
+        public String toString() {
+            return "path : " + Arrays.toString(path.toArray()) + ", totalDistance : "
+                + totalDistance;
+        }
     }
 
-    @Override
-    public String toString() {
-        return "path : " + Arrays.toString(path.toArray()) + ", totalDistance : " + totalDistance;
-    }
 }
 
 
