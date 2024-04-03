@@ -5,6 +5,7 @@ package com.d212.taiso.domain.member.service;
 
 import com.d212.taiso.domain.member.dto.MemberJoinReq;
 import com.d212.taiso.domain.member.dto.MemberRes;
+import com.d212.taiso.domain.member.dto.MemberTokenReq;
 import com.d212.taiso.domain.member.entity.Member;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,11 +21,10 @@ public interface MemberService {
 
     void memberDelete();
 
-    @Transactional
-    void saveFcmToken(String fcmToken);
+
+    void saveFcmToken(MemberTokenReq memberTokenReq);
 
     List<String> getFcmToken(Long rsvId);
-
 
     // 비밀번호 암호화로 인해 지움.
 //    default Member memberJoinReqToEntity(MemberJoinReq memberJoinReq){

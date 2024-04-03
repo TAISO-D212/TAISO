@@ -5,6 +5,7 @@ package com.d212.taiso.domain.member.service;
 
 import com.d212.taiso.domain.member.dto.MemberJoinReq;
 import com.d212.taiso.domain.member.dto.MemberRes;
+import com.d212.taiso.domain.member.dto.MemberTokenReq;
 import com.d212.taiso.domain.member.entity.Member;
 import com.d212.taiso.domain.member.repository.MemberRepository;
 import com.d212.taiso.domain.reservation.entity.Reservation;
@@ -46,11 +47,11 @@ public class MemberServiceImpl implements MemberService {
     public MemberRes getMemberInfo() {
         Member member = commonUtil.getMember();
         return MemberRes.builder()
-                .email(member.getEmail())
-                .name(member.getName())
-                .faceImg(member.getFaceImg())
-                .createDate(member.getCreateDate())
-                .build();
+            .email(member.getEmail())
+            .name(member.getName())
+            .faceImg(member.getFaceImg())
+            .createDate(member.getCreateDate())
+            .build();
     }
 
     @Override
@@ -81,19 +82,14 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void saveFcmToken(String fcmToken) {
-        Member member = commonUtil.getMember();
+    public void saveFcmToken(MemberTokenReq memberTokenReq) {
 
-        // Member member = memberRepository.findMemberByEmail();
-        //
-//        Member member = memberRepository.findMemberByEmail()
-//                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_EMAIL_NOT_EXIST));//존재하지 않는 이메일이면..
+        Member member = memberRepository.findMemberByEmail(memberTokenReq.getEmail())
+            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_EMAIL_NOT_EXIST));
 
-        member.changeFcmToken(fcmToken);
-        memberRepository.save(member);
+        member.changeFcmToken(memberTokenReq.getToken());
+//        memberRepository.save(member);
     }
-
-
 
 //    @Autowired
 //    private alertRepository reservationRepository;
@@ -108,11 +104,8 @@ public class MemberServiceImpl implements MemberService {
 //    }
 
 
-
-
-
     //
-    public List<String> getFcmToken(Long rsvId){
+    public List<String> getFcmToken(Long rsvId) {
 
         List<Member> members = memberRepository.findMemberByRsvId(rsvId);
         List<String> fcmTokens = new ArrayList<>();
@@ -123,8 +116,6 @@ public class MemberServiceImpl implements MemberService {
 
         return fcmTokens;
     }
-
-
 
 //    @Transactional //해당 메서드가 트랜잭션 내에서 실행되어야 함을 나타냄. 메서드 내에서 발생하는 모든 데이터베이스 작업은 하나의 트랜잭션으로 묶임.
 //    //알림을 저장하는 메서드 -> 토큰을 매개변수로 받아들임.
