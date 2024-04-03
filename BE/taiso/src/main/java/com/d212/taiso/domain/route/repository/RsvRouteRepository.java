@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RsvRouteRepository extends JpaRepository<RsvRoute, Long> {
     // 여기에 추가적인 쿼리 메소드 정의
-
+    
 }

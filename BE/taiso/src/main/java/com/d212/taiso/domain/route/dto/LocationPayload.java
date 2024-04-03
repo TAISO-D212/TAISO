@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class LocationPayload {
 
-    private List<Long> distanceList;
+    private List<Integer> distanceList;
     private long placeId;
     private long rsvId;
 }
