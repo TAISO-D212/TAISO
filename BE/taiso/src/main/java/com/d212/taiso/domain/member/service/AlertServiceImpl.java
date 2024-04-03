@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.sql.exec.ExecutionException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -21,13 +23,21 @@ public class AlertServiceImpl {
 
     public void arrivalAlertSend(Long rsvId) throws ExecutionException, InterruptedException {
 
+        // fcm토큰 리스트를 다 가져오고
+        // fcm 토큰 for문으로 돌리면서 fcm을 통해 멤버를 조회해서
+        List<String> tokens = memberService.getFcmToken(rsvId);
+
+
+// 각 토큰에 대해 Alert를 보냅니다.
+        for (String token : tokens) {
         AlertDto alertDto = AlertDto.builder()
                 .title("TAISO")
-                .token(memberService.getfcmToken(rsvId))
+                .token(token)
                 .message("버스가 곧 도착합니다.")
                 .build();
         sendAlert(alertDto);
         log.info("보내졌습니다!");
+        }
     }
 
 
