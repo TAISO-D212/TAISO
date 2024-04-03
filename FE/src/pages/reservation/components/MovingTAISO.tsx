@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 export const MovingTAISO = () => {
 	const navigate = useNavigate();
 	const { locationData } = useMQTT();
+	const modalRef = useRef<HTMLDialogElement>(null);
 	// 시간 상태를 관리합니다. 초기값은 0입니다.
 	// const [time, setTime] = useState(0);
 	// 스톱워치가 실행 중인지 여부를 관리합니다.
@@ -209,7 +210,7 @@ export const MovingTAISO = () => {
 				setLocationList((prev: any) => [...prev, new window.kakao.maps.LatLng(lat, lng)]);
 				setAreaList(new window.kakao.maps.LatLng(lat, lng));
 			} else {
-				console.log('Geolocation is not available.');
+				console.log('mqtt data is not available.');
 			}
 		};
 
@@ -245,11 +246,11 @@ export const MovingTAISO = () => {
 				navigator.geolocation.clearWatch(watchId);
 			}
 		};
-	}, [isMoving, setLocationList]); // `isMoving` 상태가 변경될 때마다 이 useEffect를 다시 실행합니다.
+	}, [isMoving, setLocationList, locationData]); // `isMoving` 상태가 변경될 때마다 이 useEffect를 다시 실행합니다.
 
 	// 폴리라인 그리는 것
 	useEffect(() => {
-		if (copyMap && locationList.length > 0 && window.kakao.maps) {
+		if (copyMap && locationList.length > 3 && window.kakao.maps) {
 			if (!polylineRef.current) {
 				const polyline = new window.kakao.maps.Polyline({
 					path: locationList,
@@ -264,9 +265,9 @@ export const MovingTAISO = () => {
 				polylineRef.current.setPath(locationList);
 			}
 		}
-		// return () => {
-		//   polylineRef.current.setPath(null);
-		// };
+		return () => {
+			resetLocationList();
+		};
 	}, [locationList, location.center, copyMap]);
 
 	// 마커
@@ -372,40 +373,74 @@ export const MovingTAISO = () => {
 	// 		});
 	// };
 
+	const checkIsMoving = () => {
+		setIsMoving(true);
+	};
+
+	const handlecCancel = () => {
+		navigate('/');
+	};
+
+	let modal = (
+		<>
+			{/* Open the modal using document.getElementById('ID').showModal() method */}
+			<dialog ref={modalRef} id='my_modal_2' className='modal'>
+				<div className='modal-box'>
+					<h3 className='font-bold text-lg'>탑승확인</h3>
+					<p className='py-4'>현재 차량에 탑승중이신가요 ?</p>
+					<div className='modal-action'>
+						<form method='dialog'>
+							{/* if there is a button in form, it will close the modal */}
+							<button className='btn mx-5' onClick={handlecCancel}>
+								아니요
+							</button>
+							<button className='btn bg-[#C4B5FC] text-white' onClick={checkIsMoving}>
+								네
+							</button>
+						</form>
+					</div>
+				</div>
+			</dialog>
+		</>
+	);
+
 	return (
-		<div className='flex flex-col items-center w-[100%] h-[100%] '>
-			{location.isLoading ? (
-				<div className='flex justify-center items-center w-[100%] h-[100%]'>
-					<img src={LoadingBus} alt='LOADING' />
-				</div>
-			) : (
-				<div ref={CaptureRef} className='w-[100%] h-[80%]'>
-					<Map
-						width='100%'
-						height='100%'
-						lat={location.center.lat}
-						lng={location.center.lng}
-						handleCopyMap={handleCopyMap}
-					/>
-				</div>
-			)}
+		<>
+			{modal}
+			<div className='flex flex-col items-center w-[100%] h-[100%] '>
+				{location.isLoading ? (
+					<div className='flex justify-center items-center w-[100%] h-[100%]'>
+						<img src={LoadingBus} alt='LOADING' />
+					</div>
+				) : (
+					<div ref={CaptureRef} className='w-[100%] h-[80%]'>
+						<Map
+							width='100%'
+							height='100%'
+							lat={location.center.lat}
+							lng={location.center.lng}
+							handleCopyMap={handleCopyMap}
+						/>
+					</div>
+				)}
 
-			<div className='fixed bottom-0 flex flex-col justify-evenly items-center mt-[3%] w-[100%] h-[23%] z-10'>
-				<div className='flex justify-evenly items-center w-[100%]'>
-					<div className='flex flex-col justify-center items-center w-[40%]'>
-						<div className='text-[20px] font-["Pretendard-Bold"]'>{totalTime}</div>
-						<div className='text-'>이동 시간</div>
+				<div className='fixed bottom-0 flex flex-col justify-evenly items-center mt-[3%] bg-white w-[100%] h-[23%] z-10'>
+					<div className='flex justify-evenly items-center w-[100%]'>
+						<div className='flex flex-col justify-center items-center w-[40%]'>
+							<div className='text-[20px] font-["Pretendard-Bold"]'>{totalTime}</div>
+							<div className='text-'>이동 시간</div>
+						</div>
+						<div className='w-[40%]'>
+							<FootInfoItem title='이동거리(km)' value={totalDistance?.toFixed(2)} />
+						</div>
 					</div>
-					<div className='w-[40%]'>
-						<FootInfoItem title='이동거리(km)' value={totalDistance?.toFixed(2)} />
+					<div className='flex justify-center items-center w-[70%] h-[30%]'>
+						<StopTrackingMove isMoving={isMoving} handleMoveTrack={handleMoveTrack} stopMove={stopMove} />
 					</div>
 				</div>
-				<div className='flex justify-center items-center w-[70%] h-[30%]'>
-					<StopTrackingMove isMoving={isMoving} handleMoveTrack={handleMoveTrack} stopMove={stopMove} />
-				</div>
+
+				{/* <button onClick={htmlToImageConvert}>이동기록저장</button> */}
 			</div>
-
-			{/* <button onClick={htmlToImageConvert}>이동기록저장</button> */}
-		</div>
+		</>
 	);
 };
