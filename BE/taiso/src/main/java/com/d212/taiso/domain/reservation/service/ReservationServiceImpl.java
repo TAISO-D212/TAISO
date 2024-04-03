@@ -302,7 +302,7 @@ public class ReservationServiceImpl implements ReservationService {
         int stopCnt = reservation.getStopCnt() - 1;
 
         // 거리 배열 저장값에서 해당 경유지 제거
-        int tempstopCnt = stopCnt + 2;
+        int tempStopCnt = stopCnt + 2;
         String originDistStr = reservation.getRouteDist();
         // 받아온 경유지 간 거리를 테이블로 만들기
         //          주차장     목적지     경유지 1   경유지 2
@@ -310,8 +310,8 @@ public class ReservationServiceImpl implements ReservationService {
         // 목적지      500       0         300       1번
         // 경유지 1    400      300         0        2번
         // 새 경유지    0번      1번        2번        0
-        int lastNum = stopCnt - 1;
-        int[][] distTable = new int[stopCnt][stopCnt];
+        int lastNum = tempStopCnt - 1;
+        int[][] distTable = new int[tempStopCnt][tempStopCnt];
         StringTokenizer stk = new StringTokenizer(originDistStr);
         for (int i = 0; i < lastNum; i++) {
             for (int j = 0; j < lastNum; j++) {
@@ -319,7 +319,26 @@ public class ReservationServiceImpl implements ReservationService {
             }
         }
         // 지울 placeId가 해당 rsvId로 저장된 것 중 몇 번째 순서인지 찾아오는 로직
-        // TODO : 해당 로직으로 행, 열 지워서 하기
+        int index = 0;
+        List<RsvDetail> rsvDetailList = rsvDetailRepository.findRdByRsvIdOrderByArrivalTime(rsvId);
+        for (int i = 0; i < rsvDetailList.size(); i++) {
+            if (rsvDetailList.get(i).getRsvDetailId().getPlace().getId().equals(placeId)) {
+                index = i + 2;      // 출발지, 목적지 포함
+                break;
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < lastNum; i++) {
+            if (i == index) {
+                continue;
+            }
+            for (int j = 0; j < lastNum; j++) {
+                if (j == index) {
+                    continue;
+                }
+                sb.append(distTable[i][j] + " ");
+            }
+        }
 
         // 총 인원 수와 경유지 수가 모두 0이 되면 예약 리스트 자체를 제거
         // Cascade 적용이 되어있나?? -> 되어있음.
@@ -330,6 +349,7 @@ public class ReservationServiceImpl implements ReservationService {
             // 예약 변경 값 적용하기
             reservation.changeCnt(cnt);
             reservation.changeStopCnt(stopCnt);
+            reservation.changeRouteDist(sb.toString());
         }
     }
 
