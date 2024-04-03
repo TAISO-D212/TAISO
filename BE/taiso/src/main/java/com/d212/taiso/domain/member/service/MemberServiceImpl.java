@@ -7,13 +7,11 @@ import com.d212.taiso.domain.member.dto.MemberJoinReq;
 import com.d212.taiso.domain.member.dto.MemberRes;
 import com.d212.taiso.domain.member.entity.Member;
 import com.d212.taiso.domain.member.repository.MemberRepository;
-import com.d212.taiso.domain.reservation.entity.Reservation;
 import com.d212.taiso.global.result.error.ErrorCode;
 import com.d212.taiso.global.result.error.exception.BusinessException;
 import com.d212.taiso.global.util.CommonUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,11 +44,11 @@ public class MemberServiceImpl implements MemberService {
     public MemberRes getMemberInfo() {
         Member member = commonUtil.getMember();
         return MemberRes.builder()
-                .email(member.getEmail())
-                .name(member.getName())
-                .faceImg(member.getFaceImg())
-                .createDate(member.getCreateDate())
-                .build();
+            .email(member.getEmail())
+            .name(member.getName())
+            .faceImg(member.getFaceImg())
+            .createDate(member.getCreateDate())
+            .build();
     }
 
     @Override
@@ -93,8 +91,6 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
     }
 
-
-
 //    @Autowired
 //    private alertRepository reservationRepository;
 //
@@ -108,11 +104,8 @@ public class MemberServiceImpl implements MemberService {
 //    }
 
 
-
-
-
     //
-    public List<String> getFcmToken(Long rsvId){
+    public List<String> getFcmToken(Long rsvId) {
 
         List<Member> members = memberRepository.findMemberByRsvId(rsvId);
         List<String> fcmTokens = new ArrayList<>();
@@ -123,8 +116,6 @@ public class MemberServiceImpl implements MemberService {
 
         return fcmTokens;
     }
-
-
 
 //    @Transactional //해당 메서드가 트랜잭션 내에서 실행되어야 함을 나타냄. 메서드 내에서 발생하는 모든 데이터베이스 작업은 하나의 트랜잭션으로 묶임.
 //    //알림을 저장하는 메서드 -> 토큰을 매개변수로 받아들임.

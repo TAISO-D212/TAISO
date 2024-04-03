@@ -31,7 +31,7 @@ public class RsvRouteServiceImpl implements RsvRouteService {
     private final PlaceRepository placeRepository;
     private final RsvDetailRepository rsvDetailRepository;
     private final ReservationRepository reservationRepository;
-    
+
     @Override
     public void startConnection(long rsvId) {
         // 경유지 gps 리스트 ROS 넘겨주기 -> ROS단에서는 ros토픽으로 저장
