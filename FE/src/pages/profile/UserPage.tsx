@@ -63,15 +63,6 @@ export const UserPage = () => {
 				</div>
 				{/* <button onClick={handleClickGetMemberInfo}>test</button> */}
 				{/* 위치추적기능 TEST */}
-				<div className='flex justify-center w-[100%]'>
-					<button
-						className='mt-8 w-[70%] btn btn-accent'
-						onClick={() => {
-							navigate('/move');
-						}}>
-						위치추적기능 페이지 이동 버튼
-					</button>
-				</div>
 			</div>
 			<BottomNav />
 		</>

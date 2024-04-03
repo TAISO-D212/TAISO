@@ -406,7 +406,6 @@ export const MovingTAISO = () => {
 
 	return (
 		<>
-			{modal}
 			<div className='flex flex-col items-center w-[100%] h-[100%] '>
 				{location.isLoading ? (
 					<div className='flex justify-center items-center w-[100%] h-[100%]'>
@@ -424,7 +423,7 @@ export const MovingTAISO = () => {
 					</div>
 				)}
 
-				<div className='fixed bottom-0 flex flex-col justify-evenly items-center mt-[3%] bg-white w-[100%] h-[23%] z-10'>
+				<div className='fixed bottom-0 flex flex-col justify-evenly items-center mt-[3%] rounded-lg bg-white w-[100%] h-[23%] z-10'>
 					<div className='flex justify-evenly items-center w-[100%]'>
 						<div className='flex flex-col justify-center items-center w-[40%]'>
 							<div className='text-[20px] font-["Pretendard-Bold"]'>{totalTime}</div>
