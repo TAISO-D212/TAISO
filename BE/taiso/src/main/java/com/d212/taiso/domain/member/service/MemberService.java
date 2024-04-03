@@ -19,9 +19,9 @@ public interface MemberService {
     void memberDelete();
 
     @Transactional
-    void saveFcmToken(String fcmToken);
+    void saveFcmToken(Long rsvId, String fcmToken);
 
-    String getfcmToken();
+    String getfcmToken(Long rsvId);
 
 
     // 비밀번호 암호화로 인해 지움.

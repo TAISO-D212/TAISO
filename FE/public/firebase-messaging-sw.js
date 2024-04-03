@@ -1,3 +1,35 @@
+importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js");
+importScripts(
+  "https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"
+);
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBm16pVX-h-wlTc0Ll7I9otOl_l5_CiXDM",
+  projectId: "taiso-18ea8",
+  messagingSenderId: "37210886537",
+  appId: "1:37210886537:web:f34fb3edec5872323c9158",
+};
+
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+
+// Initialize Firebase Cloud Messaging and get a reference to the service
+const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage((payload) => {
+  console.log(
+    "[firebase-messaging-sw.js] Received background message ",
+    payload
+  );
+  // TODO : payload를 이용한 notification 생성
+  const notificationTitle = payload.notification.title;
+  const notificationOptions = {
+    body: payload.notification.body,
+    icon: "/firebase-logo.png",
+  };
+
+  self.registration.showNotification(notificationTitle, notificationOptions);
+});
+
 const CACHE_NAME = "TAISO-CACHE-V1";
 
 // 캐싱할 파일
@@ -47,7 +79,6 @@ self.addEventListener("push", function (event) {
   const notificationOptions = {
     body: resultData.body,
     icon: resultData.image,
-    tag: resultData.tag,
     ...resultData,
   };
   console.log("push: ", { resultData, notificationTitle, notificationOptions });

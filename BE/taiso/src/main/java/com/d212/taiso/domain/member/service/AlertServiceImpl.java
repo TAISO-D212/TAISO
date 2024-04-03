@@ -1,7 +1,6 @@
 package com.d212.taiso.domain.member.service;
 
 import com.d212.taiso.domain.member.dto.AlertDto;
-import com.d212.taiso.domain.member.entity.Member;
 import com.d212.taiso.global.util.CommonUtil;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.Message;
@@ -10,7 +9,6 @@ import com.google.firebase.messaging.WebpushNotification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.sql.exec.ExecutionException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,11 +18,12 @@ public class AlertServiceImpl {
 
     private final MemberService memberService;
     private final CommonUtil commonUtil;
-    public void arrivalAlertSend() throws ExecutionException, InterruptedException {
+
+    public void arrivalAlertSend(Long rsvId) throws ExecutionException, InterruptedException {
 
         AlertDto alertDto = AlertDto.builder()
                 .title("TAISO")
-                .token(memberService.getfcmToken())
+                .token(memberService.getfcmToken(rsvId))
                 .message("버스가 곧 도착합니다.")
                 .build();
         sendAlert(alertDto);
@@ -32,11 +31,11 @@ public class AlertServiceImpl {
     }
 
 
-    public String getNotificationToken() {
-//        Member member = commonUtil.getMember();
-//        return member.getFcmToken();
-       return memberService.getfcmToken();
-    }
+//    public String getNotificationToken() {
+////        Member member = commonUtil.getMember();
+////        return member.getFcmToken();
+//       return memberService.getfcmToken(rsvId);
+//    }
 
 
     public void sendAlert(AlertDto alert) throws ExecutionException, InterruptedException {
@@ -47,7 +46,7 @@ public class AlertServiceImpl {
                                 .setBody(alert.getMessage())
                                 .build())
                         .build())
-                .setToken(memberService.getfcmToken())
+                .setToken(alert.getToken())
                 .build();
 
 

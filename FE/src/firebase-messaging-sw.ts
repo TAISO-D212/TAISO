@@ -1,6 +1,5 @@
 import { initializeApp } from 'firebase/app';
 import { getToken, onMessage } from 'firebase/messaging';
-import { getAnalytics } from 'firebase/analytics';
 import { getMessaging, onBackgroundMessage } from 'firebase/messaging/sw';
 import { viteConfig } from './apis/viteConfig';
 
@@ -15,7 +14,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 
 // Initialize Firebase Cloud Messaging and get a reference to the service
 const messaging = getMessaging(app);
@@ -52,7 +50,7 @@ const requestPermission = async () => {
 		return;
 	}
 
-	const token = await getToken(messaging, { vapidKey: '<YOUR_PUBLIC_VAPID_KEY_HERE>' });
+	const token = await getToken(messaging, { vapidKey: viteConfig.VITE_FIREBASE_PUBLIC_VAPID_KEY });
 
 	if (token) {
 		console.log(`푸시 토큰 발급 완료 : ${token}`);
@@ -74,16 +72,36 @@ const requestPermission = async () => {
 	onMessage(messaging, (payload) => {
 		console.log('Message received. : ', payload);
 		// ...
+		let notificationPermission = Notification.permission;
+
+		if (notificationPermission === 'granted') {
+			//Notification을 이미 허용한 사람들에게 보여주는 알람창
+			new Notification(payload.notification.title, {
+				body: payload.notification.body,
+				icon: '/assets/icon/icon_48.png',
+			});
+		} else if (notificationPermission !== 'denied') {
+			//Notification을 거부했을 경우 재 허용 창 띄우기
+			Notification.requestPermission(function (permission) {
+				if (permission === 'granted') {
+					new Notification(payload.notification.title, {
+						body: payload.notification.body,
+					});
+				} else {
+					alert('알람 허용이 거부되었습니다.');
+				}
+			});
+		}
 	});
-	onBackgroundMessage(messaging, (payload) => {
-		console.log('[firebase-messaging-sw.js] Received background message ', payload);
-		// TODO : payload를 이용한 notification 생성
-		const notificationTitle = 'Background Message Title';
-		const notificationOptions = {
-			body: 'Background Message body.',
-			icon: '/firebase-logo.png',
-		};
-	});
+	// onBackgroundMessage(messaging, (payload) => {
+	// 	console.log('[firebase-messaging-sw.js] Received background message ', payload);
+	// 	// TODO : payload를 이용한 notification 생성
+	// 	const notificationTitle = 'Background Message Title';
+	// 	const notificationOptions = {
+	// 		body: 'Background Message body.',
+	// 		icon: '/firebase-logo.png',
+	// 	};
+	// });
 };
 
 requestPermission();
