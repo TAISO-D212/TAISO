@@ -5,6 +5,7 @@ package com.d212.taiso.domain.member.service;
 
 import com.d212.taiso.domain.member.dto.MemberJoinReq;
 import com.d212.taiso.domain.member.dto.MemberRes;
+import com.d212.taiso.domain.member.dto.MemberTokenReq;
 import com.d212.taiso.domain.member.entity.Member;
 import com.d212.taiso.domain.member.repository.MemberRepository;
 import com.d212.taiso.global.result.error.ErrorCode;
@@ -79,15 +80,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void saveFcmToken(String fcmToken) {
-        Member member = commonUtil.getMember();
+    public void saveFcmToken(MemberTokenReq memberTokenReq) {
 
-        // Member member = memberRepository.findMemberByEmail();
-        //
-//        Member member = memberRepository.findMemberByEmail()
-//                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_EMAIL_NOT_EXIST));//존재하지 않는 이메일이면..
+        Member member = memberRepository.findMemberByEmail(memberTokenReq.getEmail())
+            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_EMAIL_NOT_EXIST));
 
-        member.changeFcmToken(fcmToken);
+        member.changeFcmToken(memberTokenReq.getToken());
         memberRepository.save(member);
     }
 

@@ -9,7 +9,7 @@ from nav_msgs.msg import Odometry,Path
 from morai_msgs.msg import CtrlCmd,EgoVehicleStatus,ObjectStatusList,GetTrafficLightStatus
 import numpy as np
 from tf.transformations import euler_from_quaternion,quaternion_from_euler
-from std_msgs.msg import Bool, Float64, Int16
+from std_msgs.msg import Bool, Float64, Int16, String, Float32MultiArray
 
 
 class pure_pursuit :
@@ -28,8 +28,10 @@ class pure_pursuit :
         rospy.Subscriber("/Object_topic", ObjectStatusList, self.object_info_callback)
         rospy.Subscriber("/stopline", Int16, self.stopline_callback)
         rospy.Subscriber("/exist_traffic_light", Bool, self.traffic_light_callback)
+        rospy.Subscriber("/intersection", String, self.intersection_callback)
+        rospy.Subscriber('/route', Float32MultiArray, self.route_callback)
         
-        self.ctrl_cmd_pub = rospy.Publisher('ctrl_cmd',CtrlCmd, queue_size=100)
+        self.ctrl_cmd_pub = rospy.Publisher('ctrl_cmd',CtrlCmd, queue_size=10)
 
         self.ctrl_cmd_msg = CtrlCmd()
         self.ctrl_cmd_msg.longlCmdType = 1
@@ -46,26 +48,33 @@ class pure_pursuit :
         
         self.vehicle_length = 2.9
         self.lfd = 8
-        self.min_lfd = 5
+        self.min_lfd = 8
         self.max_lfd = 30
         self.lfd_gain = 0.8
-        self.target_velocity = 34
+        self.target_velocity = 30
         self.dis = 999
         self.traffic_light = False
         self.stopline = 0
-        self.traffic_light_status = 0
+        self.traffic_light_status = GetTrafficLightStatus()
         self.pid = pidControl()
         self.adaptive_cruise_control = AdaptiveCruiseControl(velocity_gain = 0.1, distance_gain = 1, time_gap = 0.8, vehicle_length = 4)
         self.vel_planning = velocityPlanning(self.target_velocity/3.6, 0.15)
+        self.check_waypoint = True
+        self.was_zone = False
+        self.waiting = False
+        self.count = 0
+        self.intersection = 'forward'
+        self.status_msg = EgoVehicleStatus()
+        self.route_msg = Float32MultiArray().data
 
         while True:
             if self.is_global_path == True:
-                self.velocity_list = self.vel_planning.curvedBaseVelocity(self.global_path, 15)
+                self.velocity_list = self.vel_planning.curvedBaseVelocity(self.global_path, 25)
                 break
             else:
                 rospy.loginfo('Waiting global path data')
 
-        rate = rospy.Rate(30) # 10hz
+        rate = rospy.Rate(50) # 10hz
         while not rospy.is_shutdown():
 
             if self.is_global_path == True and self.is_path == True and self.is_odom == True and self.is_status == True:
@@ -79,21 +88,49 @@ class pure_pursuit :
                 local_ped_info = result[3] 
                 # global_obs_info = result[4] 
                 # local_obs_info = result[5] 
+                # waypoints 
+                #(105.124124535, 1156.1241256),
+                # (118.887, 1498.312),
+                # (130.277, 1561.641)
                 
                 self.current_waypoint = self.get_current_waypoint(self.status_msg, self.global_path)
-                
-                if 0 < (abs(self.current_position.x - 130.277) + abs(self.current_position.y - 1461.641)) < 9:
-                    self.ctrl_cmd_msg.steering = 1.0
-                    self.target_velocity = 0.0
-                    if round((self.status_msg.velocity.x**2 + self.status_msg.velocity.y**2) ** 0.5, 3) == 0: # 현재 속도가 0일 때
-                        rospy.sleep(5)
-                        self.target_velocity = 10 
-                else:
-                    if self.traffic_light == True and self.stopline and self.traffic_light_status==1:
-                        self.target_velocity = 0.0
-                    else:
-                        self.target_velocity = self.velocity_list[self.current_waypoint] * 3.6  
+                self.target_velocity = self.velocity_list[self.current_waypoint] * 3.6
+                # ego_status x,y 좌표와 waypoint x,y 좌표간의 차이가 일정값 이하일때 정지후 rospy.sleep(180) 아닐 때 원래 로직
+                self.check_waypoint = False
+                for i in range(len(self.route_msg)//2):
+                    if 0 < (abs(self.current_position.x - self.route_msg[2*i]) + abs(self.current_position.y - self.route_msg[2*i+1])) < 2:
+                        self.check_waypoint = True
+                        break
 
+                if self.check_waypoint:
+                    if self.was_zone == False:
+                        self.waiting = True
+                    self.was_zone = True
+                else:
+                    self.was_zone = False
+                
+                if self.waiting == True:
+                    self.target_velocity = 0.0
+                    if self.count == 300:
+                        self.count = 0
+                        self.waiting = False
+                    else:
+                        self.count += 1
+                else:
+                    target_sign = 16
+                    if self.intersection == 'left':
+                        target_sign = 32
+
+                    if self.traffic_light_status.header.stamp.secs == self.status_msg.header.stamp.secs and abs(self.status_msg.wheel_angle) < 5  and self.traffic_light_status.trafficLightStatus&target_sign == 0 and self.stopline:
+                        if 0 < self.stopline < 80:
+                            self.target_velocity = 10
+                        elif self.stopline < 350 :
+                            self.target_velocity = 5
+                        elif self.stopline != 0:
+                            self.target_velocity = 0.0
+                    else:
+                        self.target_velocity = self.velocity_list[self.current_waypoint] * 3.6     
+                 
                 steering = self.calc_pure_pursuit()
                 if self.is_look_forward_point :
                     self.ctrl_cmd_msg.steering = steering
@@ -155,7 +192,13 @@ class pure_pursuit :
         self.traffic_light = msg.data
 
     def traffic_light_status_callback(self, msg):
-        self.traffic_light_status = msg.trafficLightStatus
+        self.traffic_light_status = msg
+
+    def intersection_callback(self, msg):
+        self.intersection = msg.data
+
+    def route_callback(self,msg):
+        self.route_msg = msg.data
 
     def get_current_waypoint(self,ego_status,global_path):
         min_dist = float('inf')
@@ -275,7 +318,7 @@ class pure_pursuit :
 class pidControl:
     def __init__(self):
         self.p_gain = 0.2
-        self.i_gain = 0.01
+        self.i_gain = 0.00
         self.d_gain = 0.03
         self.prev_error = 0
         self.i_control = 0
@@ -321,27 +364,22 @@ class velocityPlanning:
                 x_list.append([-2*x, -2*y, 1])
                 y_list.append((-x*x) - (y*y))
 
-            x_matrix = np.array(x_list)
-            y_matrix = np.array(y_list)
-            x_trans = x_matrix.T
+            A = np.array(x_list)
+            B = np.array(y_list)
+            a, b, c = np.dot(np.linalg.pinv(A), B)
+            
+            r = (a**2 + b**2 - c)**0.5
 
-            # 의사 역행렬을 사용하여 회귀 계수 계산
-            a_matrix = np.linalg.pinv(x_trans.dot(x_matrix)).dot(x_trans).dot(y_matrix)
-            a = a_matrix[0]
-            b = a_matrix[1]
-            c = a_matrix[2]
-            r = (a*a + b*b - c)*0.5
-
-            v_max = (r * 9.8 * self.road_friction)*0.5
-
+            v_max = (r * 9.8 * self.road_friction)**0.5 + 1
+            
             if v_max > self.car_max_speed:
                 v_max = self.car_max_speed
             out_vel_plan.append(v_max)
 
         for i in range(len(gloabl_path.poses) - point_num, len(gloabl_path.poses)-10):
-            out_vel_plan.append(10)
+            out_vel_plan.append(30)
 
-        for i in range(len(gloabl_path.poses) - 13, len(gloabl_path.poses)):
+        for i in range(len(gloabl_path.poses) - 10, len(gloabl_path.poses)):
             out_vel_plan.append(0)
 
         return out_vel_plan
@@ -396,14 +434,15 @@ class AdaptiveCruiseControl:
                                 self.Person = [True, i]
 
         # 주행 경로 상 NPC 차량 유무 파악
+        self.npc_vehicle = [False,0]
         if len(global_npc_info) > 0 :            
             for i in range(len(global_npc_info)):
                 for path in ref_path.poses :      
                     if global_npc_info[i][0] == 1 : # type=1 [npc_vehicle] 
                         dis = sqrt(pow(path.pose.position.x - global_npc_info[i][1], 2) + pow(path.pose.position.y - global_npc_info[i][2], 2))
-                        if dis < 0.5:
+                        if dis < 0.3:
                             rel_distance = sqrt(pow(local_npc_info[i][1], 2) + pow(local_npc_info[i][2], 2))       
-                            if rel_distance < min_rel_distance:
+                            if rel_distance < min_rel_distance and (-1.8 < path.pose.position.y - global_npc_info[i][2] < 1.8):
                                 min_rel_distance = rel_distance
                                 self.npc_vehicle=[True,i]
 
@@ -427,7 +466,7 @@ class AdaptiveCruiseControl:
     def get_target_velocity(self, local_npc_info, local_ped_info, ego_vel, target_vel): 
         #TODO: (9) 장애물과의 속도와 거리 차이를 이용하여 ACC 를 진행 목표 속도를 설정
         out_vel =  target_vel
-        default_space = 5
+        default_space = 7
         self.time_gap = self.time_gap
         self.v_gain = self.velocity_gain
         self.x_errgain = self.distance_gain
@@ -438,8 +477,8 @@ class AdaptiveCruiseControl:
             front_vehicle = [local_npc_info[self.npc_vehicle[1]][1], local_npc_info[self.npc_vehicle[1]][2], local_npc_info[self.npc_vehicle[1]][3]]
 
             self.object_distance = sqrt(pow(front_vehicle[0],2) + pow(front_vehicle[1],2))
-            if front_vehicle[2] < 2.6:
-                if self.object_distance < 2.4:
+            if front_vehicle[2] < 2.0:
+                if self.object_distance < 1.8:
                     out_vel = 0
                     return out_vel
                 

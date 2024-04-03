@@ -5,6 +5,8 @@ package com.d212.taiso.domain.member.service;
 
 import com.d212.taiso.domain.member.dto.MemberJoinReq;
 import com.d212.taiso.domain.member.dto.MemberRes;
+import com.d212.taiso.domain.member.dto.MemberTokenReq;
+import com.d212.taiso.domain.member.entity.Member;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -19,8 +21,8 @@ public interface MemberService {
 
     void memberDelete();
 
-    @Transactional
-    void saveFcmToken(String fcmToken);
+
+    void saveFcmToken(MemberTokenReq memberTokenReq);
 
     List<String> getFcmToken(Long rsvId);
 

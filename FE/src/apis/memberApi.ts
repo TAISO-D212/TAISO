@@ -32,10 +32,10 @@ export const checkEmail = async (email: string): Promise<APIResponse<boolean>> =
 	return res.data;
 };
 
-export const getMember = async ():Promise<APIResponse<MemberInfo>> => {
+export const getMember = async (): Promise<APIResponse<MemberInfo>> => {
 	const res = await jwtAxios.get(`${host}/`);
-	return res.data
-}
+	return res.data;
+};
 
 export const memberJoin = async (signUpObj: SignUpInputType): Promise<APIResponse<boolean>> => {
 	const header = { headers: { 'Content-Type': 'application/json' } };
@@ -47,5 +47,12 @@ export const memberJoin = async (signUpObj: SignUpInputType): Promise<APIRespons
 
 export const deleteMember = async (): Promise<APIResponse<boolean>> => {
 	const res = await jwtAxios.delete(`${host}/`);
+	return res.data;
+};
+
+export const fetchFCMToken = async (email: string): Promise<APIResponse<boolean>> => {
+	const header = { headers: { 'Content-Type': 'application/json' } };
+	const token = localStorage.getItem('FCMtoken');
+	const res = await axios.post(`${host}/new`, { email: email, token: token }, header);
 	return res.data;
 };
