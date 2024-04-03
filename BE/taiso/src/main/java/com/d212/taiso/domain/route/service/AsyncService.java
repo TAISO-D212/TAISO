@@ -148,7 +148,7 @@ public class AsyncService {
                 // 최소 거리 총합이 30km 넘으면 예약 삭제 DB 업데이트, 예약 실패 push 알림
                 log.info("30km 초과! 예약 실패");
                 reservationService.deleteRsv(rsvId, placeId);
-                // TODO : 예약 실패 push 알림 호출 추가
+                alertService.rsvFailAlertSend(rsvId);
             } else {
                 // 최소 거리 총합이 30km 이내면 예약 성공 DB 업데이트, 예약 성공 push 알림
                 log.info("30km 이하! 예약 성공");
@@ -175,11 +175,15 @@ public class AsyncService {
                     log.info((i - 1) + " 번째 저장한 rsvDetail order update to " + order);
                 }
                 log.info("rsvDetail order updated!");
-                // TODO : 예약 성공 push 알림 호출 추가
+                alertService.rsvSucAlertSend(rsvId);
             }
 
         } catch (JsonProcessingException e) {
             log.error("json 처리 에러 : {}", e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (FirebaseMessagingException e) {
+            throw new RuntimeException(e);
         }
     }
 
