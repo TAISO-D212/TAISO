@@ -23,11 +23,10 @@ public class RsvRoute {
 
     // 외래키이자 pk가 되도록 설정
     @Id
-    @Column(name = "rsv_id", nullable = false)
+    @Column(name = "route_id", nullable = false)
     private Long id;
 
-    @OneToOne(fetch = LAZY)
-    @MapsId
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "rsv_id")
     private Reservation reservation;
 
