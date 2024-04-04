@@ -88,17 +88,37 @@
 
 
 
+
 ### 2. 시뮬레이터 화면
 
+#### 인지 - 카메라 센서
+![](https://i.imgur.com/9CVwDrz.png)
+
+#### 인지 - 라이다 센서
+![](https://i.imgur.com/NiituoU.png)
+![](https://i.imgur.com/SHpprM9.png)
+
+#### 판단 - dijkstra 경로 계획 
+![](https://i.imgur.com/DsuFdg2.png)
+
+#### 판단 - V2X
+
+#### 제어 - acc & 정지선 속도 제어
 
 
-# IV. 프로젝트 산출물
+
+# IV. 기술 & 개발 환경 / 빌드 및 배포
 ---
-#### 아키텍처
-##### 1. 기술
-![](https://i.imgur.com/zigXAr3.png)
+##### [매뉴얼 바로가기](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/docs/TAISO%20%ED%8F%AC%ED%8C%85%20%EB%A7%A4%EB%89%B4%EC%96%BC.md?ref_type=heads)
 
-##### 2. 배포
+# V. 프로젝트 산출물
+---
+## 아키텍처
+### 1. 기술
+![](https://i.imgur.com/zigXAr3.png)
+![](https://i.imgur.com/ajU7dcz.png)
+
+### 2. 배포
 ![](https://i.imgur.com/TSfkqtI.png)
 
 #### [기능 명세서](https://kimtaeyong.notion.site/dbf6a8fdc14d494e8172ca040bb36038)
@@ -109,23 +129,16 @@
 
 
 #### 프로젝트 파일 구조
-##### FE 구조
-##### BE 구조
+##### [FE 구조](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/FE/%ED%8F%B4%EB%8D%94%EA%B5%AC%EC%A1%B0_FE.txt?ref_type=heads)
+##### [BE 구조](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/BE/%ED%8F%B4%EB%8D%94%EA%B5%AC%EC%A1%B0_BE.txt?ref_type=heads)
 
 
-# V. 프로젝트 결과물
+# IV. 프로젝트 결과물
 ---
-##### 포팅 메뉴얼
-##### 중간 발표 자료
-##### 최종 발표 자료
-##### UCC 영상
-
-
-
-# VI. 기술 & 개발 환경 / 빌드 및 배포
----
-##### 매뉴얼 바로가기
-
+#### [포팅 매뉴얼](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/docs/TAISO%20%ED%8F%AC%ED%8C%85%20%EB%A7%A4%EB%89%B4%EC%96%BC.md?ref_type=heads)
+##### [중간 발표 자료](https://www.canva.com/design/DAF_XhUAR14/W7leyn3d0c11jM4fW0YpjA/view?utm_content=DAF_XhUAR14&utm_campaign=designshare&utm_medium=link&utm_source=editor)
+##### [최종 발표 자료](https://www.canva.com/design/DAGBUDIsiLA/UGu0VwczUgmRmfLWdVq59g/view?utm_content=DAGBUDIsiLA&utm_campaign=share_your_design&utm_medium=link&utm_source=shareyourdesignpanel)
+##### [UCC 영상]()
 
 
 
