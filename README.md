@@ -65,80 +65,97 @@
 
 ### 4. 팀원 소개
 ---
-    Front-End
-    * 김태용
-    * 전근렬
-    
-    Back-End
-    * 전근렬
-    * 배성연
-    * 정경리
-    
-    자율주행
-    * 전인구
-    * 양원석
-    
-    Infra
-    * 정경리
+    ❤️ 김태용: FE
+    🧡 전근렬: BE/FE
+    💛 배성연: BE/MQTT 통신
+    💚 정경리: BE/DevOps
+    💙 전인구: 자율주행 (ROS/Morai Simulator)
+    💜 양원석: 자율주행 (ROS/Morai Simulator)
 
 
-# III. TAISO 서비스 화면 
----
+
+
+# II. TAISO 서비스 화면 
 ### 1. 앱 화면
+1️⃣ 로그인
+![로그인](https://i.imgur.com/N0FKOap.gif)
 
+2️⃣ 합승예약
+![합승예약](https://i.imgur.com/wdwRg6X.gif)
 
+3️⃣ 즐겨찾기 추가/삭제
+![즐겨찾기추가삭제](https://i.imgur.com/kqOyhgp.gif)
 
+4️⃣ 현 위치 마커
+![현 위치 마커](https://i.imgur.com/bmIOWI8.gif)
+
+5️⃣ 자율주행
+![]()
 
 ### 2. 시뮬레이터 화면
 
-#### 인지 - 카메라 센서
+1️⃣ 인지 - 카메라 센서
 ![](https://i.imgur.com/9CVwDrz.png)
 
-#### 인지 - 라이다 센서
+2️⃣ 인지 - 라이다 센서
 ![](https://i.imgur.com/NiituoU.png)
 ![](https://i.imgur.com/SHpprM9.png)
 
-#### 판단 - dijkstra 경로 계획 
-![](https://i.imgur.com/DsuFdg2.png)
-
-#### 판단 - V2X
-
-#### 제어 - acc & 정지선 속도 제어
+3️⃣ 판단 - dijkstra 경로 계획 
+![사진](https://i.imgur.com/DsuFdg2.png)
+![gif](https://imgur.com/hCZ6YFE)
 
 
+4️⃣ 판단 - V2X
 
-# IV. 기술 & 개발 환경 / 빌드 및 배포
----
-##### [매뉴얼 바로가기](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/docs/TAISO%20%ED%8F%AC%ED%8C%85%20%EB%A7%A4%EB%89%B4%EC%96%BC.md?ref_type=heads)
+5️⃣ 제어 - acc & 정지선 속도 제어
+![정지선 인식](https://imgur.com/a/K2QbnCg)
+![앞에 차가 있을때](https://imgur.com/5004NOF)
+![]()
 
-# V. 프로젝트 산출물
----
-## 아키텍처
-### 1. 기술
+
+
+
+# III. 기술 & 개발 환경 / 빌드 및 배포
+
+📔 [매뉴얼 바로가기](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/docs/TAISO%20%ED%8F%AC%ED%8C%85%20%EB%A7%A4%EB%89%B4%EC%96%BC.md?ref_type=heads)
+
+##### 아키텍처
+🔧 기술
 ![](https://i.imgur.com/zigXAr3.png)
 ![](https://i.imgur.com/ajU7dcz.png)
 
-### 2. 배포
+☁️ 배포
 ![](https://i.imgur.com/TSfkqtI.png)
 
-#### [기능 명세서](https://kimtaeyong.notion.site/dbf6a8fdc14d494e8172ca040bb36038)
-#### [요구사항 정의서](https://kimtaeyong.notion.site/86156328c3734bf6b6bcb4360d5c81a6)
-#### [API 명세서](https://kimtaeyong.notion.site/API-23b59c75b0584712b4d625b71ff70efe)
-#### [ERD](https://kimtaeyong.notion.site/ERD-4e00456b5ad64f2586e0b24d4ff7eb4b)
+
+# IV. 프로젝트 산출물  
+
+🧾 [기능 명세서](https://kimtaeyong.notion.site/dbf6a8fdc14d494e8172ca040bb36038)  
+
+📃 [요구사항 정의서](https://kimtaeyong.notion.site/86156328c3734bf6b6bcb4360d5c81a6)  
+
+📜 [API 명세서](https://kimtaeyong.notion.site/API-23b59c75b0584712b4d625b71ff70efe)  
+
+💾 [ERD](https://kimtaeyong.notion.site/ERD-4e00456b5ad64f2586e0b24d4ff7eb4b)  
 
 
 
 #### 프로젝트 파일 구조
-##### [FE 구조](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/FE/%ED%8F%B4%EB%8D%94%EA%B5%AC%EC%A1%B0_FE.txt?ref_type=heads)
-##### [BE 구조](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/BE/%ED%8F%B4%EB%8D%94%EA%B5%AC%EC%A1%B0_BE.txt?ref_type=heads)
+📱 [FE 구조](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/FE/%ED%8F%B4%EB%8D%94%EA%B5%AC%EC%A1%B0_FE.txt?ref_type=heads) 
+
+⚙️ [BE 구조](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/BE/%ED%8F%B4%EB%8D%94%EA%B5%AC%EC%A1%B0_BE.txt?ref_type=heads)  
 
 
-# IV. 프로젝트 결과물
----
-#### [포팅 매뉴얼](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/docs/TAISO%20%ED%8F%AC%ED%8C%85%20%EB%A7%A4%EB%89%B4%EC%96%BC.md?ref_type=heads)
-##### [중간 발표 자료](https://www.canva.com/design/DAF_XhUAR14/W7leyn3d0c11jM4fW0YpjA/view?utm_content=DAF_XhUAR14&utm_campaign=designshare&utm_medium=link&utm_source=editor)
-##### [최종 발표 자료](https://www.canva.com/design/DAGBUDIsiLA/UGu0VwczUgmRmfLWdVq59g/view?utm_content=DAGBUDIsiLA&utm_campaign=share_your_design&utm_medium=link&utm_source=shareyourdesignpanel)
-##### [UCC 영상]()
+# V. 프로젝트 결과물
+
+📔 [포팅 매뉴얼](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/docs/TAISO%20%ED%8F%AC%ED%8C%85%20%EB%A7%A4%EB%89%B4%EC%96%BC.md?ref_type=heads)  
+
+🗣️ [중간 발표 자료](https://www.canva.com/design/DAF_XhUAR14/W7leyn3d0c11jM4fW0YpjA/view?utm_content=DAF_XhUAR14&utm_campaign=designshare&utm_medium=link&utm_source=editor)  
+
+🗣️ [최종 발표 자료](https://www.canva.com/design/DAGBUDIsiLA/UGu0VwczUgmRmfLWdVq59g/view?utm_content=DAGBUDIsiLA&utm_campaign=share_your_design&utm_medium=link&utm_source=shareyourdesignpanel)  
+
+🎬 [UCC 영상]()  
 
 
 
