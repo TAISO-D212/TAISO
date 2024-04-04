@@ -20,3 +20,8 @@
         - ```sudo systemctl enable mosquitto```
     - 서비스 상태 확인
         - ```sudo systemctl status mosquitto```
+- ROS
+    - mqtt-client 설치
+        - ```pip install paho-mqtt```
+        - ```sudo apt-get install mosquitto-clients```
+
