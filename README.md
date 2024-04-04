@@ -112,7 +112,9 @@
 ### 2. 시뮬레이터 화면
 
 1️⃣ 인지 - 카메라 센서
-![센서_활용](/uploads/585b1828d2cfa3c54b4fb5187b622fa1/센서_활용.gif)
+<p align="center">
+ <img src = "/uploads/585b1828d2cfa3c54b4fb5187b622fa1/센서_활용.gif">
+</p>
 
 2️⃣ 인지 - 라이다 센서
 
@@ -122,6 +124,9 @@
 <p align="center">
  <img src = "https://i.imgur.com/SHpprM9.png">
 </p>
+<p align="center">
+ <img src = "/uploads/6408145d1cb0f80c02a3d50eee1e1682/라이다.gif">
+</p>
 
 3️⃣ 판단 - dijkstra 경로 계획 
 
@@ -129,7 +134,7 @@
  <img src = "https://i.imgur.com/DsuFdg2.png">
 </p>
 <p align="center">
- <img src = "https://imgur.com/hCZ6YFE">
+ <img src = "/uploads/a4966c9ebc1bad84b96e2c313fc04920/다익스트라.gif">
 </p>
 
 
