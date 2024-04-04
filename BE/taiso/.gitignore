@@ -36,8 +36,12 @@ out/
 ### VS Code ###
 .vscode/
 
-### ENV ###
+# dotenv environment variable files
 .env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
 
 # FCM 비공개 키
 /src/main/resourcesgit /taiso-18ea8-firebase-adminsdk-m9qcd-e458ff02c9.json
