@@ -77,31 +77,31 @@
 
 # II. TAISO 서비스 화면 
 ### 1. 앱 화면
-1️⃣ 로그인
+#### 1️⃣ 로그인
 
 <p align="center">
  <img src = "https://i.imgur.com/N0FKOap.gif">
 </p>
 
-2️⃣ 합승예약
+#### 2️⃣ 합승예약
 
 <p align="center">
  <img src = "https://i.imgur.com/wdwRg6X.gif">
 </p>
 
-3️⃣ 즐겨찾기 추가/삭제
+#### 3️⃣ 즐겨찾기 추가/삭제
 
 <p align="center">
  <img src = "https://i.imgur.com/kqOyhgp.gif">
 </p>
 
-4️⃣ 현 위치 마커
+#### 4️⃣ 현 위치 마커
 
 <p align="center">
  <img src = "https://i.imgur.com/bmIOWI8.gif">
 </p>
 
-5️⃣ 자율주행
+#### 5️⃣ 자율주행
 
 <div style="text-align:center;">
   <img src="/uploads/33986547e90babcd64467a2d7ebb8731/자율주행.gif" style="width: 20%;">
@@ -111,12 +111,12 @@
 
 ### 2. 시뮬레이터 화면
 
-1️⃣ 인지 - 카메라 센서
+#### 1️⃣ 인지 - 카메라 센서
 <p align="center">
  <img src = "/uploads/585b1828d2cfa3c54b4fb5187b622fa1/센서_활용.gif">
 </p>
 
-2️⃣ 인지 - 라이다 센서
+#### 2️⃣ 인지 - 라이다 센서
 
 <p align="center">
  <img src = "https://i.imgur.com/NiituoU.png">
@@ -128,7 +128,7 @@
  <img src = "/uploads/6408145d1cb0f80c02a3d50eee1e1682/라이다.gif">
 </p>
 
-3️⃣ 판단 - dijkstra 경로 계획 
+#### 3️⃣ 판단 - dijkstra 경로 계획 
 
 <p align="center">
  <img src = "https://i.imgur.com/DsuFdg2.png">
@@ -138,14 +138,14 @@
 </p>
 
 
-4️⃣ 판단 - V2X
+#### 4️⃣ 판단 - V2X 
 
 <p align="center">
  <img src = "https://i.imgur.com/9CVwDrz.png">
 </p>
 
 
-5️⃣ 제어 - acc & 정지선 속도 제어
+#### 5️⃣ 제어 - acc & 정지선 속도 제어
 
 * 정지선/신호 인식
 <p align="center">
@@ -160,14 +160,14 @@
 
 # III. 기술 & 개발 환경 / 빌드 및 배포
 
-📔 [매뉴얼 바로가기](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/docs/TAISO%20%ED%8F%AC%ED%8C%85%20%EB%A7%A4%EB%89%B4%EC%96%BC.md?ref_type=heads)
+#### 📔 [매뉴얼 바로가기](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/docs/TAISO%20%ED%8F%AC%ED%8C%85%20%EB%A7%A4%EB%89%B4%EC%96%BC.md?ref_type=heads)
 
-##### 아키텍처
-🔧 기술
+### 🏗️ 아키텍처
+#### 🔧 기술
 ![](https://i.imgur.com/zigXAr3.png)
 ![](https://i.imgur.com/ajU7dcz.png)
 
-☁️ 배포
+#### ☁️ 배포
 ![](https://i.imgur.com/TSfkqtI.png)
 
 
