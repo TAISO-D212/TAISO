@@ -78,42 +78,67 @@
 # II. TAISO 서비스 화면 
 ### 1. 앱 화면
 1️⃣ 로그인
-![로그인](https://i.imgur.com/N0FKOap.gif)
+<p align="center">
+ <img src = "https://i.imgur.com/N0FKOap.gif">
+</p>
 
 2️⃣ 합승예약
-![합승예약](https://i.imgur.com/wdwRg6X.gif)
+<p align="center">
+ <img src = "https://i.imgur.com/wdwRg6X.gif">
+</p>
 
 3️⃣ 즐겨찾기 추가/삭제
-![즐겨찾기추가삭제](https://i.imgur.com/kqOyhgp.gif)
+<p align="center">
+ <img src = "https://i.imgur.com/kqOyhgp.gif">
+</p>
 
 4️⃣ 현 위치 마커
-![현 위치 마커](https://i.imgur.com/bmIOWI8.gif)
+<p align="center">
+ <img src = "https://i.imgur.com/bmIOWI8.gif">
+</p>
 
 5️⃣ 자율주행
-![]()
+<p align="center">
+ <img src = "/resources/자율주행.gif">
+</p>
 
 ### 2. 시뮬레이터 화면
 
 1️⃣ 인지 - 카메라 센서
-![](https://i.imgur.com/9CVwDrz.png)
+<p align="center">
+ <img src = "https://i.imgur.com/9CVwDrz.png">
+</p>
 
 2️⃣ 인지 - 라이다 센서
-![](https://i.imgur.com/NiituoU.png)
-![](https://i.imgur.com/SHpprM9.png)
+
+<p align="center">
+ <img src = "https://i.imgur.com/NiituoU.png">
+</p>
+<p align="center">
+ <img src = "https://i.imgur.com/SHpprM9.png">
+</p>
 
 3️⃣ 판단 - dijkstra 경로 계획 
-![사진](https://i.imgur.com/DsuFdg2.png)
-![gif](https://imgur.com/hCZ6YFE)
+<p align="center">
+ <img src = "https://i.imgur.com/DsuFdg2.png">
+</p>
+<p align="center">
+ <img src = "https://imgur.com/hCZ6YFE">
+</p>
 
 
 4️⃣ 판단 - V2X
 
 5️⃣ 제어 - acc & 정지선 속도 제어
-![정지선 인식](https://imgur.com/a/K2QbnCg)
-![앞에 차가 있을때](https://imgur.com/5004NOF)
-![]()
+정지선 인식
+<p align="center">
+ <img src = "https://imgur.com/a/K2QbnCg">
+</p>
 
-
+앞에 차가 있을 때
+<p align="center">
+ <img src = "https://imgur.com/5004NOF">
+</p>
 
 
 # III. 기술 & 개발 환경 / 빌드 및 배포
