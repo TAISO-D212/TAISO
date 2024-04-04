@@ -1,5 +1,4 @@
 
-
 # TAISO: 시골 친화형 자율주행 택시 서비스
 
 ![](https://i.imgur.com/rYL1KGC.png)
