@@ -1,0 +1,140 @@
+¦§¦¡.gradle
+¦¢  ¦§¦¡8.5
+¦¢  ¦¢  ¦§¦¡checksums
+¦¢  ¦¢  ¦§¦¡dependencies-accessors
+¦¢  ¦¢  ¦§¦¡executionHistory
+¦¢  ¦¢  ¦§¦¡fileChanges
+¦¢  ¦¢  ¦§¦¡fileHashes
+¦¢  ¦¢  ¦¦¦¡vcsMetadata
+¦¢  ¦§¦¡buildOutputCleanup
+¦¢  ¦¦¦¡vcs-1
+¦§¦¡.idea
+¦¢  ¦¦¦¡modules
+¦§¦¡build
+¦¢  ¦§¦¡classes
+¦¢  ¦¢  ¦¦¦¡java
+¦¢  ¦¢      ¦¦¦¡main
+¦¢  ¦¢          ¦¦¦¡com
+¦¢  ¦¢              ¦¦¦¡d212
+¦¢  ¦¢                  ¦¦¦¡taiso
+¦¢  ¦¢                      ¦§¦¡domain
+¦¢  ¦¢                      ¦¢  ¦§¦¡bookmark
+¦¢  ¦¢                      ¦¢  ¦¢  ¦§¦¡controller
+¦¢  ¦¢                      ¦¢  ¦¢  ¦§¦¡dto
+¦¢  ¦¢                      ¦¢  ¦¢  ¦§¦¡entity
+¦¢  ¦¢                      ¦¢  ¦¢  ¦§¦¡repository
+¦¢  ¦¢                      ¦¢  ¦¢  ¦¦¦¡service
+¦¢  ¦¢                      ¦¢  ¦§¦¡member
+¦¢  ¦¢                      ¦¢  ¦¢  ¦§¦¡controller
+¦¢  ¦¢                      ¦¢  ¦¢  ¦¢  ¦§¦¡advice
+¦¢  ¦¢                      ¦¢  ¦¢  ¦¢  ¦¦¦¡formatter
+¦¢  ¦¢                      ¦¢  ¦¢  ¦§¦¡dto
+¦¢  ¦¢                      ¦¢  ¦¢  ¦§¦¡entity
+¦¢  ¦¢                      ¦¢  ¦¢  ¦§¦¡repository
+¦¢  ¦¢                      ¦¢  ¦¢  ¦¦¦¡service
+¦¢  ¦¢                      ¦¢  ¦§¦¡place
+¦¢  ¦¢                      ¦¢  ¦¢  ¦§¦¡entity
+¦¢  ¦¢                      ¦¢  ¦¢  ¦¦¦¡repository
+¦¢  ¦¢                      ¦¢  ¦§¦¡reservation
+¦¢  ¦¢                      ¦¢  ¦¢  ¦§¦¡controller
+¦¢  ¦¢                      ¦¢  ¦¢  ¦§¦¡dto
+¦¢  ¦¢                      ¦¢  ¦¢  ¦§¦¡entity
+¦¢  ¦¢                      ¦¢  ¦¢  ¦§¦¡mapper
+¦¢  ¦¢                      ¦¢  ¦¢  ¦§¦¡repository
+¦¢  ¦¢                      ¦¢  ¦¢  ¦¦¦¡service
+¦¢  ¦¢                      ¦¢  ¦¦¦¡route
+¦¢  ¦¢                      ¦¢      ¦§¦¡dto
+¦¢  ¦¢                      ¦¢      ¦§¦¡entity
+¦¢  ¦¢                      ¦¢      ¦§¦¡mqtt
+¦¢  ¦¢                      ¦¢      ¦§¦¡repository
+¦¢  ¦¢                      ¦¢      ¦¦¦¡service
+¦¢  ¦¢                      ¦¦¦¡global
+¦¢  ¦¢                          ¦§¦¡app
+¦¢  ¦¢                          ¦§¦¡result
+¦¢  ¦¢                          ¦¢  ¦¦¦¡error
+¦¢  ¦¢                          ¦¢      ¦¦¦¡exception
+¦¢  ¦¢                          ¦§¦¡security
+¦¢  ¦¢                          ¦¢  ¦§¦¡config
+¦¢  ¦¢                          ¦¢  ¦§¦¡filter
+¦¢  ¦¢                          ¦¢  ¦§¦¡handler
+¦¢  ¦¢                          ¦¢  ¦¦¦¡util
+¦¢  ¦¢                          ¦§¦¡swagger
+¦¢  ¦¢                          ¦¢  ¦¦¦¡config
+¦¢  ¦¢                          ¦¦¦¡util
+¦¢  ¦§¦¡generated
+¦¢  ¦¢  ¦¦¦¡sources
+¦¢  ¦¢      ¦§¦¡annotationProcessor
+¦¢  ¦¢      ¦¢  ¦¦¦¡java
+¦¢  ¦¢      ¦¢      ¦¦¦¡main
+¦¢  ¦¢      ¦¢          ¦¦¦¡com
+¦¢  ¦¢      ¦¢              ¦¦¦¡d212
+¦¢  ¦¢      ¦¢                  ¦¦¦¡taiso
+¦¢  ¦¢      ¦¢                      ¦¦¦¡domain
+¦¢  ¦¢      ¦¢                          ¦¦¦¡reservation
+¦¢  ¦¢      ¦¢                              ¦¦¦¡mapper
+¦¢  ¦¢      ¦¦¦¡headers
+¦¢  ¦¢          ¦¦¦¡java
+¦¢  ¦¢              ¦¦¦¡main
+¦¢  ¦§¦¡libs
+¦¢  ¦§¦¡resources
+¦¢  ¦¢  ¦¦¦¡main
+¦¢  ¦¦¦¡tmp
+¦¢      ¦§¦¡bootJar
+¦¢      ¦§¦¡compileJava
+¦¢      ¦¢  ¦¦¦¡compileTransaction
+¦¢      ¦¢      ¦§¦¡backup-dir
+¦¢      ¦¢      ¦¦¦¡stash-dir
+¦¢      ¦¦¦¡jar
+¦§¦¡gradle
+¦¢  ¦¦¦¡wrapper
+¦¦¦¡src
+    ¦¦¦¡main
+        ¦§¦¡java
+        ¦¢  ¦¦¦¡com
+        ¦¢      ¦¦¦¡d212
+        ¦¢          ¦¦¦¡taiso
+        ¦¢              ¦§¦¡domain
+        ¦¢              ¦¢  ¦§¦¡bookmark
+        ¦¢              ¦¢  ¦¢  ¦§¦¡controller
+        ¦¢              ¦¢  ¦¢  ¦§¦¡dto
+        ¦¢              ¦¢  ¦¢  ¦§¦¡entity
+        ¦¢              ¦¢  ¦¢  ¦§¦¡repository
+        ¦¢              ¦¢  ¦¢  ¦¦¦¡service
+        ¦¢              ¦¢  ¦§¦¡member
+        ¦¢              ¦¢  ¦¢  ¦§¦¡controller
+        ¦¢              ¦¢  ¦¢  ¦¢  ¦§¦¡advice
+        ¦¢              ¦¢  ¦¢  ¦¢  ¦¦¦¡formatter
+        ¦¢              ¦¢  ¦¢  ¦§¦¡dto
+        ¦¢              ¦¢  ¦¢  ¦§¦¡entity
+        ¦¢              ¦¢  ¦¢  ¦§¦¡repository
+        ¦¢              ¦¢  ¦¢  ¦¦¦¡service
+        ¦¢              ¦¢  ¦§¦¡place
+        ¦¢              ¦¢  ¦¢  ¦§¦¡entity
+        ¦¢              ¦¢  ¦¢  ¦¦¦¡repository
+        ¦¢              ¦¢  ¦§¦¡reservation
+        ¦¢              ¦¢  ¦¢  ¦§¦¡controller
+        ¦¢              ¦¢  ¦¢  ¦§¦¡dto
+        ¦¢              ¦¢  ¦¢  ¦§¦¡entity
+        ¦¢              ¦¢  ¦¢  ¦§¦¡mapper
+        ¦¢              ¦¢  ¦¢  ¦§¦¡repository
+        ¦¢              ¦¢  ¦¢  ¦¦¦¡service
+        ¦¢              ¦¢  ¦¦¦¡route
+        ¦¢              ¦¢      ¦§¦¡dto
+        ¦¢              ¦¢      ¦§¦¡entity
+        ¦¢              ¦¢      ¦§¦¡mqtt
+        ¦¢              ¦¢      ¦§¦¡repository
+        ¦¢              ¦¢      ¦¦¦¡service
+        ¦¢              ¦¦¦¡global
+        ¦¢                  ¦§¦¡app
+        ¦¢                  ¦§¦¡result
+        ¦¢                  ¦¢  ¦¦¦¡error
+        ¦¢                  ¦¢      ¦¦¦¡exception
+        ¦¢                  ¦§¦¡security
+        ¦¢                  ¦¢  ¦§¦¡config
+        ¦¢                  ¦¢  ¦§¦¡filter
+        ¦¢                  ¦¢  ¦§¦¡handler
+        ¦¢                  ¦¢  ¦¦¦¡util
+        ¦¢                  ¦§¦¡swagger
+        ¦¢                  ¦¢  ¦¦¦¡config
+        ¦¢                  ¦¦¦¡util
+        ¦¦¦¡resources
