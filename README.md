@@ -86,13 +86,13 @@
 #### 2️⃣ 합승예약
 
 <p align="center">
- <img src = "https://i.imgur.com/wdwRg6X.gif">
+ <img src = "https://i.imgur.com/wdwRg6X.gif" style="width: 150%">
 </p>
 
 #### 3️⃣ 즐겨찾기 추가/삭제
 
 <p align="center">
- <img src = "https://i.imgur.com/kqOyhgp.gif">
+ <img src = "https://github.com/TAISO-D212/TAISO/assets/50294908/24214d7a-965a-4d15-bdf9-a0649601ef00">
 </p>
 
 #### 4️⃣ 현 위치 마커
@@ -103,9 +103,9 @@
 
 #### 5️⃣ 자율주행
 
-<div style="text-align:center;">
-  <img src="/uploads/33986547e90babcd64467a2d7ebb8731/자율주행.gif" style="width: 20%;">
-</div>
+<p align="center">
+  <img src="/resources/자율주행.gif" style="width: 30%;">
+</p>
 
 
 
@@ -147,14 +147,14 @@
 
 #### 5️⃣ 제어 - acc & 정지선 속도 제어
 
-* 정지선/신호 인식
+* 정지선/신호 인식 (이미지 로딩이 느립니다)
 <p align="center">
- <img src = "/uploads/663ce4cb71e08a746f51c643ef73c722/차선및신호인식.gif">
+ <img src = "https://github.com/TAISO-D212/TAISO/assets/50294908/a9b07f11-0976-4041-9f98-d8b8142a007e">
 </p>
 
-* 앞 차 인식
+* 앞 차 인식 (이미지 로딩이 느립니다)
 <p align="center">
- <img src = "/uploads/ab8c5c3e6a58b3e207fa2b1fd59fe256/앞차인식.gif">
+ <img src = "https://github.com/TAISO-D212/TAISO/assets/50294908/c21bc037-d2db-4515-9b5e-49a3191761a4">
 </p>
 
 
