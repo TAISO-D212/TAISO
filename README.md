@@ -111,7 +111,7 @@
 <div>
   <img src="https://img.shields.io/badge/ROS-000000?style=for-the-badge&logo=ros&logoColor=white">
   <img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white">
-  <img src="https://img.shields.io/badge/MQTT-660066?style=for-the-badge&logo=MQTTt&logoColor=white">
+  <img src="https://img.shields.io/badge/MQTT-660066?style=for-the-badge&logo=MQTT&logoColor=white">
   <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=OpenCV&logoColor=white">
   <br/>
   <img src="https://img.shields.io/badge/CMake-064F8C?style=for-the-badge&logo=CMake&logoColor=white">
