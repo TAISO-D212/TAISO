@@ -1,6 +1,6 @@
 ### I. 기술 스택 & 개발 환경
 ---
-> [!사용 도구]
+> [사용 도구]
 >* 이슈 관리: JIRA
 >* 형상 관리: GitLab
 >* 커뮤니케이션: Mattermost, Notion, Google Docs
@@ -8,7 +8,7 @@
 >* UCC: Movavi
 >* CI/CD: EC2, Docker, Jenkins
 
-> [!개발 환경]
+> [개발 환경]
 > * **Front-end**
 > 	* Node.js: 20.11.1
 > 	* React: 18.2.0
@@ -49,12 +49,12 @@
 > 	 * Web Server:
 > 		 * Nginx: 1.18.0 (Ubuntu)
 
-> [!외부 서비스]
+> [외부 서비스]
 > * Kakao Map API
 > * Firebase API
 > * Morai Simulator
 
-> [!gitignore]
+> [gitignore]
 ```
 [Back]
 
@@ -128,7 +128,7 @@ dist-ssr
 *.sw?
 ```
 
-> [!환경변수 (Front) ]
+> [환경변수 (Front) ]
 ```
 VITE_BASE_URL={사이트 URL}
 VITE_KAKAO_MAP_API_KEY={카카오맵 API 키}
@@ -173,7 +173,7 @@ MQTT_BROKER_URL=tcp://{도메인}:{MQTT용 포트}
 
 ###  II. 빌드 및 배포
 ---
-> [!개발 환경에서 직접 빌드(로컬 빌드)]
+> [개발 환경에서 직접 빌드(로컬 빌드)]
 > [Front]
 > 1. 의존성 설치
 > `npm install`
@@ -194,7 +194,7 @@ MQTT_BROKER_URL=tcp://{도메인}:{MQTT용 포트}
 >   `./gradlew bootRun`
 >
 
-> [!배포 시 빌드(Jenkins 파이프라인)] 
+> [배포 시 빌드(Jenkins 파이프라인)] 
 
 > **jenkins 파이프라인**
 ```
@@ -432,7 +432,7 @@ ENTRYPOINT ["java","-jar","/{저장한 jar파일 이름: Taiso-copy(예시) }.ja
 ```
 
 
-> [!Nginx 설정파일]
+> [Nginx 설정파일]
 
 ```
 server {
