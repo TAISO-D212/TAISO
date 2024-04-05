@@ -114,7 +114,7 @@
 #### 1️⃣ 인지 - 카메라 센서
 (이미지 로딩이 느립니다)
 <p align="center">
- <img src = "/resources/센서_활용.gif">
+ <img src = "/resources/센서 활용.gif">
 </p>
 
 #### 2️⃣ 인지 - 라이다 센서
