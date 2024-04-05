@@ -92,7 +92,7 @@
 #### 3️⃣ 즐겨찾기 추가/삭제
 
 <p align="center">
- <img src = "https://i.imgur.com/kqOyhgp.gif">
+ <img src = "https://github.com/TAISO-D212/TAISO/assets/50294908/5af2951a-2aa3-4e7e-b73a-7473ed6df59b">
 </p>
 
 #### 4️⃣ 현 위치 마커
@@ -149,7 +149,7 @@
 
 * 정지선/신호 인식
 <p align="center">
- <img src = "/uploads/663ce4cb71e08a746f51c643ef73c722/차선및신호인식.gif">
+ <img src = "https://github.com/TAISO-D212/TAISO/assets/50294908/a9b07f11-0976-4041-9f98-d8b8142a007e">
 </p>
 
 * 앞 차 인식
@@ -160,7 +160,7 @@
 
 # III. 기술 & 개발 환경 / 빌드 및 배포
 
-#### 📔 [매뉴얼 바로가기](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/docs/TAISO%20%ED%8F%AC%ED%8C%85%20%EB%A7%A4%EB%89%B4%EC%96%BC.md?ref_type=heads)
+#### 📔 [매뉴얼 바로가기](https://github.com/TAISO-D212/TAISO/blob/master/docs/TAISO%20%ED%8F%AC%ED%8C%85%20%EB%A7%A4%EB%89%B4%EC%96%BC.md)
 
 ### 🏗️ 아키텍처
 #### 🔧 기술
@@ -184,14 +184,14 @@
 
 
 #### 프로젝트 파일 구조
-📱 [FE 구조](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/FE/%ED%8F%B4%EB%8D%94%EA%B5%AC%EC%A1%B0_FE.txt?ref_type=heads) 
+📱 [FE 구조](https://github.com/TAISO-D212/TAISO/blob/master/FE/%ED%8F%B4%EB%8D%94%EA%B5%AC%EC%A1%B0_FE.txt) 
 
-⚙️ [BE 구조](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/BE/%ED%8F%B4%EB%8D%94%EA%B5%AC%EC%A1%B0_BE.txt?ref_type=heads)  
+⚙️ [BE 구조](https://github.com/TAISO-D212/TAISO/blob/master/BE/%ED%8F%B4%EB%8D%94%EA%B5%AC%EC%A1%B0_BE.txt)  
 
 
 # V. 프로젝트 결과물
 
-📔 [포팅 매뉴얼](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/docs/TAISO%20%ED%8F%AC%ED%8C%85%20%EB%A7%A4%EB%89%B4%EC%96%BC.md?ref_type=heads)  
+📔 [포팅 매뉴얼](https://github.com/TAISO-D212/TAISO/blob/master/docs/TAISO%20%ED%8F%AC%ED%8C%85%20%EB%A7%A4%EB%89%B4%EC%96%BC.md)  
 
 🗣️ [중간 발표 자료](https://www.canva.com/design/DAF_XhUAR14/W7leyn3d0c11jM4fW0YpjA/view?utm_content=DAF_XhUAR14&utm_campaign=designshare&utm_medium=link&utm_source=editor)  
 
