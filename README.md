@@ -90,7 +90,7 @@
 </p>
 
 #### 3️⃣ 즐겨찾기 추가/삭제
-
+(이미지 로딩이 느립니다)
 <p align="center">
  <img src = "https://github.com/TAISO-D212/TAISO/assets/50294908/24214d7a-965a-4d15-bdf9-a0649601ef00">
 </p>
@@ -102,7 +102,7 @@
 </p>
 
 #### 5️⃣ 자율주행
-
+(이미지 로딩이 느립니다)
 <p align="center">
   <img src="/resources/자율주행.gif" style="width: 30%;">
 </p>
@@ -112,8 +112,9 @@
 ### 2. 시뮬레이터 화면
 
 #### 1️⃣ 인지 - 카메라 센서
+(이미지 로딩이 느립니다)
 <p align="center">
- <img src = "/uploads/585b1828d2cfa3c54b4fb5187b622fa1/센서_활용.gif">
+ <img src = "/resources/센서_활용.gif">
 </p>
 
 #### 2️⃣ 인지 - 라이다 센서
@@ -125,7 +126,7 @@
  <img src = "https://i.imgur.com/SHpprM9.png">
 </p>
 <p align="center">
- <img src = "/uploads/6408145d1cb0f80c02a3d50eee1e1682/라이다.gif">
+ <img src = "/resources/라이다.gif">
 </p>
 
 #### 3️⃣ 판단 - dijkstra 경로 계획 
@@ -134,7 +135,7 @@
  <img src = "https://i.imgur.com/DsuFdg2.png">
 </p>
 <p align="center">
- <img src = "/uploads/a4966c9ebc1bad84b96e2c313fc04920/다익스트라.gif">
+ <img src = "/resources/다익스트라.gif">
 </p>
 
 
@@ -147,12 +148,14 @@
 
 #### 5️⃣ 제어 - acc & 정지선 속도 제어
 
-* 정지선/신호 인식 (이미지 로딩이 느립니다)
+* 정지선/신호 인식
+(이미지 로딩이 느립니다)
 <p align="center">
  <img src = "https://github.com/TAISO-D212/TAISO/assets/50294908/a9b07f11-0976-4041-9f98-d8b8142a007e">
 </p>
 
-* 앞 차 인식 (이미지 로딩이 느립니다)
+* 앞 차 인식
+(이미지 로딩이 느립니다)
 <p align="center">
  <img src = "https://github.com/TAISO-D212/TAISO/assets/50294908/c21bc037-d2db-4515-9b5e-49a3191761a4">
 </p>
@@ -160,7 +163,7 @@
 
 # III. 기술 & 개발 환경 / 빌드 및 배포
 
-#### 📔 [매뉴얼 바로가기](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/docs/TAISO%20%ED%8F%AC%ED%8C%85%20%EB%A7%A4%EB%89%B4%EC%96%BC.md?ref_type=heads)
+#### 📔 [매뉴얼 바로가기](https://github.com/TAISO-D212/TAISO/blob/master/docs/TAISO%20%ED%8F%AC%ED%8C%85%20%EB%A7%A4%EB%89%B4%EC%96%BC.md)
 
 ### 🏗️ 아키텍처
 #### 🔧 기술
@@ -184,14 +187,14 @@
 
 
 #### 프로젝트 파일 구조
-📱 [FE 구조](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/FE/%ED%8F%B4%EB%8D%94%EA%B5%AC%EC%A1%B0_FE.txt?ref_type=heads) 
+📱 [FE 구조](https://github.com/TAISO-D212/TAISO/blob/master/FE/%ED%8F%B4%EB%8D%94%EA%B5%AC%EC%A1%B0_FE.txt) 
 
-⚙️ [BE 구조](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/BE/%ED%8F%B4%EB%8D%94%EA%B5%AC%EC%A1%B0_BE.txt?ref_type=heads)  
+⚙️ [BE 구조](https://github.com/TAISO-D212/TAISO/blob/master/BE/%ED%8F%B4%EB%8D%94%EA%B5%AC%EC%A1%B0_BE.txt)  
 
 
 # V. 프로젝트 결과물
 
-📔 [포팅 매뉴얼](https://lab.ssafy.com/s10-mobility-autodriving-sub2/S10P22D212/-/blob/develop/docs/TAISO%20%ED%8F%AC%ED%8C%85%20%EB%A7%A4%EB%89%B4%EC%96%BC.md?ref_type=heads)  
+📔 [포팅 매뉴얼](https://github.com/TAISO-D212/TAISO/blob/master/docs/TAISO%20%ED%8F%AC%ED%8C%85%20%EB%A7%A4%EB%89%B4%EC%96%BC.md)  
 
 🗣️ [중간 발표 자료](https://www.canva.com/design/DAF_XhUAR14/W7leyn3d0c11jM4fW0YpjA/view?utm_content=DAF_XhUAR14&utm_campaign=designshare&utm_medium=link&utm_source=editor)  
 
